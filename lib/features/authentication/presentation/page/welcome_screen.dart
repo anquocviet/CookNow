@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+  static const routeName = '/';
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
@@ -40,7 +42,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Container(
             margin: const EdgeInsets.only(top: 20.0),
             child: TextButton(
-              onPressed: () => context.go('/auth'),
+              onPressed: () => context.go(AuthScreen.routeName),
               child: const Text("Bỏ qua",
                   style: TextStyle(
                       color: Color.fromRGBO(221, 91, 25, 0.8), fontSize: 16)),
@@ -115,7 +117,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             }).toList(),
           ),
         ),
-        const AuthButton('Tiếp tục'),
+        AuthButton(
+          'Tiếp tục',
+          onPressed: () {},
+        ),
       ],
     ));
   }

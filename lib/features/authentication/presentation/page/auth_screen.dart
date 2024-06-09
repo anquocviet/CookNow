@@ -1,8 +1,12 @@
+import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
+import 'package:cooknow/features/authentication/presentation/page/register/register_user_info_screen.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
+  static const routeName = '/auth';
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,10 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const AuthButton('Đăng nhập'),
+            AuthButton(
+              'Đăng nhập',
+              onPressed: () => context.push(LoginScreen.routeName),
+            ),
             const SizedBox(
               height: 16,
             ),
@@ -46,33 +53,44 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            const AuthButton(
+            AuthButton(
               'Tiếp tục bằng Google',
-              icon: Icon(
+              icon: const Icon(
                 Icons.g_mobiledata_outlined,
                 color: Colors.white,
                 size: 32,
               ),
-              color: Color(0xFF4285F4),
+              color: const Color(0xFF4285F4),
+              onPressed: () {},
             ),
             const SizedBox(
               height: 8,
             ),
-            const AuthButton(
+            AuthButton(
               'Tiếp tục bằng Apple',
-              icon: Icon(
+              icon: const Icon(
                 Icons.apple,
                 color: Colors.white,
                 size: 32,
               ),
-              color: Color(0xFF000000),
+              color: const Color(0xFF000000),
+              onPressed: () {},
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Bạn chưa có tài khoản? "),
-                TextButton(onPressed: () {}, child: const Text('Đăng ký'))
+                TextButton(
+                    onPressed: () =>
+                        context.push(RegisterUserInfoScreen.routeName),
+                    child: Text(
+                      'Đăng ký',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ))
               ],
             )
           ],

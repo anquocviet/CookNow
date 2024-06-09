@@ -13,6 +13,15 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: RouterApp.router,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: const Color(0xFFDD5B19),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: const Color(0xFFDD5B33),
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }
