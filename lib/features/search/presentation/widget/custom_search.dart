@@ -19,8 +19,8 @@ class _CustomSearchState extends State<CustomSearch> {
       leading: const Icon(Icons.search),
       elevation: const WidgetStatePropertyAll(0),
       constraints: BoxConstraints(
-        minHeight: 50,
-        maxWidth: width - 100,
+        minHeight: 44,
+        maxWidth: width - 80,
       ),
     );
   }

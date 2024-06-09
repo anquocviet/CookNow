@@ -15,34 +15,30 @@ class HomeFeedScreen extends StatelessWidget {
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.home, size: 30.0),
             CustomSearch(),
             Icon(Icons.chat_rounded, size: 30),
           ],
         ),
       ),
-      body: AspectRatio(
-        aspectRatio: 1,
-        child: TabContainer(
-          tabEdge: TabEdge.top,
-          selectedTextStyle: const TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w600,
-          ),
-          unselectedTextStyle: const TextStyle(
-            fontSize: 13.0,
-          ),
-          tabs: const [
-            Text('Cộng đồng'),
-            Text('Theo dõi'),
-            Text('Nguyên liệu'),
-          ],
-          children: const [
-            CommunityScreen(),
-            FollowerScreen(),
-            IngredientScreen(),
-          ],
+      body: TabContainer(
+        tabEdge: TabEdge.top,
+        selectedTextStyle: const TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
         ),
+        unselectedTextStyle: const TextStyle(
+          fontSize: 13.0,
+        ),
+        tabs: const [
+          Text('Cộng đồng'),
+          Text('Theo dõi'),
+          Text('Nguyên liệu'),
+        ],
+        children: const [
+          CommunityScreen(),
+          FollowerScreen(),
+          IngredientScreen(),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cooknow/features/feeds/presentation/page/post/post.dart';
 import 'package:flutter/material.dart';
 
 class CommunityScreen extends StatelessWidget {
@@ -5,9 +6,17 @@ class CommunityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Community Screen'),
+        child: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            return const Post();
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 8);
+          },
+          itemCount: 3,
+        ),
       ),
     );
   }
