@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 class Item {
   int? item;
@@ -19,21 +20,24 @@ class _CreatePostStepState extends State<CreatePostStep> {
   final List<Item> _items =
       List<Item>.generate(2, (int index) => Item(index, ''));
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
-  XFile? _video;
+  final Set<XFile>? _medias = {};
 
   Future getImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
+    image != null
+        ? setState(() {
+            _medias!.add(image);
+          })
+        : null;
   }
 
   Future getVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-    setState(() {
-      _video = video;
-    });
+    video != null
+        ? setState(() {
+            _medias!.add(video);
+          })
+        : null;
   }
 
   @override
@@ -54,7 +58,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
           ),
         ),
         SizedBox(
-          height: _items.length * 130.0,
+          height: _items.length * 200.0,
           child: ReorderableListView.builder(
             onReorderStart: (_) {
               FocusScope.of(context).unfocus();
@@ -63,82 +67,128 @@ class _CreatePostStepState extends State<CreatePostStep> {
             itemCount: _items.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                  key: ObjectKey(_items[index]),
-                  leading: Container(
-                    margin: const EdgeInsets.only(left: 8),
-                    width: 24,
-                    height: 24,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black,
-                    ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                key: ObjectKey(_items[index]),
+                leading: Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${index + 1}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  trailing: ReorderableDragStartListener(
-                    index: index,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Icon(Icons.drag_handle),
-                    ),
+                ),
+                trailing: ReorderableDragStartListener(
+                  index: index,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.drag_handle),
                   ),
-                  title: TextFormField(
-                    initialValue: _items[index].text,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _items[index].text = value!;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Bước ${index + 1}: Làm gì đó',
-                    ),
+                ),
+                title: TextFormField(
+                  initialValue: _items[index].text,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _items[index].text = value!;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Bước ${index + 1}: Làm gì đó',
                   ),
-                  subtitle: Container(
-                    margin: const EdgeInsets.only(top: 12),
-                    child: Row(
-                      children: [
-                        IconButton.filledTonal(
-                          onPressed: getImage,
-                          icon: const Icon(Icons.camera_alt_rounded),
-                          style: ButtonStyle(
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.all(16),
-                            ),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
+                ),
+                subtitle: Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 300,
+                        height: 60,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _medias?.length ?? 0,
+                          shrinkWrap: true,
+                          itemBuilder: ((context, index) {
+                            return Card(
+                              margin: const EdgeInsets.all(4),
+                              child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
+                                child:
+                                    RegExp(r'^(mp4|mov)$', caseSensitive: false)
+                                            .hasMatch(_medias!
+                                                .elementAt(index)
+                                                .path
+                                                .split('.')
+                                                .last)
+                                        ? AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: VideoPlayer(
+                                              VideoPlayerController.asset(
+                                                _medias.elementAt(index).path,
+                                                videoPlayerOptions:
+                                                    VideoPlayerOptions(
+                                                        mixWithOthers: true),
+                                              ),
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            _medias.elementAt(index).path,
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.cover,
+                                          ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          IconButton.filledTonal(
+                            onPressed: getImage,
+                            icon: const Icon(Icons.camera_alt_rounded),
+                            style: ButtonStyle(
+                              padding: WidgetStateProperty.all(
+                                const EdgeInsets.all(16),
+                              ),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton.filledTonal(
-                          onPressed: getVideo,
-                          icon: const Icon(Icons.video_camera_back_rounded),
-                          style: ButtonStyle(
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.all(16),
-                            ),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                          const SizedBox(width: 8),
+                          IconButton.filledTonal(
+                            onPressed: getVideo,
+                            icon: const Icon(Icons.video_camera_back_rounded),
+                            style: ButtonStyle(
+                              padding: WidgetStateProperty.all(
+                                const EdgeInsets.all(16),
+                              ),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ));
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
             onReorder: (int oldIndex, int newIndex) {
               setState(() {

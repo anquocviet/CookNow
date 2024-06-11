@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.notifications,
     Icons.person,
   ];
-  Widget? page;
+  Widget? page = const HomeFeedScreen();
 
   void _onSelectedTab(int index) {
     setState(() {
