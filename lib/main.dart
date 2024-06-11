@@ -1,3 +1,4 @@
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +10,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp.router(
+      routerConfig: RouterApp.router,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: const Color(0xFFDD5B19),
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: const Color(0xFFDD5B33),
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }
