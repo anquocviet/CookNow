@@ -12,6 +12,7 @@ class HomeFeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

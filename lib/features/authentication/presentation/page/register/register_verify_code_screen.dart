@@ -14,7 +14,7 @@ class RegisterVerifyCodeScreen extends StatefulWidget {
 }
 
 class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
-  int _resendOtpTime = 60;
+  final int _resendOtpTime = 60;
 
   // void _handleResendOtp() {
   //   setState(() {

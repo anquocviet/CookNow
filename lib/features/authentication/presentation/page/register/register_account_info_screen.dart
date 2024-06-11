@@ -2,7 +2,6 @@ import 'package:cooknow/features/authentication/presentation/page/register/regis
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterAccountInfoScreen extends StatefulWidget {

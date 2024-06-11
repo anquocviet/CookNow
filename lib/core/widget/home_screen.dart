@@ -23,27 +23,37 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.notifications,
     Icons.person,
   ];
-  late Widget page;
+  Widget? page;
+
+  void _onSelectedTab(int index) {
+    setState(() {
+      switch (index) {
+        case 0:
+          page = const HomeFeedScreen();
+          break;
+        case 1:
+          page = const SearchScreen();
+          break;
+        case 2:
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => const CreatePostScreen(),
+            isScrollControlled: true,
+          );
+          break;
+        case 3:
+          page = const NotificationScreen();
+          break;
+        case 4:
+          page = const ProfileScreen();
+          break;
+      }
+      _currentIndex = index == 2 ? _currentIndex : index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    switch (_currentIndex) {
-      case 0:
-        page = const HomeFeedScreen();
-        break;
-      case 1:
-        page = const SearchScreen();
-        break;
-      case 2:
-        page = const CreatePostScreen();
-        break;
-      case 3:
-        page = const NotificationScreen();
-        break;
-      case 4:
-        page = const ProfileScreen();
-        break;
-    }
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
@@ -52,9 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         activeIndex: _currentIndex,
         gapWidth: 1,
         notchSmoothness: NotchSmoothness.verySmoothEdge,
-        onTap: (index) => setState(() {
-          _currentIndex = index;
-        }),
+        onTap: _onSelectedTab,
         tabBuilder: (int index, bool isActive) {
           return Icon(
             icons[index],
