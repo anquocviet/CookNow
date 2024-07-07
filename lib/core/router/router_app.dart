@@ -1,44 +1,65 @@
+import 'package:cooknow/core/widget/home_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_account_info_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_user_info_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
-import 'package:cooknow/features/authentication/presentation/page/welcome_screen.dart';
-import 'package:cooknow/core/widget/home_screen.dart';
 import 'package:go_router/go_router.dart';
 
+class RouteName {
+  static const home = '/';
+  static const auth = '/auth';
+  static const login = '/login';
+  static const registerUserInfo = '/register/user-info';
+  static const registerAccountInfo = '/register/account-info';
+  static const registerVerifyCode = '/register/verify-code';
+  static const registerWelcome = '/register/welcome';
+
+  static const publicRoutes = [
+    auth,
+    login,
+    registerUserInfo,
+    registerAccountInfo,
+    registerVerifyCode,
+    registerWelcome,
+  ];
+}
+
 class RouterApp {
-  static const bool _isAuth = true;
   static final router = GoRouter(
+    redirect: (context, state) {
+      if (RouteName.publicRoutes.contains(state.fullPath)) {
+        return null;
+      }
+      return RouteName.auth;
+    },
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) =>
-            _isAuth ? const HomeScreen() : const WelcomeScreen(),
-      ),
+          path: RouteName.home,
+          builder: (context, state) => const HomeScreen()),
       GoRoute(
-        path: AuthScreen.routeName,
+        path: RouteName.auth,
         builder: (context, state) => const AuthScreen(),
       ),
       GoRoute(
-        path: LoginScreen.routeName,
+        path: RouteName.auth,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: RegisterUserInfoScreen.routeName,
+        path: RouteName.registerUserInfo,
         builder: (context, state) => const RegisterUserInfoScreen(),
       ),
       GoRoute(
-        path: RegisterAccountInfoScreen.routeName,
+        path: RouteName.registerAccountInfo,
         builder: (context, state) => const RegisterAccountInfoScreen(),
       ),
       GoRoute(
-        path: RegisterVerifyCodeScreen.routeName,
+        path: RouteName.registerVerifyCode,
         builder: (context, state) => const RegisterVerifyCodeScreen(),
       ),
       GoRoute(
-        path: RegisterWelcome.routeName,
+        path: RouteName.registerWelcome,
         builder: (context, state) => const RegisterWelcome(),
       ),
     ],

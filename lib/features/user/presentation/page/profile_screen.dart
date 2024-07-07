@@ -1,5 +1,5 @@
-import 'package:cooknow/features/profile/presentation/widget/tab_personal_post.dart';
-import 'package:cooknow/features/profile/presentation/widget/tab_saved_post.dart';
+import 'package:cooknow/features/user/presentation/widget/tab_personal_post.dart';
+import 'package:cooknow/features/user/presentation/widget/tab_saved_post.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_container/tab_container.dart';
 

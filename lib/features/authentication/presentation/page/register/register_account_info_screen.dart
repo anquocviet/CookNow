@@ -1,4 +1,4 @@
-import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 class RegisterAccountInfoScreen extends StatefulWidget {
   const RegisterAccountInfoScreen({super.key});
-  static const String routeName = '/register/account-info';
 
   @override
   State<RegisterAccountInfoScreen> createState() =>
@@ -116,7 +115,7 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen> {
                       _confirmPassword.isNotEmpty &&
                       _confirmRule)
                   ? () {
-                      context.push(RegisterVerifyCodeScreen.routeName);
+                      context.push(RouteName.registerVerifyCode);
                     }
                   : null,
             )

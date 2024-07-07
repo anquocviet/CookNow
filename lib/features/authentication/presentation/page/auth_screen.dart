@@ -1,12 +1,10 @@
-import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
-import 'package:cooknow/features/authentication/presentation/page/register/register_user_info_screen.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
-  static const routeName = '/auth';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class AuthScreen extends StatelessWidget {
             ),
             AuthButton(
               'Đăng nhập',
-              onPressed: () => context.push(LoginScreen.routeName),
+              onPressed: () => context.push(RouteName.login),
             ),
             const SizedBox(
               height: 16,
@@ -82,8 +80,7 @@ class AuthScreen extends StatelessWidget {
               children: [
                 const Text("Bạn chưa có tài khoản? "),
                 TextButton(
-                    onPressed: () =>
-                        context.push(RegisterUserInfoScreen.routeName),
+                    onPressed: () => context.push(RouteName.registerUserInfo),
                     child: Text(
                       'Đăng ký',
                       style: TextStyle(

@@ -1,13 +1,11 @@
-import 'package:cooknow/features/authentication/presentation/page/register/register_user_info_screen.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
-import 'package:cooknow/core/widget/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-  static const routeName = '/login';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,7 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
 
   void _handleLogin(BuildContext context) {
-    context.go(HomeScreen.routeName);
+    // context.read().login(_emailPhone, _password);
+    // context.go(HomeScreen.routeName);
   }
 
   @override
@@ -89,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Text('Bạn chưa có tài khoản? '),
                 TextButton(
-                  onPressed: () =>
-                      context.push(RegisterUserInfoScreen.routeName),
+                  onPressed: () => context.push(RouteName.registerUserInfo),
                   child: Text('Đăng ký',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,

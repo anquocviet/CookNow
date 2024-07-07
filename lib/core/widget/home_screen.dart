@@ -2,7 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
-import 'package:cooknow/features/profile/presentation/page/profile_screen.dart';
+import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:flutter/material.dart';
 
