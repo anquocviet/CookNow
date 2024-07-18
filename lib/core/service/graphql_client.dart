@@ -4,12 +4,11 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphqlClient {
   static final HttpLink httpLink = HttpLink(
-    dotenv.env['SERVER_HOST'] ?? 'http://localhost:3000/graphql',
+    dotenv.env['SERVER_HOST']!,
   );
 
   static final AuthLink authLink = AuthLink(
-    // getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-    getToken: () async => '',
+    getToken: () async => 'Bearer ${dotenv.env['TOKEN']}',
   );
 
   static Link link = authLink.concat(httpLink);

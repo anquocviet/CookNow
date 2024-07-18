@@ -1,32 +1,36 @@
 import 'dart:io';
 
 import 'package:cooknow/core/api/auth_api.dart';
-import 'package:cooknow/core/api/user_api.dart';
+import 'package:cooknow/core/exceptions/api_exception.dart' as api_exception;
 import 'package:cooknow/core/service/graphql_client.dart';
+import 'package:cooknow/core/utils/decode_token.dart';
+import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/authentication/data/repositories/auth_repository.dart';
-import 'package:cooknow/features/user/domain/user/user.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:cooknow/features/authentication/data/api_exception.dart'
-    as api_exception;
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+part 'http_auth_repository.g.dart';
 
 class HttpAuthRepository implements AuthRepository {
-  HttpAuthRepository({required this.authApi, required this.userApi});
+  HttpAuthRepository({required this.authApi});
 
   final AuthApi authApi;
-  final UserApi userApi;
+  late SharedPreferences prefs;
+  final _accountState = ims.InMemoryStore<Account?>(null);
+  Account? get currentAccount => _accountState.value;
 
   @override
-  Future<User> login(String username, String password) => _getData(
+  Future<void> login(String username, String password) => _getData(
         options: authApi.login(username, password),
-        builder: (data) {
-          Map<String, dynamic> decodedToken = JwtDecoder.decode(data['login']);
-          final String id = decodedToken['id'];
-          return _getData(
-            options: userApi.getUser(id),
-            builder: (data) => User.fromJson(data['user']),
-          ) as User;
+        builder: (data) async {
+          final decodedToken = decodeToken(data['login']['access_token']);
+          prefs = await SharedPreferences.getInstance();
+          _accountState.value = Account.fromJson(decodedToken);
+          // Key is sub, username, password
+          decodedToken
+              .forEach((key, value) => prefs.setString(key, value.toString()));
         },
       );
 
@@ -42,16 +46,11 @@ class HttpAuthRepository implements AuthRepository {
     try {
       final QueryResult result =
           await GraphqlClient.client.value.query(options);
-      final int? statusCode =
-          result.context.entry<HttpLinkResponseContext>()?.statusCode;
-      if (statusCode != null) {
-        switch (statusCode) {
-          case 200:
-            final data = result.data!;
-            return builder(data);
-          default:
-            throw api_exception.UnknownException();
-        }
+      final String error =
+          result.exception?.graphqlErrors.firstOrNull?.message ?? '';
+      if (error.isEmpty) {
+        final data = result.data;
+        return builder(data);
       } else {
         throw api_exception.UnknownException();
       }
@@ -61,7 +60,7 @@ class HttpAuthRepository implements AuthRepository {
   }
 }
 
-/// Providers used by rest of the app
-final authRepositoryProvider = Provider<HttpAuthRepository>(
-  (ref) => HttpAuthRepository(authApi: AuthApi(), userApi: UserApi()),
-);
+@riverpod
+HttpAuthRepository authRepository(AuthRepositoryRef ref) {
+  return HttpAuthRepository(authApi: AuthApi());
+}

@@ -12,15 +12,16 @@ void main() async {
   ));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final goRouter = ref.read(goRouterProvider);
     return GraphQLProvider(
       client: GraphqlClient.client,
       child: MaterialApp.router(
-        routerConfig: RouterApp.router,
+        routerConfig: goRouter,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.light,

@@ -12,15 +12,15 @@ class User with _$User {
     required int gender,
     required int age,
     required String living,
-    required Account account,
+    Account? account,
     required String bio,
     required String email,
     required String phone,
     required String avatar,
     // required List<HistorySearch> top5HistorySearch,
-    required List<String> following,
-    required List<String> followers,
-    required List<String> blocks,
+    @Default([]) List<String> following,
+    @Default([]) List<String> followers,
+    @Default([]) List<String> blocks,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

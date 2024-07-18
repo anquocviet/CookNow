@@ -3,14 +3,14 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class UserApi {
   QueryOptions getUser(String id) {
     return QueryOptions(
-      document: gql(findUserQuery),
+      document: gql(_findUserQuery),
       variables: {'id': id},
     );
   }
 
   // Define queries here
-  final String findUserQuery = '''
-    query User {
+  final String _findUserQuery = '''
+    query User(\$id: String!) {
       user(id: \$id) {
         id
         name

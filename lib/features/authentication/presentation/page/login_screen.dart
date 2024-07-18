@@ -1,28 +1,26 @@
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/features/authentication/presentation/controller/login_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   String _emailPhone = '';
   String _password = '';
   bool _isObscure = true;
 
-  void _handleLogin(BuildContext context) {
-    // context.read().login(_emailPhone, _password);
-    // context.go(HomeScreen.routeName);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(loginScreenControllerProvider);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -76,12 +74,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text('Quên mật khẩu?'),
               ),
             ),
-            AuthButton(
-              'Tiếp tục',
-              onPressed: (_emailPhone.isEmpty || _password.isEmpty)
-                  ? null
-                  : () => _handleLogin(context),
-            ),
+            state.isLoading
+                ? const CircularProgressIndicator()
+                : AuthButton(
+                    'Tiếp tục',
+                    onPressed: state.isLoading
+                        ? null
+                        : () => ref
+                            .read(loginScreenControllerProvider.notifier)
+                            .login(_emailPhone, _password),
+                  ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

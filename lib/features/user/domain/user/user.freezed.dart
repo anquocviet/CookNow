@@ -25,7 +25,7 @@ mixin _$User {
   int get gender => throw _privateConstructorUsedError;
   int get age => throw _privateConstructorUsedError;
   String get living => throw _privateConstructorUsedError;
-  Account get account => throw _privateConstructorUsedError;
+  Account? get account => throw _privateConstructorUsedError;
   String get bio => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $UserCopyWith<$Res> {
       int gender,
       int age,
       String living,
-      Account account,
+      Account? account,
       String bio,
       String email,
       String phone,
@@ -60,7 +60,7 @@ abstract class $UserCopyWith<$Res> {
       List<String> followers,
       List<String> blocks});
 
-  $AccountCopyWith<$Res> get account;
+  $AccountCopyWith<$Res>? get account;
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? gender = null,
     Object? age = null,
     Object? living = null,
-    Object? account = null,
+    Object? account = freezed,
     Object? bio = null,
     Object? email = null,
     Object? phone = null,
@@ -111,10 +111,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.living
           : living // ignore: cast_nullable_to_non_nullable
               as String,
-      account: null == account
+      account: freezed == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as Account,
+              as Account?,
       bio: null == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
@@ -148,8 +148,12 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
 
   @override
   @pragma('vm:prefer-inline')
-  $AccountCopyWith<$Res> get account {
-    return $AccountCopyWith<$Res>(_value.account, (value) {
+  $AccountCopyWith<$Res>? get account {
+    if (_value.account == null) {
+      return null;
+    }
+
+    return $AccountCopyWith<$Res>(_value.account!, (value) {
       return _then(_value.copyWith(account: value) as $Val);
     });
   }
@@ -168,7 +172,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       int gender,
       int age,
       String living,
-      Account account,
+      Account? account,
       String bio,
       String email,
       String phone,
@@ -178,7 +182,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       List<String> blocks});
 
   @override
-  $AccountCopyWith<$Res> get account;
+  $AccountCopyWith<$Res>? get account;
 }
 
 /// @nodoc
@@ -196,7 +200,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? gender = null,
     Object? age = null,
     Object? living = null,
-    Object? account = null,
+    Object? account = freezed,
     Object? bio = null,
     Object? email = null,
     Object? phone = null,
@@ -226,10 +230,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.living
           : living // ignore: cast_nullable_to_non_nullable
               as String,
-      account: null == account
+      account: freezed == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as Account,
+              as Account?,
       bio: null == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
@@ -271,14 +275,14 @@ class _$UserImpl implements _User {
       required this.gender,
       required this.age,
       required this.living,
-      required this.account,
+      this.account,
       required this.bio,
       required this.email,
       required this.phone,
       required this.avatar,
-      required final List<String> following,
-      required final List<String> followers,
-      required final List<String> blocks})
+      final List<String> following = const [],
+      final List<String> followers = const [],
+      final List<String> blocks = const []})
       : _following = following,
         _followers = followers,
         _blocks = blocks;
@@ -297,7 +301,7 @@ class _$UserImpl implements _User {
   @override
   final String living;
   @override
-  final Account account;
+  final Account? account;
   @override
   final String bio;
   @override
@@ -310,6 +314,7 @@ class _$UserImpl implements _User {
   final List<String> _following;
 // required List<HistorySearch> top5HistorySearch,
   @override
+  @JsonKey()
   List<String> get following {
     if (_following is EqualUnmodifiableListView) return _following;
     // ignore: implicit_dynamic_type
@@ -318,6 +323,7 @@ class _$UserImpl implements _User {
 
   final List<String> _followers;
   @override
+  @JsonKey()
   List<String> get followers {
     if (_followers is EqualUnmodifiableListView) return _followers;
     // ignore: implicit_dynamic_type
@@ -326,6 +332,7 @@ class _$UserImpl implements _User {
 
   final List<String> _blocks;
   @override
+  @JsonKey()
   List<String> get blocks {
     if (_blocks is EqualUnmodifiableListView) return _blocks;
     // ignore: implicit_dynamic_type
@@ -398,14 +405,14 @@ abstract class _User implements User {
       required final int gender,
       required final int age,
       required final String living,
-      required final Account account,
+      final Account? account,
       required final String bio,
       required final String email,
       required final String phone,
       required final String avatar,
-      required final List<String> following,
-      required final List<String> followers,
-      required final List<String> blocks}) = _$UserImpl;
+      final List<String> following,
+      final List<String> followers,
+      final List<String> blocks}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -420,7 +427,7 @@ abstract class _User implements User {
   @override
   String get living;
   @override
-  Account get account;
+  Account? get account;
   @override
   String get bio;
   @override

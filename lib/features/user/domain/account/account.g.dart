@@ -8,12 +8,14 @@ part of 'account.dart';
 
 _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
     _$AccountImpl(
+      id: json['id'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
     );
 
 Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'username': instance.username,
       'password': instance.password,
     };

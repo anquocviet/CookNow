@@ -12,17 +12,25 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       gender: (json['gender'] as num).toInt(),
       age: (json['age'] as num).toInt(),
       living: json['living'] as String,
-      account: Account.fromJson(json['account'] as Map<String, dynamic>),
+      account: json['account'] == null
+          ? null
+          : Account.fromJson(json['account'] as Map<String, dynamic>),
       bio: json['bio'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
       avatar: json['avatar'] as String,
-      following:
-          (json['following'] as List<dynamic>).map((e) => e as String).toList(),
-      followers:
-          (json['followers'] as List<dynamic>).map((e) => e as String).toList(),
-      blocks:
-          (json['blocks'] as List<dynamic>).map((e) => e as String).toList(),
+      following: (json['following'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      followers: (json['followers'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      blocks: (json['blocks'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>

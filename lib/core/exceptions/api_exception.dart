@@ -11,3 +11,7 @@ class NoInternetException extends ApiException {
 class UnknownException extends ApiException {
   UnknownException() : super('Đã xảy ra lỗi không xác định');
 }
+
+class ServerException extends ApiException {
+  ServerException() : super('Đã xảy ra lỗi trên máy chủ');
+}
