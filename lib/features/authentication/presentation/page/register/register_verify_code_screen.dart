@@ -1,4 +1,4 @@
-import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +6,6 @@ import 'package:pinput/pinput.dart';
 
 class RegisterVerifyCodeScreen extends StatefulWidget {
   const RegisterVerifyCodeScreen({super.key});
-  static const String routeName = '/register/verify-code';
 
   @override
   State<RegisterVerifyCodeScreen> createState() =>
@@ -24,7 +23,7 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
   // }
 
   void _handleSubmitOtp(BuildContext context) {
-    context.push(RegisterWelcome.routeName);
+    context.push(RouteName.registerWelcome);
   }
 
   // void _countDownResendOtp() {

@@ -1,4 +1,4 @@
-import 'package:cooknow/features/authentication/presentation/page/register/register_account_info_screen.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 class RegisterUserInfoScreen extends StatefulWidget {
   const RegisterUserInfoScreen({super.key});
-  static const String routeName = '/register/user-info';
 
   @override
   State<RegisterUserInfoScreen> createState() => _RegisterUserInfoScreenState();
@@ -103,7 +102,7 @@ class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen> {
             AuthButton('Tiếp tục',
                 onPressed: (username.isEmpty || age < 16)
                     ? null
-                    : () => context.push(RegisterAccountInfoScreen.routeName))
+                    : () => context.push(RouteName.registerAccountInfo))
           ],
         ),
       ),

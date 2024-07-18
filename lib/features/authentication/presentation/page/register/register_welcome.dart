@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 class RegisterWelcome extends StatelessWidget {
   const RegisterWelcome({super.key});
-  static const String routeName = '/register/welcome';
 
   @override
   Widget build(BuildContext context) {
