@@ -6,7 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initHiveForFlutter();
   await dotenv.load();
+
   runApp(const ProviderScope(
     child: MainApp(),
   ));

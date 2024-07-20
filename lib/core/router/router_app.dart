@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:cooknow/core/constant/store_variable.dart';
 import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
+import 'package:cooknow/core/utils/store_local_data.dart';
 import 'package:cooknow/core/widget/home_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
@@ -42,13 +44,17 @@ final _key = GlobalKey<NavigatorState>();
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final userRepository = ref.watch(userRepositoryProvider);
+  final storeLocalData = StoreLocalData();
+
   return GoRouter(
     navigatorKey: _key,
+    initialLocation: '/',
     debugLogDiagnostics: true,
-    redirect: (context, state) {
-      final isLoggedIn = userRepository.currentUser != null;
+    redirect: (context, state) async {
+      final token = await storeLocalData.getData(StoreVariable.token);
+      final isLoggedIn = token != null || userRepository.currentUser != null;
+      log('Is Logged In: $isLoggedIn');
       final path = state.uri.path;
-      log(isLoggedIn.toString());
       if (isLoggedIn) {
         if (!RouteName.publicRoutes.contains(path)) {
           return RouteName.home;
