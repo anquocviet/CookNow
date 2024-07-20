@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cooknow/core/api/auth_api.dart';
@@ -35,8 +36,15 @@ class HttpAuthRepository implements AuthRepository {
 
   @override
   Future<void> logout() {
-    throw UnimplementedError();
+    _accountState.value = null;
+    return storeLocalData.removeData(StoreVariable.token);
   }
+
+  @override
+  Future<bool> validateToken(String token) => _getData(
+        options: authApi.validateToken(token),
+        builder: (data) => data['validateToken'],
+      );
 
   Future<T> _getData<T>({
     required QueryOptions options,
@@ -51,7 +59,8 @@ class HttpAuthRepository implements AuthRepository {
         final data = result.data;
         return builder(data);
       } else {
-        throw api_exception.UnknownException();
+        log(error.toString());
+        throw api_exception.ServerException();
       }
     } on SocketException {
       throw api_exception.NoInternetException();
@@ -59,7 +68,7 @@ class HttpAuthRepository implements AuthRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 HttpAuthRepository authRepository(AuthRepositoryRef ref) {
   return HttpAuthRepository(
       authApi: AuthApi(), storeLocalData: StoreLocalData());

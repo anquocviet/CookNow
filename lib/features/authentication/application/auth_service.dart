@@ -15,6 +15,16 @@ class AuthService {
     await authRepository.login(username, password);
     userRepository.getUser(authRepository.currentAccount!.id);
   }
+
+  Future<void> logout() async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.logout();
+  }
+
+  Future<bool> validateToken(String token) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    return authRepository.validateToken(token);
+  }
 }
 
 @Riverpod(keepAlive: true)
