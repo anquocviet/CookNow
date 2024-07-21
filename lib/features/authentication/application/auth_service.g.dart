@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'router_app.dart';
+part of 'auth_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'7718c887f7f461acbb248e416712fc01e7b81054';
+String _$authServiceHash() => r'c7e3496f7ed26b311f6193f7050c33b10e660f67';
 
-/// See also [goRouter].
-@ProviderFor(goRouter)
-final goRouterProvider = Provider<GoRouter>.internal(
-  goRouter,
-  name: r'goRouterProvider',
+/// See also [authService].
+@ProviderFor(authService)
+final authServiceProvider = Provider<AuthService>.internal(
+  authService,
+  name: r'authServiceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$goRouterHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GoRouterRef = ProviderRef<GoRouter>;
+typedef AuthServiceRef = ProviderRef<AuthService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

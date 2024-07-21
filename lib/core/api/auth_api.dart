@@ -5,6 +5,15 @@ class AuthApi {
     return QueryOptions(
       document: gql(_loginQuery),
       variables: {'username': username, 'password': password},
+      fetchPolicy: FetchPolicy.noCache,
+    );
+  }
+
+  QueryOptions validateToken(String token) {
+    return QueryOptions(
+      document: gql(_validateTokenQuery),
+      variables: {'token': token},
+      optimisticResult: String,
     );
   }
 
@@ -14,6 +23,12 @@ class AuthApi {
       login(data: { username: \$username, password: \$password }) {
         access_token
       }
+    }
+  ''';
+
+  final String _validateTokenQuery = '''
+    query ValidateToken(\$token: String!) {
+      validateToken(token: \$token)
     }
   ''';
 }

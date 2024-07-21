@@ -1,8 +1,10 @@
-import 'dart:developer';
-
+import 'package:cooknow/core/exceptions/auth_exception.dart';
 import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/widget/home_screen.dart';
+import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/features/authentication/application/auth_service.dart';
+import 'package:cooknow/features/authentication/data/repositories/impl/http_auth_repository.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_account_info_screen.dart';
@@ -10,7 +12,6 @@ import 'package:cooknow/features/authentication/presentation/page/register/regis
 import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
 import 'package:cooknow/features/authentication/presentation/page/welcome_screen.dart';
-import 'package:cooknow/features/user/data/repositories/impl/http_user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,15 +42,22 @@ final _key = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final userRepository = ref.watch(userRepositoryProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
+  final authService = ref.read(authServiceProvider);
+
+  authService.validateToken().catchError((error) {
+    if (error is TokenExpiredException) {
+      showError(_key.currentContext!, error.message);
+    }
+  });
+
   return GoRouter(
     navigatorKey: _key,
+    initialLocation: '/',
     debugLogDiagnostics: true,
-    redirect: (context, state) {
-      final isLoggedIn = userRepository.currentUser != null;
+    redirect: (context, state) async {
       final path = state.uri.path;
-      log(isLoggedIn.toString());
-      if (isLoggedIn) {
+      if (authRepository.isLoggedIn) {
         if (!RouteName.publicRoutes.contains(path)) {
           return RouteName.home;
         }
@@ -60,7 +68,7 @@ GoRouter goRouter(GoRouterRef ref) {
       }
       return RouteName.welcome;
     },
-    refreshListenable: GoRouterRefreshStream(userRepository.authStateChanges()),
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
       GoRoute(
           path: RouteName.home,

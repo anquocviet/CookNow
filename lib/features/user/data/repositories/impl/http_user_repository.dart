@@ -15,9 +15,8 @@ class HttpUserRepository implements UserRepository {
   HttpUserRepository({required this.userApi});
 
   final UserApi userApi;
-  final _userState = ims.InMemoryStore<User?>(null);
 
-  Stream<User?> authStateChanges() => _userState.stream;
+  final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
 
   @override
@@ -55,10 +54,4 @@ class HttpUserRepository implements UserRepository {
 HttpUserRepository userRepository(UserRepositoryRef ref) {
   final userRepository = HttpUserRepository(userApi: UserApi());
   return userRepository;
-}
-
-@Riverpod(keepAlive: true)
-Stream<User?> userStateChanges(UserStateChangesRef ref) {
-  final userRepository = ref.watch(userRepositoryProvider);
-  return userRepository.authStateChanges();
 }
