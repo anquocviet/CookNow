@@ -8,9 +8,10 @@ class LoginScreenController extends _$LoginScreenController {
   @override
   FutureOr<void> build() {}
 
-  FutureOr<void> login(String username, String password) async {
+  FutureOr<bool> login(String username, String password) async {
     final authService = ref.read(authServiceProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authService.login(username, password));
+    return state.hasError == false;
   }
 }

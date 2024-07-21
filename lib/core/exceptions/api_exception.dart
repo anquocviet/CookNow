@@ -12,6 +12,6 @@ class UnknownException extends ApiException {
   UnknownException() : super('Đã xảy ra lỗi không xác định');
 }
 
-class ServerException extends ApiException {
-  ServerException() : super('Đã xảy ra lỗi trên máy chủ');
+class ServerErrorException extends ApiException {
+  ServerErrorException() : super('Đã xảy ra lỗi trên máy chủ');
 }

@@ -5,6 +5,7 @@ class AuthApi {
     return QueryOptions(
       document: gql(_loginQuery),
       variables: {'username': username, 'password': password},
+      fetchPolicy: FetchPolicy.noCache,
     );
   }
 

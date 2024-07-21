@@ -1,4 +1,5 @@
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/login_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
@@ -17,6 +18,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String _emailPhone = '';
   String _password = '';
   bool _isObscure = true;
+
+  void _login() async {
+    final isLoggedIn = await ref
+        .read(loginScreenControllerProvider.notifier)
+        .login(_emailPhone, _password);
+    if (!isLoggedIn && mounted) {
+      showError(context, 'Đăng nhập thất bại');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +88,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ? const CircularProgressIndicator()
                 : AuthButton(
                     'Tiếp tục',
-                    onPressed: state.isLoading
-                        ? null
-                        : () => ref
-                            .read(loginScreenControllerProvider.notifier)
-                            .login(_emailPhone, _password),
+                    onPressed: state.isLoading ? null : _login,
                   ),
             const Spacer(),
             Row(
