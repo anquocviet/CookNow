@@ -12,6 +12,7 @@ class LoginScreenController extends _$LoginScreenController {
     final authService = ref.read(authServiceProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authService.login(username, password));
+    if (state.hasError) throw state.error!;
     return state.hasError == false;
   }
 }

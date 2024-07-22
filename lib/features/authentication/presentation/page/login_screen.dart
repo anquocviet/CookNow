@@ -1,3 +1,4 @@
+import 'package:cooknow/core/exceptions/auth_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/login_controller.dart';
@@ -20,11 +21,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isObscure = true;
 
   void _login() async {
-    final isLoggedIn = await ref
-        .read(loginScreenControllerProvider.notifier)
-        .login(_emailPhone, _password);
-    if (!isLoggedIn && mounted) {
-      showError(context, 'Đăng nhập thất bại');
+    try {
+      await ref
+          .read(loginScreenControllerProvider.notifier)
+          .login(_emailPhone, _password);
+    } catch (e) {
+      if (mounted) {
+        showError(context, (e as AuthException).message);
+      }
     }
   }
 
