@@ -1,7 +1,6 @@
 import 'package:cooknow/features/posts/presentation/widget/create_post_ingredient.dart';
 import 'package:cooknow/features/posts/presentation/widget/create_post_step.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});

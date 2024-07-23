@@ -17,6 +17,7 @@ import 'package:cooknow/features/notifications/presentation/page/notification_sc
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
+import 'package:cooknow/features/user/presentation/page/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -29,6 +30,7 @@ class RouteName {
   static const createPost = '/create-post';
   static const notification = '/notification';
   static const profile = '/profile';
+  static const settings = 'settings';
   static const welcome = '/welcome';
   static const auth = '/auth';
   static const login = '/login';
@@ -37,7 +39,17 @@ class RouteName {
   static const registerVerifyCode = 'verify-code';
   static const registerWelcome = 'welcome';
 
-  static const privateRouteMap = {
+  static const publicRoute = [
+    welcome,
+    auth,
+    login,
+    registerUserInfo,
+    registerAccountInfo,
+    registerVerifyCode,
+    registerWelcome,
+  ];
+
+  static const bottomRouteMap = {
     home: HomeFeedScreen(),
     search: SearchScreen(),
     createPost: CreatePostScreen(),
@@ -47,14 +59,6 @@ class RouteName {
 }
 
 final _key = GlobalKey<NavigatorState>();
-
-void _showModal(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (context) => const CreatePostScreen(),
-    isScrollControlled: true,
-  );
-}
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
@@ -74,12 +78,18 @@ GoRouter goRouter(GoRouterRef ref) {
     redirect: (context, state) async {
       final path = state.uri.path;
       if (authRepository.isLoggedIn) {
-        if (RouteName.privateRouteMap.keys.contains(path)) {
+        if (RouteName.publicRoute.contains(path)) {
+          return RouteName.home;
+        }
+        return null;
+      } else {
+        if ((RouteName.publicRoute.contains(path) ||
+                RouteName.publicRoute.contains(path.split('/').last)) &&
+            path != RouteName.welcome) {
           return null;
         }
-        return RouteName.home;
+        return RouteName.welcome;
       }
-      return RouteName.welcome;
     },
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
@@ -87,7 +97,7 @@ GoRouter goRouter(GoRouterRef ref) {
         builder: (context, state, navigationShell) {
           return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
         },
-        branches: RouteName.privateRouteMap.entries
+        branches: RouteName.bottomRouteMap.entries
             .map(
               (entry) => StatefulShellBranch(
                 navigatorKey: GlobalKey<NavigatorState>(
@@ -97,6 +107,13 @@ GoRouter goRouter(GoRouterRef ref) {
                     path: entry.key,
                     pageBuilder: (context, state) =>
                         NoTransitionPage(child: entry.value),
+                    routes: [
+                      if (entry.key == RouteName.profile)
+                        GoRoute(
+                          path: RouteName.settings,
+                          builder: (context, state) => const SettingScreen(),
+                        ),
+                    ],
                   )
                 ],
               ),
@@ -105,15 +122,10 @@ GoRouter goRouter(GoRouterRef ref) {
       ),
       GoRoute(
           path: RouteName.welcome,
-          name: RouteName.welcome,
           builder: (context, state) => const WelcomeScreen()),
       GoRoute(
         path: RouteName.auth,
         builder: (context, state) => const AuthScreen(),
-      ),
-      GoRoute(
-        path: RouteName.auth,
-        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: RouteName.login,

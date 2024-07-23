@@ -1,6 +1,8 @@
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_personal_post.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_saved_post.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tab_container/tab_container.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -16,7 +18,8 @@ class ProfileScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () =>
+                context.go('${RouteName.profile}/${RouteName.settings}'),
           ),
         ],
       ),

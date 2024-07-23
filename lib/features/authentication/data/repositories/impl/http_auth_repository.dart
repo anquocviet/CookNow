@@ -40,10 +40,10 @@ class HttpAuthRepository implements AuthRepository {
       );
 
   @override
-  Future<void> logout() {
+  Future<void> logout() async {
     _accountState.value = null;
     _isLoggedInState.value = false;
-    return storeLocalData.removeData(StoreVariable.token);
+    storeLocalData.removeData(StoreVariable.token);
   }
 
   @override
