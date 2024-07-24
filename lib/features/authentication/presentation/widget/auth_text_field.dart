@@ -11,6 +11,9 @@ class AuthTextField extends ConsumerStatefulWidget {
     this.enableSuggestions = true,
     this.autocorrect = true,
     this.keyboardType = TextInputType.text,
+    this.controller,
+    this.validator,
+    this.onEditingComplete,
     this.onChanged,
   });
 
@@ -21,6 +24,9 @@ class AuthTextField extends ConsumerStatefulWidget {
   final bool enableSuggestions;
   final bool autocorrect;
   final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+  final TextEditingController? controller;
+  final void Function()? onEditingComplete;
   final void Function(String)? onChanged;
 
   @override
@@ -28,8 +34,6 @@ class AuthTextField extends ConsumerStatefulWidget {
 }
 
 class _AuthTextFieldState extends ConsumerState<AuthTextField> {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -37,11 +41,13 @@ class _AuthTextFieldState extends ConsumerState<AuthTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       obscureText: widget.obscureText,
       enableSuggestions: widget.enableSuggestions,
       autocorrect: widget.autocorrect,
       keyboardType: widget.keyboardType,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: widget.validator,
       decoration: InputDecoration(
         labelText: widget.label,
         prefixIcon: widget.prefixIcon,
@@ -49,12 +55,11 @@ class _AuthTextFieldState extends ConsumerState<AuthTextField> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+        errorMaxLines: 3,
       ),
       onChanged: widget.onChanged,
-      controller: _controller,
-      onEditingComplete: () {
-        FocusScope.of(context).nextFocus();
-      },
+      controller: widget.controller,
+      onEditingComplete: widget.onEditingComplete,
     );
   }
 }

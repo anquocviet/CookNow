@@ -1,7 +1,6 @@
 import 'package:cooknow/features/posts/presentation/widget/create_post_ingredient.dart';
 import 'package:cooknow/features/posts/presentation/widget/create_post_step.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -14,37 +13,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 10,
-        toolbarHeight: 72,
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 12),
-          child: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => context.pop(),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 12, right: 16),
-            child: TextButton(
-              style: ButtonStyle(
-                foregroundColor: WidgetStateProperty.all(Colors.white),
-                textStyle: WidgetStateProperty.all(
-                  const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                backgroundColor:
-                    WidgetStateProperty.all(Theme.of(context).primaryColor),
-              ),
-              onPressed: () {},
-              child: const Text('Chia sẻ'),
-            ),
-          ),
-        ],
-      ),
       body: ListView(
         children: [
           GestureDetector(

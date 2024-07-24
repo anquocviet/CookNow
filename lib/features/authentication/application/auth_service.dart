@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cooknow/core/constant/store_variable.dart';
 import 'package:cooknow/core/utils/store_local_data.dart';
 import 'package:cooknow/features/authentication/data/repositories/impl/http_auth_repository.dart';
@@ -12,6 +10,11 @@ part 'auth_service.g.dart';
 class AuthService {
   AuthService(this.ref);
   final Ref ref;
+
+  Future<String?> get token async {
+    final storeLocalData = StoreLocalData();
+    return await storeLocalData.getData(StoreVariable.token);
+  }
 
   Future<void> login(String username, String password) async {
     final authRepository = ref.read(authRepositoryProvider);
@@ -26,10 +29,8 @@ class AuthService {
   }
 
   Future<void> validateToken() async {
-    final storeLocalData = StoreLocalData();
     final authRepository = ref.read(authRepositoryProvider);
-    final token = await storeLocalData.getData(StoreVariable.token);
-    log(token.toString());
+    final token = await this.token;
     if (token != null) await authRepository.validateToken(token);
   }
 }

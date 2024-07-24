@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_controller.dart';
+part of 'setting_screen_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginScreenControllerHash() =>
-    r'e893d65c66f793743507d31a8205f33087e38935';
+String _$settingScreenControllerHash() =>
+    r'ae048494c17e44430c148310e23cf3dd7cc1b89c';
 
-/// See also [LoginScreenController].
-@ProviderFor(LoginScreenController)
-final loginScreenControllerProvider =
-    AutoDisposeAsyncNotifierProvider<LoginScreenController, void>.internal(
-  LoginScreenController.new,
-  name: r'loginScreenControllerProvider',
+/// See also [SettingScreenController].
+@ProviderFor(SettingScreenController)
+final settingScreenControllerProvider =
+    AutoDisposeAsyncNotifierProvider<SettingScreenController, void>.internal(
+  SettingScreenController.new,
+  name: r'settingScreenControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$loginScreenControllerHash,
+      : _$settingScreenControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$LoginScreenController = AutoDisposeAsyncNotifier<void>;
+typedef _$SettingScreenController = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
