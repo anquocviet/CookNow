@@ -36,6 +36,10 @@ mixin AuthValidators {
     return noneEmptyStringValidator.isValid(password);
   }
 
+  bool canSubmitConfirmPassword(String password, String confirmPassword) {
+    return password == confirmPassword;
+  }
+
   String? usernameErrorText(String username) {
     final bool showErrorText = !canSubmitUsername(username);
     return showErrorText ? 'Username không được rỗng' : null;
@@ -61,7 +65,16 @@ mixin AuthValidators {
     final bool showErrorText = !canSubmitPhoneNumber(phoneNumber);
     final errorText = phoneNumber.isEmpty
         ? 'Số điện thoại không được rỗng'
-        : 'Số điện thoại phải chứa 10 kí tự số';
+        : 'Số điện thoại không hợp lệ';
+    return showErrorText ? errorText : null;
+  }
+
+  String? mailPhoneErrorText(String mailPhone) {
+    final bool showErrorText =
+        !canSubmitPhoneNumber(mailPhone) && !canSubmitEmail(mailPhone);
+    final errorText = mailPhone.isEmpty
+        ? 'Email hoặc số điện thoại không được rỗng'
+        : 'Email hoặc số điện thoại không hợp lệ';
     return showErrorText ? errorText : null;
   }
 
@@ -71,7 +84,16 @@ mixin AuthValidators {
         ? 'Password không được rỗng'
         : !minLengthPasswordValidator.isValid(password)
             ? 'Password phải chứa ít nhất 8 kí tự'
-            : 'Password phải chứa ít nhất một ký tự hoa, một ký tự thường, một số, và một ký tự đặc biệt.';
+            : 'Password phải có chứa ký tự hoa, ký tự thường, số, và ký tự đặc biệt.';
+    return showErrorText ? errorText : null;
+  }
+
+  String? confirmPasswordErrorText(String password, String confirmPassword) {
+    final bool showErrorText =
+        !canSubmitConfirmPassword(password, confirmPassword);
+    final errorText = confirmPassword.isEmpty
+        ? 'Password không được rỗng'
+        : 'Password không khớp';
     return showErrorText ? errorText : null;
   }
 }

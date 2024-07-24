@@ -55,6 +55,7 @@ class _AuthTextFieldState extends ConsumerState<AuthTextField> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+        errorMaxLines: 3,
       ),
       onChanged: widget.onChanged,
       controller: widget.controller,
