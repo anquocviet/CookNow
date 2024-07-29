@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "538874086903",
+    "project_id": "cooknow-b55d0",
+    "storage_bucket": "cooknow-b55d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538874086903:android:94c41592c29503990e1af2",
+        "android_client_info": {
+          "package_name": "com.vie.cooknow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538874086903-2h7cd4qqseolpr489phermebfqnbqsir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCst3rM84D0HSpr84IyhNNqSNRpPxcXNvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538874086903-2h7cd4qqseolpr489phermebfqnbqsir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "538874086903-gpjttk6tmnd1p9gvbelm5ae9jlrcp46b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cooknow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
