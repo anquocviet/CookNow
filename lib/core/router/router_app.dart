@@ -141,7 +141,8 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: RouteName.registerVerifyCode,
-            builder: (context, state) => const RegisterVerifyCodeScreen(),
+            builder: (context, state) =>
+                RegisterVerifyCodeScreen(verificationId: state.extra as String),
           ),
           GoRoute(
             path: RouteName.registerWelcome,
