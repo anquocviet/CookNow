@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,6 +32,33 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
   bool _isObscureConfirm = true;
   bool _confirmRule = false;
   bool isValid = false;
+
+  void _submit() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+84$mailPhone',
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential);
+        if (mounted) {
+          context.push(RouteName.registerWelcome);
+        }
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        log('Error: ${e.message}');
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        context.push(
+          '${RouteName.registerUserInfo}/${RouteName.registerVerifyCode}',
+          extra: verificationId,
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Auto-resolution timed out...
+        log('Auto-resolution timed out...');
+      },
+    );
+  }
 
   void _checkValid(_) {
     setState(() {
@@ -166,10 +196,7 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
                   const SizedBox(height: 25),
                   AuthButton(
                     'Tiếp tục',
-                    onPressed: isValid
-                        ? () => context.push(
-                            '${RouteName.registerUserInfo}/${RouteName.registerVerifyCode}')
-                        : null,
+                    onPressed: isValid ? _submit : null,
                   )
                 ],
               ),

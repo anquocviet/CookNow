@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class RegisterVerifyCodeScreen extends StatefulWidget {
-  const RegisterVerifyCodeScreen({super.key});
+  const RegisterVerifyCodeScreen({super.key, required this.verificationId});
+
+  final String verificationId;
 
   @override
   State<RegisterVerifyCodeScreen> createState() =>
@@ -13,29 +18,41 @@ class RegisterVerifyCodeScreen extends StatefulWidget {
 }
 
 class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
-  final int _resendOtpTime = 60;
+  int _resendOtpTime = 60;
+  final _pinController = TextEditingController();
+  String get otp => _pinController.text;
 
-  // void _handleResendOtp() {
-  //   setState(() {
-  //     _resendOtpTime = 60;
-  //   });
-  //   _countDownResendOtp();
-  // }
-
-  void _handleSubmitOtp(BuildContext context) {
-    context.push(RouteName.registerWelcome);
+  void _handleResendOtp() {
+    setState(() {
+      _resendOtpTime = 60;
+    });
+    _countDownResendOtp();
   }
 
-  // void _countDownResendOtp() {
-  //   Future.delayed(const Duration(seconds: 1), () {
-  //     if (_resendOtpTime > 0) {
-  //       setState(() {
-  //         _resendOtpTime--;
-  //       });
-  //       _countDownResendOtp();
-  //     }
-  //   });
-  // }
+  void _handleSubmitOtp(BuildContext context) {
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: otp,
+      );
+      FirebaseAuth.instance.signInWithCredential(credential);
+      context
+          .push('${RouteName.registerUserInfo}/${RouteName.registerWelcome}');
+    } on Exception catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  void _countDownResendOtp() {
+    Future.delayed(const Duration(seconds: 1), () {
+      if (_resendOtpTime > 0) {
+        setState(() {
+          _resendOtpTime--;
+        });
+        _countDownResendOtp();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -45,7 +62,7 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
   @override
   void initState() {
     super.initState();
-    // _countDownResendOtp();
+    _countDownResendOtp();
   }
 
   @override
@@ -72,8 +89,9 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
           ),
           const SizedBox(height: 32),
           Pinput(
+            controller: _pinController,
             length: 6,
-            onCompleted: (pin) => print(pin),
+            onCompleted: (pin) => _handleSubmitOtp(context),
           ),
           const SizedBox(height: 25),
           AuthButton('Tiếp tục', onPressed: () => _handleSubmitOtp(context)),
@@ -82,8 +100,7 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
             children: [
               const Text('Không nhận được mã?'),
               TextButton(
-                // onPressed: _resendOtpTime > 0 ? null : _handleResendOtp,
-                onPressed: () {},
+                onPressed: _resendOtpTime > 0 ? null : _handleResendOtp,
                 child: Text('Gửi lại (${_resendOtpTime}s)'),
               )
             ],
