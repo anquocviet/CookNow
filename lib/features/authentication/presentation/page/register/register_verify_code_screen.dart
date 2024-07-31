@@ -1,23 +1,27 @@
-import 'dart:developer';
+import 'dart:async';
 
+import 'package:cooknow/core/exceptions/auth_exception.dart';
+import 'package:cooknow/core/exceptions/firebase_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
-class RegisterVerifyCodeScreen extends StatefulWidget {
-  const RegisterVerifyCodeScreen({super.key, required this.verificationId});
-
-  final String verificationId;
+class RegisterVerifyCodeScreen extends ConsumerStatefulWidget {
+  const RegisterVerifyCodeScreen({super.key});
 
   @override
-  State<RegisterVerifyCodeScreen> createState() =>
+  ConsumerState<RegisterVerifyCodeScreen> createState() =>
       _RegisterVerifyCodeScreenState();
 }
 
-class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
+class _RegisterVerifyCodeScreenState
+    extends ConsumerState<RegisterVerifyCodeScreen> {
+  Timer? _timer;
   int _resendOtpTime = 60;
   final _pinController = TextEditingController();
   String get otp => _pinController.text;
@@ -29,34 +33,39 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
     _countDownResendOtp();
   }
 
-  void _handleSubmitOtp(BuildContext context) {
+  void _handleSubmitOtp() async {
     try {
-      final credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: otp,
-      );
-      FirebaseAuth.instance.signInWithCredential(credential);
-      context
-          .push('${RouteName.registerUserInfo}/${RouteName.registerWelcome}');
+      await ref.read(registerControllerProvider.notifier).verifyCode(otp);
+      await ref.read(registerControllerProvider.notifier).register();
+      if (mounted) {
+        context
+            .push('${RouteName.registerUserInfo}/${RouteName.registerWelcome}');
+      }
+    } on FirebaseException catch (e) {
+      if (mounted) {
+        showError(context, e.message);
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        showError(context, e.message);
+      }
     } on Exception catch (e) {
-      log('Error: $e');
+      if (mounted) {
+        showError(context, e.toString());
+      }
     }
   }
 
   void _countDownResendOtp() {
-    Future.delayed(const Duration(seconds: 1), () {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_resendOtpTime > 0) {
         setState(() {
           _resendOtpTime--;
         });
-        _countDownResendOtp();
+      } else {
+        _timer?.cancel();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -66,7 +75,16 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
   }
 
   @override
+  void dispose() {
+    _pinController.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(registerControllerProvider);
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -91,10 +109,12 @@ class _RegisterVerifyCodeScreenState extends State<RegisterVerifyCodeScreen> {
           Pinput(
             controller: _pinController,
             length: 6,
-            onCompleted: (pin) => _handleSubmitOtp(context),
+            onCompleted: (pin) => _handleSubmitOtp(),
           ),
           const SizedBox(height: 25),
-          AuthButton('Tiếp tục', onPressed: () => _handleSubmitOtp(context)),
+          state.isLoading
+              ? const CircularProgressIndicator()
+              : AuthButton('Tiếp tục', onPressed: () => _handleSubmitOtp()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

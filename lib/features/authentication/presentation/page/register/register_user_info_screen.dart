@@ -1,18 +1,21 @@
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
+import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class RegisterUserInfoScreen extends StatefulWidget {
+class RegisterUserInfoScreen extends ConsumerStatefulWidget {
   const RegisterUserInfoScreen({super.key});
 
   @override
-  State<RegisterUserInfoScreen> createState() => _RegisterUserInfoScreenState();
+  ConsumerState<RegisterUserInfoScreen> createState() =>
+      _RegisterUserInfoScreenState();
 }
 
-class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen>
+class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
     with AuthValidators {
   final _formKey = GlobalKey<FormState>();
   final _node = FocusScopeNode();
@@ -55,6 +58,15 @@ class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen>
       isValid =
           usernameErrorText(username) == null && ageErrorText(age) == null;
     });
+  }
+
+  void _submit() {
+    ref.read(registerUserProvider).name = username;
+    ref.read(registerUserProvider).age = int.parse(age);
+    ref.read(registerUserProvider).gender = gender;
+    ref.read(registerUserProvider).username = username;
+    context
+        .push('${RouteName.registerUserInfo}/${RouteName.registerAccountInfo}');
   }
 
   @override
@@ -143,11 +155,7 @@ class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen>
                     },
                   ),
                   const SizedBox(height: 25),
-                  AuthButton('Tiếp tục',
-                      onPressed: isValid
-                          ? () => context.push(
-                              '${RouteName.registerUserInfo}/${RouteName.registerAccountInfo}')
-                          : null),
+                  AuthButton('Tiếp tục', onPressed: isValid ? _submit : null),
                 ],
               ),
             ),

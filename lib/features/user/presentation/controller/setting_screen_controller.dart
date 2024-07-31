@@ -8,7 +8,7 @@ class SettingScreenController extends _$SettingScreenController {
   @override
   FutureOr<void> build() {}
 
-  FutureOr<void> logout() async {
+  Future<void> logout() async {
     final authService = ref.read(authServiceProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authService.logout());

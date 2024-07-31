@@ -13,6 +13,10 @@ class AccountNotFoundException extends AuthException {
   AccountNotFoundException() : super('Tài khoản không tồn tại');
 }
 
+class UserAlreadyExistsException extends AuthException {
+  UserAlreadyExistsException() : super('Tài khoản đã tồn tại');
+}
+
 class AccountIsDisabledException extends AuthException {
   AccountIsDisabledException() : super('Tài khoản đã bị vô hiệu hóa');
 }
