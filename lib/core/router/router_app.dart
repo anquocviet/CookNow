@@ -1,4 +1,4 @@
-import 'package:cooknow/core/exceptions/auth_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/router/scaffold_with_nested_navigation.dart';

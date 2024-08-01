@@ -11,6 +11,10 @@ mixin AuthValidators {
   final StringValidator numberSubmitValidator = NumberSubmitRegexValidator();
   final StringValidator emailSubmitValidator = EmailSubmitRegexValidator();
 
+  bool canSubmitFullName(String fullName) {
+    return noneEmptyStringValidator.isValid(fullName);
+  }
+
   bool canSubmitUsername(String username) {
     return noneEmptyStringValidator.isValid(username);
   }
@@ -38,6 +42,11 @@ mixin AuthValidators {
 
   bool canSubmitConfirmPassword(String password, String confirmPassword) {
     return password == confirmPassword;
+  }
+
+  String? fullNameErrorText(String fullName) {
+    final bool showErrorText = !canSubmitFullName(fullName);
+    return showErrorText ? 'Họ và tên không được rỗng' : null;
   }
 
   String? usernameErrorText(String username) {

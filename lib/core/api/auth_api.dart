@@ -26,10 +26,10 @@ class AuthApi {
     );
   }
 
-  QueryOptions checkUserNotExist(String username) {
+  QueryOptions checkUserNotExist(String data) {
     return QueryOptions(
       document: gql(_checkUserExistQuery),
-      variables: {'username': username},
+      variables: {'data': data},
       fetchPolicy: FetchPolicy.noCache,
     );
   }
@@ -69,8 +69,8 @@ class AuthApi {
   ''';
 
   final String _checkUserExistQuery = '''
-    query UserExists(\$data: String!) {
-    userExists(data: \$data)
-  }
+    query UserNotExists(\$data: String!) {
+      userNotExists(data: \$data)
+    }
   ''';
 }

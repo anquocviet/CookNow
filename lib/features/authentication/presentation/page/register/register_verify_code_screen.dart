@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:cooknow/core/exceptions/auth_exception.dart';
-import 'package:cooknow/core/exceptions/firebase_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
@@ -41,11 +40,7 @@ class _RegisterVerifyCodeScreenState
         context
             .push('${RouteName.registerUserInfo}/${RouteName.registerWelcome}');
       }
-    } on FirebaseException catch (e) {
-      if (mounted) {
-        showError(context, e.message);
-      }
-    } on AuthException catch (e) {
+    } on AppException catch (e) {
       if (mounted) {
         showError(context, e.message);
       }

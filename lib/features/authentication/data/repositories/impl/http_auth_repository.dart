@@ -3,8 +3,7 @@ import 'dart:developer';
 import 'package:cooknow/core/api/auth_api.dart';
 import 'package:cooknow/core/constant/exception_from_server.dart';
 import 'package:cooknow/core/constant/store_variable.dart';
-import 'package:cooknow/core/exceptions/api_exception.dart';
-import 'package:cooknow/core/exceptions/auth_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/decode_token.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
@@ -43,13 +42,7 @@ class HttpAuthRepository implements AuthRepository {
   @override
   Future<void> register(RegisterDto registerDto) => _getData(
         options: authApi.register(registerDto.toJson()),
-        builder: (data) async {
-          final decodedToken = decodeToken(data['register']['access_token']);
-          _accountState.value = Account.fromJson(decodedToken);
-          _isLoggedInState.value = true;
-          await storeLocalData.saveData(
-              StoreVariable.token, data['register']['access_token']);
-        },
+        builder: (data) => (),
       );
 
   @override
@@ -66,8 +59,8 @@ class HttpAuthRepository implements AuthRepository {
       );
 
   @override
-  Future<void> checkUserNotExist(String username) => _getData(
-        options: authApi.checkUserNotExist(username),
+  Future<void> checkUserNotExist(String data) => _getData(
+        options: authApi.checkUserNotExist(data),
         builder: (data) => data['userExists'],
       );
 
@@ -88,7 +81,7 @@ class HttpAuthRepository implements AuthRepository {
         } else if (error == AuthExceptionFromServer.userNotFound) {
           throw InvalidUsernameOrPasswordException();
         } else if (error == AuthExceptionFromServer.userAlreadyExists) {
-          throw UserAlreadyExistsException();
+          throw MailOrPhoneIsAlreadyInUseException();
         } else {
           throw ServerErrorException();
         }

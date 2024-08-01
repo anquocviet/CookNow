@@ -1,5 +1,7 @@
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
+import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
@@ -19,9 +21,11 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
     with AuthValidators {
   final _formKey = GlobalKey<FormState>();
   final _node = FocusScopeNode();
+  final _fullNameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _ageController = TextEditingController();
 
+  String get fullName => _fullNameController.text;
   String get username => _usernameController.text;
   String get age => _ageController.text;
   int gender = 1;
@@ -39,6 +43,12 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
     _usernameController.dispose();
     _ageController.dispose();
     super.dispose();
+  }
+
+  void _fullNameEditingComplete() {
+    if (canSubmitFullName(fullName)) {
+      _node.nextFocus();
+    }
   }
 
   void _usernameEditingComplete() {
@@ -60,13 +70,28 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
     });
   }
 
-  void _submit() {
-    ref.read(registerUserProvider).name = username;
-    ref.read(registerUserProvider).age = int.parse(age);
-    ref.read(registerUserProvider).gender = gender;
-    ref.read(registerUserProvider).username = username;
-    context
-        .push('${RouteName.registerUserInfo}/${RouteName.registerAccountInfo}');
+  void _submit() async {
+    try {
+      await ref
+          .read(registerControllerProvider.notifier)
+          .checkUserNotExist(username);
+      ref.read(registerUserProvider).name = fullName;
+      ref.read(registerUserProvider).age = int.parse(age);
+      ref.read(registerUserProvider).gender = gender;
+      ref.read(registerUserProvider).username = username;
+      if (mounted) {
+        context.push(
+            '${RouteName.registerUserInfo}/${RouteName.registerAccountInfo}');
+      }
+    } on AppException catch (e) {
+      if (mounted) {
+        showError(context, e.message);
+      }
+    } catch (e) {
+      if (mounted) {
+        showError(context, e.toString());
+      }
+    }
   }
 
   @override
@@ -102,6 +127,18 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
                     ),
                   ),
                   const SizedBox(height: 25),
+                  AuthTextField(
+                    'Họ và tên',
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    controller: _fullNameController,
+                    validator: (fullName) => fullNameErrorText(fullName ?? ''),
+                    onEditingComplete: _fullNameEditingComplete,
+                    onChanged: _checkValid,
+                  ),
+                  const SizedBox(height: 12),
                   AuthTextField(
                     'Tên người dùng',
                     prefixIcon: Icon(

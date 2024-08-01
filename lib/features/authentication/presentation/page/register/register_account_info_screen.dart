@@ -1,4 +1,4 @@
-import 'package:cooknow/core/exceptions/firebase_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
 import 'package:cooknow/core/utils/check_formats.dart';
@@ -37,6 +37,9 @@ class _RegisterAccountInfoScreenState
 
   void _submit() async {
     try {
+      await ref
+          .read(registerControllerProvider.notifier)
+          .checkUserNotExist(mailPhone);
       await ref.read(registerControllerProvider.notifier).sendOtp(
         mailPhone,
         () => context.push(RouteName.registerWelcome),
@@ -49,7 +52,7 @@ class _RegisterAccountInfoScreenState
               '${RouteName.registerUserInfo}/${RouteName.registerVerifyCode}');
         },
       );
-    } on FirebaseException catch (e) {
+    } on AppException catch (e) {
       if (mounted) {
         showError(context, e.message);
       }
@@ -86,15 +89,6 @@ class _RegisterAccountInfoScreenState
     if (password == confirmPassword) {
       _node.nextFocus();
     }
-  }
-
-  @override
-  void initState() {
-    _mailPhoneController.text = '0393504301';
-    _passwordController.text = 'AQViet251103@';
-    _confirmPasswordController.text = 'AQViet251103@';
-    isValid = true;
-    super.initState();
   }
 
   @override

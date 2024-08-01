@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import 'package:cooknow/core/exceptions/firebase_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
+import 'package:cooknow/core/utils/check_formats.dart';
 import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,12 @@ class RegisterController extends _$RegisterController {
     final authService = ref.read(authServiceProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authService.checkUserNotExist(data));
-    if (state.hasError) throw state.error!;
+    if (state.hasError) {
+      if (!isEmail(data) && !isPhone(data)) {
+        throw UsernameIsAlreadyInUseException();
+      }
+      throw state.error!;
+    }
   }
 
   Future<void> sendOtp(
@@ -49,8 +55,8 @@ class RegisterController extends _$RegisterController {
       String mailPhone, VoidCallback onPassing, VoidCallback onSuccess) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.verifyPhoneNumber(
-      // phoneNumber: '+84$mailPhone',
-      phoneNumber: '+16505551234',
+      phoneNumber: '+84$mailPhone',
+      // phoneNumber: '+16505551234',
       timeout: const Duration(seconds: 60),
       verificationCompleted: (PhoneAuthCredential credential) async {
         await auth.signInWithCredential(credential);
