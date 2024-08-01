@@ -5,19 +5,19 @@ import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/user/data/repositories/user_repository.dart';
+import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'http_user_repository.g.dart';
+part 'user_repository_imp.g.dart';
 
-class HttpUserRepository implements UserRepository {
-  HttpUserRepository({required this.userApi});
-
-  final UserApi userApi;
+class UserRepositoryImp implements UserRepository {
+  UserRepositoryImp({required this.userApi});
 
   final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
+  final UserApi userApi;
 
   @override
   Future<User> getUser(String id) => _getData(
@@ -28,6 +28,16 @@ class HttpUserRepository implements UserRepository {
           return user;
         },
       );
+
+  @override
+  Future<User> setUser(User user) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setAccount(Account account) async {
+    _userState.value = _userState.value!.copyWith(account: account);
+  }
 
   Future<T> _getData<T>({
     required QueryOptions options,
@@ -51,7 +61,7 @@ class HttpUserRepository implements UserRepository {
 }
 
 @Riverpod(keepAlive: true)
-HttpUserRepository userRepository(UserRepositoryRef ref) {
-  final userRepository = HttpUserRepository(userApi: UserApi());
+UserRepositoryImp userRepository(UserRepositoryRef ref) {
+  final userRepository = UserRepositoryImp(userApi: UserApi());
   return userRepository;
 }

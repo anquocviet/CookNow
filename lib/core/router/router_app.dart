@@ -4,7 +4,7 @@ import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/router/scaffold_with_nested_navigation.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/application/auth_service.dart';
-import 'package:cooknow/features/authentication/data/repositories/impl/http_auth_repository.dart';
+import 'package:cooknow/features/authentication/data/repositories/impl/auth_repository_imp.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_account_info_screen.dart';
@@ -16,6 +16,7 @@ import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
+import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +65,16 @@ final _key = GlobalKey<NavigatorState>();
 GoRouter goRouter(GoRouterRef ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   final authService = ref.read(authServiceProvider);
+  final userService = ref.read(userServiceProvider);
 
-  authService.validateToken().catchError((error) {
+  authService.validateToken().then((_) async {
+    await userService.getUser(authRepository.currentAccount!.id);
+    await userService.setAccount(authRepository.currentAccount!);
+  }).catchError((error) {
     if (error is TokenExpiredException) {
       showError(_key.currentContext!, error.message);
+    } else {
+      showError(_key.currentContext!, error.toString());
     }
   });
 
