@@ -1,8 +1,9 @@
-import 'package:cooknow/core/exceptions/auth_exception.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/login_controller.dart';
+import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with AuthValidators {
       await ref
           .read(loginScreenControllerProvider.notifier)
           .login(username, password);
+    } on AppException catch (e) {
+      if (mounted) {
+        showError(context, e.message);
+      }
     } catch (e) {
       if (mounted) {
-        showError(context, (e as AuthException).message);
+        showError(context, e.toString());
       }
     }
   }
@@ -57,6 +62,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with AuthValidators {
     if (canSubmitPassword(password, AuthMode.login) && isValid) {
       _login();
     }
+  }
+
+  @override
+  void initState() {
+    final String username = ref.read(registerUserProvider).username;
+    final String password = ref.read(registerUserProvider).password;
+    if (username.isNotEmpty && password.isNotEmpty) {
+      _usernameController.text = username;
+      _passwordController.text = password;
+      isValid = true;
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override

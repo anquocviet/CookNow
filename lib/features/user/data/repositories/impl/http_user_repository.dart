@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cooknow/core/api/user_api.dart';
-import 'package:cooknow/core/exceptions/api_exception.dart' as api_exception;
+import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/user/data/repositories/user_repository.dart';
@@ -42,10 +42,10 @@ class HttpUserRepository implements UserRepository {
         final data = result.data!;
         return builder(data);
       } else {
-        throw api_exception.UnknownException();
+        throw ex.UnknownException();
       }
     } on SocketException {
-      throw api_exception.NoInternetException();
+      throw ex.NoInternetException();
     }
   }
 }

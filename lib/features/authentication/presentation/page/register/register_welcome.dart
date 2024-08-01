@@ -1,3 +1,4 @@
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -34,7 +35,7 @@ class RegisterWelcome extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 25),
-          AuthButton('Bắt đầu', onPressed: () => context.go('/')),
+          AuthButton('Bắt đầu', onPressed: () => context.go(RouteName.login)),
         ]),
       ),
     );

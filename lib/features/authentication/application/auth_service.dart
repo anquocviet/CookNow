@@ -1,5 +1,6 @@
 import 'package:cooknow/core/constant/store_variable.dart';
 import 'package:cooknow/core/utils/store_local_data.dart';
+import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:cooknow/features/authentication/data/repositories/impl/http_auth_repository.dart';
 import 'package:cooknow/features/user/data/repositories/impl/http_user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +24,11 @@ class AuthService {
     userRepository.getUser(authRepository.currentAccount!.id);
   }
 
+  Future<void> register(RegisterDto registerDto) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.register(registerDto);
+  }
+
   Future<void> logout() async {
     final authRepository = ref.read(authRepositoryProvider);
     await authRepository.logout();
@@ -32,6 +38,11 @@ class AuthService {
     final authRepository = ref.read(authRepositoryProvider);
     final token = await this.token;
     if (token != null) await authRepository.validateToken(token);
+  }
+
+  Future<void> checkUserNotExist(String data) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.checkUserNotExist(data);
   }
 }
 

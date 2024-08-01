@@ -1,23 +1,25 @@
-import 'dart:developer';
-
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
+import 'package:cooknow/core/utils/check_formats.dart';
+import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class RegisterAccountInfoScreen extends StatefulWidget {
+class RegisterAccountInfoScreen extends ConsumerStatefulWidget {
   const RegisterAccountInfoScreen({super.key});
 
   @override
-  State<RegisterAccountInfoScreen> createState() =>
+  ConsumerState<RegisterAccountInfoScreen> createState() =>
       _RegisterAccountInfoScreenState();
 }
 
-class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
-    with AuthValidators {
+class _RegisterAccountInfoScreenState
+    extends ConsumerState<RegisterAccountInfoScreen> with AuthValidators {
   final _formKey = GlobalKey<FormState>();
   final _node = FocusScopeNode();
   final _mailPhoneController = TextEditingController();
@@ -34,30 +36,31 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
   bool isValid = false;
 
   void _submit() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.verifyPhoneNumber(
-      phoneNumber: '+84$mailPhone',
-      timeout: const Duration(seconds: 60),
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await auth.signInWithCredential(credential);
-        if (mounted) {
-          context.push(RouteName.registerWelcome);
-        }
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        log('Error: ${e.message}');
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        context.push(
-          '${RouteName.registerUserInfo}/${RouteName.registerVerifyCode}',
-          extra: verificationId,
-        );
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        // Auto-resolution timed out...
-        log('Auto-resolution timed out...');
-      },
-    );
+    try {
+      await ref
+          .read(registerControllerProvider.notifier)
+          .checkUserNotExist(mailPhone);
+      await ref.read(registerControllerProvider.notifier).sendOtp(
+        mailPhone,
+        () => context.push(RouteName.registerWelcome),
+        () {
+          isEmail(mailPhone)
+              ? ref.read(registerUserProvider).email = mailPhone
+              : ref.read(registerUserProvider).phone = mailPhone;
+          ref.read(registerUserProvider).password = password;
+          context.push(
+              '${RouteName.registerUserInfo}/${RouteName.registerVerifyCode}');
+        },
+      );
+    } on AppException catch (e) {
+      if (mounted) {
+        showError(context, e.message);
+      }
+    } catch (e) {
+      if (mounted) {
+        showError(context, e.toString());
+      }
+    }
   }
 
   void _checkValid(_) {
@@ -89,7 +92,18 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
   }
 
   @override
+  void dispose() {
+    _node.dispose();
+    _mailPhoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(registerControllerProvider);
+
     return GestureDetector(
       onTap: () => _node.unfocus(),
       child: Scaffold(
@@ -194,10 +208,12 @@ class _RegisterAccountInfoScreenState extends State<RegisterAccountInfoScreen>
                         }),
                   ),
                   const SizedBox(height: 25),
-                  AuthButton(
-                    'Tiếp tục',
-                    onPressed: isValid ? _submit : null,
-                  )
+                  state.isLoading
+                      ? const CircularProgressIndicator()
+                      : AuthButton(
+                          'Tiếp tục',
+                          onPressed: isValid ? _submit : null,
+                        )
                 ],
               ),
             ),
