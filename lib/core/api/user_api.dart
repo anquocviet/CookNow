@@ -5,6 +5,7 @@ class UserApi {
     return QueryOptions(
       document: gql(_findUserQuery),
       variables: {'id': id},
+      fetchPolicy: FetchPolicy.noCache,
     );
   }
 

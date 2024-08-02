@@ -14,10 +14,10 @@ import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'http_auth_repository.g.dart';
+part 'auth_repository_imp.g.dart';
 
-class HttpAuthRepository implements AuthRepository {
-  HttpAuthRepository({required this.authApi, required this.storeLocalData});
+class AuthRepositoryImp implements AuthRepository {
+  AuthRepositoryImp({required this.authApi, required this.storeLocalData});
   StoreLocalData storeLocalData;
 
   final AuthApi authApi;
@@ -54,9 +54,12 @@ class HttpAuthRepository implements AuthRepository {
 
   @override
   Future<void> validateToken(String token) => _getData(
-        options: authApi.validateToken(token),
-        builder: (data) => _isLoggedInState.value = true,
-      );
+      options: authApi.validateToken(token),
+      builder: (data) {
+        final decodedToken = decodeToken(token);
+        _accountState.value = Account.fromJson(decodedToken);
+        _isLoggedInState.value = true;
+      });
 
   @override
   Future<void> checkUserNotExist(String data) => _getData(
@@ -93,8 +96,8 @@ class HttpAuthRepository implements AuthRepository {
 }
 
 @Riverpod(keepAlive: true)
-HttpAuthRepository authRepository(AuthRepositoryRef ref) {
-  return HttpAuthRepository(
+AuthRepositoryImp authRepository(AuthRepositoryRef ref) {
+  return AuthRepositoryImp(
       authApi: AuthApi(), storeLocalData: StoreLocalData());
 }
 

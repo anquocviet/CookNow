@@ -21,7 +21,7 @@ final registerUserProvider = Provider<RegisterDto>.internal(
 
 typedef RegisterUserRef = ProviderRef<RegisterDto>;
 String _$registerControllerHash() =>
-    r'b46f458f2e5a0eb07b349a9b75ff4bc41ab0d976';
+    r'8868b0ceac599a6e766650f643f5e40ced4bca40';
 
 /// See also [RegisterController].
 @ProviderFor(RegisterController)
