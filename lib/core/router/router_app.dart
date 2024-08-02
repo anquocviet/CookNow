@@ -17,6 +17,7 @@ import 'package:cooknow/features/notifications/presentation/page/notification_sc
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
+import 'package:cooknow/features/user/presentation/page/change_profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class RouteName {
   static const notification = '/notification';
   static const profile = '/profile';
   static const settings = 'settings';
+  static const changeInfoProfile = 'change-info-profile';
   static const welcome = '/welcome';
   static const auth = '/auth';
   static const login = '/login';
@@ -119,11 +121,17 @@ GoRouter goRouter(GoRouterRef ref) {
                     pageBuilder: (context, state) =>
                         NoTransitionPage(child: entry.value),
                     routes: [
+                      // Check if the route is profile, then add a sub route is settings, change info profile
                       if (entry.key == RouteName.profile)
                         GoRoute(
                           path: RouteName.settings,
                           builder: (context, state) => const SettingScreen(),
                         ),
+                      GoRoute(
+                        path: RouteName.changeInfoProfile,
+                        builder: (context, state) =>
+                            const ChangeProfileScreen(),
+                      ),
                     ],
                   )
                 ],

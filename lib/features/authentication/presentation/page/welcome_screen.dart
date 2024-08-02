@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cooknow/core/router/router_app.dart';
-import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -117,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             }).toList(),
           ),
         ),
-        AuthButton(
+        CustomButton(
           'Tiếp tục',
           onPressed: () {},
         ),

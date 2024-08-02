@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AuthButton extends StatelessWidget {
-  const AuthButton(this.text,
+/// A custom button widget.
+///
+/// This widget represents a custom button that can be used in the application.
+/// It is a stateless widget, which means it does not maintain any internal state.
+class CustomButton extends StatelessWidget {
+  const CustomButton(this.text,
       {super.key, this.width, this.icon, this.color, required this.onPressed});
 
   final String text;
@@ -12,10 +16,10 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = this.width ?? MediaQuery.of(context).size.width;
+    final width = this.width ?? MediaQuery.of(context).size.width * 0.9;
     final color = this.color ?? Theme.of(context).primaryColor;
     return SizedBox(
-      width: width * 0.9,
+      width: width,
       child: ElevatedButton.icon(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

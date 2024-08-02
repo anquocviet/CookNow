@@ -1,5 +1,5 @@
 import 'package:cooknow/core/router/router_app.dart';
-import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +24,7 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            AuthButton(
+            CustomButton(
               'Đăng nhập',
               onPressed: () => context.push(RouteName.login),
             ),
@@ -51,7 +51,7 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            AuthButton(
+            CustomButton(
               'Tiếp tục bằng Google',
               icon: const Icon(
                 Icons.g_mobiledata_outlined,
@@ -64,7 +64,7 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            AuthButton(
+            CustomButton(
               'Tiếp tục bằng Apple',
               icon: const Icon(
                 Icons.apple,

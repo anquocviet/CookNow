@@ -3,7 +3,7 @@ import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
-import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -192,7 +192,7 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
                     },
                   ),
                   const SizedBox(height: 25),
-                  AuthButton('Tiếp tục', onPressed: isValid ? _submit : null),
+                  CustomButton('Tiếp tục', onPressed: isValid ? _submit : null),
                 ],
               ),
             ),

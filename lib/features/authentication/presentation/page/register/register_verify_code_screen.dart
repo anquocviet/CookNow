@@ -4,7 +4,7 @@ import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
-import 'package:cooknow/features/authentication/presentation/widget/auth_button.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -109,7 +109,7 @@ class _RegisterVerifyCodeScreenState
           const SizedBox(height: 25),
           state.isLoading
               ? const CircularProgressIndicator()
-              : AuthButton('Tiếp tục', onPressed: () => _handleSubmitOtp()),
+              : CustomButton('Tiếp tục', onPressed: () => _handleSubmitOtp()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

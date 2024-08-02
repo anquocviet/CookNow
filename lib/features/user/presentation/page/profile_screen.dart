@@ -18,7 +18,8 @@ class ProfileScreen extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => context
+                .go('${RouteName.profile}/${RouteName.changeInfoProfile}'),
             icon: const Icon(Icons.edit),
           ),
           IconButton(
