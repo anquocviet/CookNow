@@ -42,10 +42,9 @@ class ProfileScreen extends ConsumerWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
-                backgroundImage:
-                    NetworkImage('http://via.placeholder.com/200x200'),
+                backgroundImage: NetworkImage(user.avatar),
               ),
               const SizedBox(width: 10),
               Column(

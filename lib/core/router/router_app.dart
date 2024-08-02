@@ -67,14 +67,18 @@ GoRouter goRouter(GoRouterRef ref) {
   final authService = ref.read(authServiceProvider);
   final userService = ref.read(userServiceProvider);
 
-  authService.validateToken().then((_) async {
-    await userService.getUser(authRepository.currentAccount!.id);
-    await userService.setAccount(authRepository.currentAccount!);
-  }).catchError((error) {
-    if (error is TokenExpiredException) {
-      showError(_key.currentContext!, error.message);
-    } else {
-      showError(_key.currentContext!, error.toString());
+  authService.token.then((token) {
+    if (token != null) {
+      authService.validateToken().then((_) async {
+        await userService.getUser(authRepository.currentAccount!.id);
+        await userService.setAccount(authRepository.currentAccount!);
+      }).catchError((error) {
+        if (error is TokenExpiredException) {
+          showError(_key.currentContext!, error.message);
+        } else {
+          showError(_key.currentContext!, error.toString());
+        }
+      });
     }
   });
 
