@@ -12,5 +12,5 @@ class ProfileScreenController extends _$ProfileScreenController {
 
 @riverpod
 Future<User> getCurrentUser(GetCurrentUserRef ref) {
-  return ref.read(userServiceProvider).getCurrentUser();
+  return ref.watch(userServiceProvider).getCurrentUser();
 }

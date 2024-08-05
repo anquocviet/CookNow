@@ -6,7 +6,7 @@ part of 'profile_screen_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getCurrentUserHash() => r'421f7cdafb0d3d4b30ea97ef74712620ba8f3bc6';
+String _$getCurrentUserHash() => r'd91d26664e10f82649e91ac264f7e161d06ef6b4';
 
 /// See also [getCurrentUser].
 @ProviderFor(getCurrentUser)

@@ -120,19 +120,20 @@ GoRouter goRouter(GoRouterRef ref) {
                     path: entry.key,
                     pageBuilder: (context, state) =>
                         NoTransitionPage(child: entry.value),
-                    routes: [
-                      // Check if the route is profile, then add a sub route is settings, change info profile
-                      if (entry.key == RouteName.profile)
-                        GoRoute(
-                          path: RouteName.settings,
-                          builder: (context, state) => const SettingScreen(),
-                        ),
-                      GoRoute(
-                        path: RouteName.changeInfoProfile,
-                        builder: (context, state) =>
-                            const ChangeProfileScreen(),
-                      ),
-                    ],
+                    routes: entry.key == RouteName.profile
+                        ? [
+                            GoRoute(
+                              path: RouteName.settings,
+                              builder: (context, state) =>
+                                  const SettingScreen(),
+                            ),
+                            GoRoute(
+                              path: RouteName.changeInfoProfile,
+                              builder: (context, state) =>
+                                  const ChangeProfileScreen(),
+                            )
+                          ]
+                        : [],
                   )
                 ],
               ),

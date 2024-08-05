@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cooknow/core/api/user_api.dart';
 import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
+import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
 import 'package:cooknow/features/user/data/repositories/user_repository.dart';
 import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
@@ -20,19 +22,32 @@ class UserRepositoryImp implements UserRepository {
   final UserApi userApi;
 
   @override
-  Future<User> getUser(String id) => _getData(
+  Future<void> getUser(String id) => _getData(
         options: userApi.getUser(id),
         builder: (data) {
           final user = User.fromJson(data['user']);
           _userState.value = user;
-          return user;
         },
       );
 
   @override
-  Future<User> setUser(User user) {
-    throw UnimplementedError();
-  }
+  Future<void> updateUser(UpdateUserDto dto) => _getData(
+      options: userApi.updateUser(dto),
+      builder: (data) {
+        UpdateUserDto dto = UpdateUserDto.fromJson(data['updateUser']);
+        log(dto.toJson().toString());
+        _userState.value = _userState.value?.copyWith(
+          name: dto.name,
+          age: dto.age,
+          gender: dto.gender,
+          email: dto.email,
+          phone: dto.phone,
+          living: dto.living,
+          bio: dto.bio,
+          avatar: dto.avatar,
+        );
+        log(_userState.value?.toJson().toString() ?? '');
+      });
 
   @override
   Future<void> setAccount(Account account) async {
@@ -40,14 +55,18 @@ class UserRepositoryImp implements UserRepository {
   }
 
   Future<T> _getData<T>({
-    required QueryOptions options,
+    required dynamic options,
     required T Function(dynamic data) builder,
   }) async {
+    assert(options is! QueryOptions || options is! MutationOptions,
+        'Options must be QueryOptions or MutationOptions');
     try {
-      final QueryResult result =
-          await GraphqlClient.client.value.query(options);
+      final QueryResult result = options is QueryOptions
+          ? await GraphqlClient.client.value.query(options)
+          : await GraphqlClient.client.value.mutate(options);
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
+      log('UserRepositoryError: $error');
       if (error.isEmpty) {
         final data = result.data!;
         return builder(data);
@@ -56,6 +75,8 @@ class UserRepositoryImp implements UserRepository {
       }
     } on SocketException {
       throw ex.NoInternetException();
+    } on Exception {
+      throw ex.UnknownException();
     }
   }
 }
