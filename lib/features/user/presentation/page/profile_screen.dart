@@ -1,6 +1,6 @@
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
-import 'package:cooknow/features/user/presentation/controller/profile_screen_controller.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_personal_post.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_saved_post.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,8 @@ class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<User> user = ref.watch(getCurrentUserProvider);
+    final userService = ref.watch(userServiceProvider);
+    final Stream<User?> user = userService.watchUser();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,12 +31,18 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
       body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: switch (user) {
-            AsyncData(:final value) => _buildProfile(value),
-            AsyncError() => const Text('Oops, có lỗi xảy ra'),
-            _ => const CircularProgressIndicator(),
-          }),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: StreamBuilder<User?>(
+          stream: user,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildProfile(snapshot.data!);
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -59,7 +66,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    user.account?.username ?? '',
+                    '@${user.account?.username}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,

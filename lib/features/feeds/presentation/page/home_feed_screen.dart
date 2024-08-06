@@ -1,15 +1,19 @@
+import 'package:cooknow/core/socket/socket_cli.dart';
 import 'package:cooknow/features/feeds/presentation/page/community/community_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/follower/follower_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/ingredient/ingredient_screen.dart';
 import 'package:cooknow/features/search/presentation/widget/custom_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tab_container/tab_container.dart';
 
-class HomeFeedScreen extends StatelessWidget {
+class HomeFeedScreen extends ConsumerWidget {
   const HomeFeedScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(socketProvider);
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
