@@ -15,9 +15,14 @@ class UserService {
 
   final Ref ref;
 
-  Future<void> getUser(String id) async {
+  Future<void> fetchUser(String id) async {
     final userRepository = ref.read(userRepositoryProvider);
     await userRepository.fetchUser(id);
+  }
+
+  Future<void> disposeUser() async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.dispose();
   }
 
   Future<void> updateUser(UpdateUserDto dto) async {

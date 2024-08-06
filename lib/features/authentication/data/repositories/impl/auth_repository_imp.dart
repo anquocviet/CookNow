@@ -2,39 +2,26 @@ import 'dart:developer';
 
 import 'package:cooknow/core/api/auth_api.dart';
 import 'package:cooknow/core/constant/exception_from_server.dart';
-import 'package:cooknow/core/constant/store_variable.dart';
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
-import 'package:cooknow/core/utils/decode_token.dart';
-import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
-import 'package:cooknow/core/utils/store_local_data.dart';
 import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:cooknow/features/authentication/data/repositories/auth_repository.dart';
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_repository_imp.g.dart';
 
 class AuthRepositoryImp implements AuthRepository {
-  AuthRepositoryImp({required this.authApi, required this.storeLocalData});
-  StoreLocalData storeLocalData;
+  AuthRepositoryImp({
+    required this.authApi,
+  });
 
   final AuthApi authApi;
-  final _accountState = ims.InMemoryStore<Account?>(null);
-  Stream<Account?> authStateChanges() => _accountState.stream;
-  Account? get currentAccount => _accountState.value;
-  bool get isLoggedIn => _accountState.value != null;
 
   @override
-  Future<void> login(String username, String password) => _getData(
+  Future<String> login(String username, String password) => _getData(
         options: authApi.login(username, password),
-        builder: (data) async {
-          final decodedToken = decodeToken(data['login']['access_token']);
-          _accountState.value = Account.fromJson(decodedToken);
-          await storeLocalData.saveData(
-              StoreVariable.token, data['login']['access_token']);
-        },
+        builder: (data) => data['login']['access_token'],
       );
 
   @override
@@ -44,18 +31,8 @@ class AuthRepositoryImp implements AuthRepository {
       );
 
   @override
-  Future<void> logout() async {
-    _accountState.value = null;
-    storeLocalData.removeData(StoreVariable.token);
-  }
-
-  @override
-  Future<void> validateToken(String token) => _getData(
-      options: authApi.validateToken(token),
-      builder: (data) {
-        final decodedToken = decodeToken(token);
-        _accountState.value = Account.fromJson(decodedToken);
-      });
+  Future<void> validateToken(String token) =>
+      _getData(options: authApi.validateToken(token), builder: (data) {});
 
   @override
   Future<void> checkUserNotExist(String data) => _getData(
@@ -93,12 +70,5 @@ class AuthRepositoryImp implements AuthRepository {
 
 @Riverpod(keepAlive: true)
 AuthRepositoryImp authRepository(AuthRepositoryRef ref) {
-  return AuthRepositoryImp(
-      authApi: AuthApi(), storeLocalData: StoreLocalData());
-}
-
-@Riverpod(keepAlive: true)
-Stream<Account?> authStateChanges(AuthStateChangesRef ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
-  return authRepository.authStateChanges();
+  return AuthRepositoryImp(authApi: AuthApi());
 }

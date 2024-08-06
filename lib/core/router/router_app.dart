@@ -2,9 +2,9 @@ import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/router/scaffold_with_nested_navigation.dart';
+import 'package:cooknow/core/utils/decode_token.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/application/auth_service.dart';
-import 'package:cooknow/features/authentication/data/repositories/impl/auth_repository_imp.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_account_info_screen.dart';
@@ -17,6 +17,8 @@ import 'package:cooknow/features/notifications/presentation/page/notification_sc
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
+import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
+import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/presentation/page/change_profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/setting_screen.dart';
@@ -65,15 +67,16 @@ final _key = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
+  final userRepository = ref.watch(userRepositoryProvider);
   final authService = ref.read(authServiceProvider);
   final userService = ref.read(userServiceProvider);
 
   authService.token.then((token) {
     if (token != null) {
       authService.validateToken().then((_) async {
-        await userService.getUser(authRepository.currentAccount!.id);
-        await userService.setAccount(authRepository.currentAccount!);
+        final decodedToken = decodeToken(token);
+        await userService.fetchUser(decodedToken['id']);
+        await userService.setAccount(Account.fromJson(decodedToken));
       }).catchError((error) {
         if (error is TokenExpiredException) {
           showError(_key.currentContext!, error.message);
@@ -90,7 +93,7 @@ GoRouter goRouter(GoRouterRef ref) {
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       final path = state.uri.path;
-      if (authRepository.isLoggedIn) {
+      if (userRepository.currentAccount != null) {
         if (RouteName.publicRoute.contains(path)) {
           return RouteName.home;
         }
@@ -104,7 +107,7 @@ GoRouter goRouter(GoRouterRef ref) {
         return RouteName.welcome;
       }
     },
-    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
+    refreshListenable: GoRouterRefreshStream(userRepository.userStateChanges()),
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

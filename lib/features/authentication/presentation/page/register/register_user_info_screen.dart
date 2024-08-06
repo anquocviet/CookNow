@@ -4,7 +4,7 @@ import 'package:cooknow/core/utils/auth_validators.dart';
 import 'package:cooknow/core/widget/show_error.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
-import 'package:cooknow/features/authentication/presentation/widget/auth_text_field.dart';
+import 'package:cooknow/core/widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -127,7 +127,7 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
                     ),
                   ),
                   const SizedBox(height: 25),
-                  AuthTextField(
+                  CustomTextField(
                     'Họ và tên',
                     prefixIcon: Icon(
                       Icons.person,
@@ -139,7 +139,7 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
                     onChanged: _checkValid,
                   ),
                   const SizedBox(height: 12),
-                  AuthTextField(
+                  CustomTextField(
                     'Tên người dùng',
                     prefixIcon: Icon(
                       Icons.person,
@@ -151,7 +151,7 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
                     onChanged: _checkValid,
                   ),
                   const SizedBox(height: 12),
-                  AuthTextField(
+                  CustomTextField(
                     'Tuổi',
                     keyboardType: TextInputType.number,
                     prefixIcon: Icon(

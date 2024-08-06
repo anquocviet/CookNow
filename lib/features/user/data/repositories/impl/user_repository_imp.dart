@@ -19,6 +19,9 @@ class UserRepositoryImp implements UserRepository {
 
   final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
+  Stream<User?> userStateChanges() => _userState.stream;
+  User? get currentAccount => _userState.value;
+
   final UserApi userApi;
 
   @override
@@ -55,6 +58,11 @@ class UserRepositoryImp implements UserRepository {
   @override
   Stream<User?> get watchUser => _userState.stream;
 
+  @override
+  Future<void> dispose() async {
+    _userState.value = null;
+  }
+
   Future<T> _getData<T>({
     required dynamic options,
     required T Function(dynamic data) builder,
@@ -86,4 +94,10 @@ class UserRepositoryImp implements UserRepository {
 UserRepositoryImp userRepository(UserRepositoryRef ref) {
   final userRepository = UserRepositoryImp(userApi: UserApi());
   return userRepository;
+}
+
+@Riverpod(keepAlive: true)
+Stream<User?> userStateChanges(UserStateChangesRef ref) {
+  final userRepository = ref.watch(userRepositoryProvider);
+  return userRepository.userStateChanges();
 }

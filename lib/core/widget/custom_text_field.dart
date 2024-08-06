@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthTextField extends ConsumerStatefulWidget {
-  const AuthTextField(
+class CustomTextField extends StatelessWidget {
+  const CustomTextField(
     this.label, {
     super.key,
     this.prefixIcon,
@@ -30,36 +29,26 @@ class AuthTextField extends ConsumerStatefulWidget {
   final void Function(String)? onChanged;
 
   @override
-  ConsumerState<AuthTextField> createState() => _AuthTextFieldState();
-}
-
-class _AuthTextFieldState extends ConsumerState<AuthTextField> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.obscureText,
-      enableSuggestions: widget.enableSuggestions,
-      autocorrect: widget.autocorrect,
-      keyboardType: widget.keyboardType,
+      obscureText: obscureText,
+      enableSuggestions: enableSuggestions,
+      autocorrect: autocorrect,
+      keyboardType: keyboardType,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: widget.validator,
+      validator: validator,
       decoration: InputDecoration(
-        labelText: widget.label,
-        prefixIcon: widget.prefixIcon,
-        suffixIcon: widget.suffixIcon,
+        labelText: label,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         errorMaxLines: 3,
       ),
-      onChanged: widget.onChanged,
-      controller: widget.controller,
-      onEditingComplete: widget.onEditingComplete,
+      onChanged: onChanged,
+      controller: controller,
+      onEditingComplete: onEditingComplete,
     );
   }
 }

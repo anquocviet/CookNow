@@ -7,4 +7,5 @@ abstract class UserRepository {
   Stream<User?> get watchUser;
   Future<void> updateUser(UpdateUserDto dto);
   Future<void> setAccount(Account account);
+  Future<void> dispose();
 }
