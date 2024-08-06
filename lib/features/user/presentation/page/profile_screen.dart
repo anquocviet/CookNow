@@ -66,7 +66,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    user.account?.username ?? '',
+                    '@${user.account?.username}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,

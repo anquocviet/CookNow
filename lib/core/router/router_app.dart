@@ -3,7 +3,7 @@ import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/router/scaffold_with_nested_navigation.dart';
 import 'package:cooknow/core/utils/decode_token.dart';
-import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/login_screen.dart';

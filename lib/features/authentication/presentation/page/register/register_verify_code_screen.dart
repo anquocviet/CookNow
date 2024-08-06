@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
-import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +41,9 @@ class _RegisterVerifyCodeScreenState
             .push('${RouteName.registerUserInfo}/${RouteName.registerWelcome}');
       }
     } on AppException catch (e) {
-      if (mounted) {
-        showError(context, e.message);
-      }
+      if (mounted) showError(context, e.message);
     } on Exception catch (e) {
-      if (mounted) {
-        showError(context, e.toString());
-      }
+      if (mounted) showError(context, e.toString());
     }
   }
 

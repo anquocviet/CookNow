@@ -1,7 +1,7 @@
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/auth_validators.dart';
-import 'package:cooknow/core/widget/show_error.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:cooknow/core/widget/custom_text_field.dart';
@@ -84,13 +84,9 @@ class _RegisterUserInfoScreenState extends ConsumerState<RegisterUserInfoScreen>
             '${RouteName.registerUserInfo}/${RouteName.registerAccountInfo}');
       }
     } on AppException catch (e) {
-      if (mounted) {
-        showError(context, e.message);
-      }
+      if (mounted) showError(context, e.message);
     } catch (e) {
-      if (mounted) {
-        showError(context, e.toString());
-      }
+      if (mounted) showError(context, e.toString());
     }
   }
 
