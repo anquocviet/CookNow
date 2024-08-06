@@ -22,10 +22,9 @@ class AuthRepositoryImp implements AuthRepository {
 
   final AuthApi authApi;
   final _accountState = ims.InMemoryStore<Account?>(null);
-  final _isLoggedInState = ims.InMemoryStore<bool>(false);
-  Stream<bool?> authStateChanges() => _isLoggedInState.stream;
+  Stream<Account?> authStateChanges() => _accountState.stream;
   Account? get currentAccount => _accountState.value;
-  bool get isLoggedIn => _isLoggedInState.value;
+  bool get isLoggedIn => _accountState.value != null;
 
   @override
   Future<void> login(String username, String password) => _getData(
@@ -33,7 +32,6 @@ class AuthRepositoryImp implements AuthRepository {
         builder: (data) async {
           final decodedToken = decodeToken(data['login']['access_token']);
           _accountState.value = Account.fromJson(decodedToken);
-          _isLoggedInState.value = true;
           await storeLocalData.saveData(
               StoreVariable.token, data['login']['access_token']);
         },
@@ -48,7 +46,6 @@ class AuthRepositoryImp implements AuthRepository {
   @override
   Future<void> logout() async {
     _accountState.value = null;
-    _isLoggedInState.value = false;
     storeLocalData.removeData(StoreVariable.token);
   }
 
@@ -58,7 +55,6 @@ class AuthRepositoryImp implements AuthRepository {
       builder: (data) {
         final decodedToken = decodeToken(token);
         _accountState.value = Account.fromJson(decodedToken);
-        _isLoggedInState.value = true;
       });
 
   @override
@@ -102,7 +98,7 @@ AuthRepositoryImp authRepository(AuthRepositoryRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-Stream<bool?> authStateChanges(AuthStateChangesRef ref) {
+Stream<Account?> authStateChanges(AuthStateChangesRef ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return authRepository.authStateChanges();
 }

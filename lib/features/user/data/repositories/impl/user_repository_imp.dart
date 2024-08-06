@@ -22,7 +22,7 @@ class UserRepositoryImp implements UserRepository {
   final UserApi userApi;
 
   @override
-  Future<void> getUser(String id) => _getData(
+  Future<void> fetchUser(String id) => _getData(
         options: userApi.getUser(id),
         builder: (data) {
           final user = User.fromJson(data['user']);
@@ -35,7 +35,6 @@ class UserRepositoryImp implements UserRepository {
       options: userApi.updateUser(dto),
       builder: (data) {
         UpdateUserDto dto = UpdateUserDto.fromJson(data['updateUser']);
-        log(dto.toJson().toString());
         _userState.value = _userState.value?.copyWith(
           name: dto.name,
           age: dto.age,
@@ -46,13 +45,15 @@ class UserRepositoryImp implements UserRepository {
           bio: dto.bio,
           avatar: dto.avatar,
         );
-        log(_userState.value?.toJson().toString() ?? '');
       });
 
   @override
   Future<void> setAccount(Account account) async {
     _userState.value = _userState.value!.copyWith(account: account);
   }
+
+  @override
+  Stream<User?> get watchUser => _userState.stream;
 
   Future<T> _getData<T>({
     required dynamic options,

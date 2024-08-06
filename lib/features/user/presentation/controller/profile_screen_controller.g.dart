@@ -6,21 +6,6 @@ part of 'profile_screen_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getCurrentUserHash() => r'd91d26664e10f82649e91ac264f7e161d06ef6b4';
-
-/// See also [getCurrentUser].
-@ProviderFor(getCurrentUser)
-final getCurrentUserProvider = AutoDisposeFutureProvider<User>.internal(
-  getCurrentUser,
-  name: r'getCurrentUserProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getCurrentUserHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetCurrentUserRef = AutoDisposeFutureProviderRef<User>;
 String _$profileScreenControllerHash() =>
     r'396f812ada9d2de5f7fcad9eb501918071973508';
 

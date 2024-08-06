@@ -1,7 +1,7 @@
 import 'package:cooknow/core/widget/custom_button.dart';
+import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:cooknow/features/user/presentation/controller/change_profile_screen_controller.dart';
-import 'package:cooknow/features/user/presentation/controller/profile_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,16 +12,22 @@ class ChangeProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<void> state =
         ref.watch(changeProfileScreenControllerProvider);
-    final AsyncValue<User> user = ref.watch(getCurrentUserProvider);
+    final Stream<User?> user = ref.watch(userServiceProvider).watchUser();
 
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-          child: switch (user) {
-        AsyncData(:final value) => _buildChangeInfo(state, ref, value),
-        AsyncError() => const Text('Oops, có lỗi xảy ra'),
-        _ => const CircularProgressIndicator(),
-      }),
+        child: StreamBuilder<User?>(
+          stream: user,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildChangeInfo(state, ref, snapshot.data!);
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
     );
   }
 

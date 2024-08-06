@@ -17,7 +17,7 @@ class UserService {
 
   Future<void> getUser(String id) async {
     final userRepository = ref.read(userRepositoryProvider);
-    await userRepository.getUser(id);
+    await userRepository.fetchUser(id);
   }
 
   Future<void> updateUser(UpdateUserDto dto) async {
@@ -25,9 +25,9 @@ class UserService {
     await userRepository.updateUser(dto);
   }
 
-  Future<User> getCurrentUser() async {
-    final userRepository = ref.watch(userRepositoryProvider);
-    return userRepository.currentUser!;
+  Stream<User?> watchUser() {
+    final userRepository = ref.read(userRepositoryProvider);
+    return userRepository.watchUser;
   }
 
   Future<void> setAccount(Account account) async {
@@ -37,11 +37,12 @@ class UserService {
 
   Future<void> changeAvatar() async {
     final imagePick = ref.read(imagePickServiceProvider);
+    final userRepository = ref.read(userRepositoryProvider);
     final firebase = ref.read(firebaseServiceProvider);
-    final user = await getCurrentUser();
+    final user = userRepository.currentUser;
     final list = await imagePick.pickImage(ImageSource.gallery);
     String url = await firebase.uploadFile(list.first);
-    UpdateUserDto dto = UpdateUserDto.fromJson(user
+    UpdateUserDto dto = UpdateUserDto.fromJson(user!
         .copyWith(
           avatar: url,
         )
