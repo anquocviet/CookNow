@@ -125,23 +125,27 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
 
     return GestureDetector(
       onTap: () => _node.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: FocusScope(
-            node: _node,
-            child: Form(
-              key: _formKey,
-              child: StreamBuilder<User?>(
-                stream: user,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final user = snapshot.data!;
+      child: StreamBuilder<User?>(
+        stream: user,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final user = snapshot.data!;
 
-                  return Column(
+          return Scaffold(
+            appBar: AppBar(),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: FocusScope(
+                node: _node,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
                       CircleAvatar(
                         radius: 50,
@@ -238,22 +242,21 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
                         validator: (phone) => phoneNumberErrorText(phone ?? ''),
                         onChanged: (_) => _checkValid(user),
                       ),
-                      const SizedBox(height: 24),
-                      state.isLoading
-                          ? const CircularProgressIndicator()
-                          : CustomButton(
-                              'Lưu',
-                              onPressed: isValid
-                                  ? () => _submit(user.id, user.avatar)
-                                  : null,
-                            ),
+                      const SizedBox(height: 56),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+            bottomSheet: state.isLoading
+                ? const CircularProgressIndicator()
+                : CustomButton(
+                    'Lưu',
+                    onPressed:
+                        isValid ? () => _submit(user.id, user.avatar) : null,
+                  ),
+          );
+        },
       ),
     );
   }

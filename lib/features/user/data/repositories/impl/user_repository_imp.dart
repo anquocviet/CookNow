@@ -16,13 +16,12 @@ part 'user_repository_imp.g.dart';
 
 class UserRepositoryImp implements UserRepository {
   UserRepositoryImp({required this.userApi});
+  final UserApi userApi;
 
   final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
   Stream<User?> userStateChanges() => _userState.stream;
   User? get currentAccount => _userState.value;
-
-  final UserApi userApi;
 
   @override
   Future<void> fetchUser(String id) => _getData(

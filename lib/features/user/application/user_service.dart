@@ -56,7 +56,7 @@ class UserService {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 UserService userService(UserServiceRef ref) {
   return UserService(ref);
 }

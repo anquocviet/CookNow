@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_service.dart';
+part of 'post_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userServiceHash() => r'ee02fb892d9326489b3b486dce1dfd4af1d58041';
+String _$postServiceHash() => r'44c355ee33af77b7f3fd52a39ab64789d0003259';
 
-/// See also [userService].
-@ProviderFor(userService)
-final userServiceProvider = AutoDisposeProvider<UserService>.internal(
-  userService,
-  name: r'userServiceProvider',
+/// See also [postService].
+@ProviderFor(postService)
+final postServiceProvider = AutoDisposeProvider<PostService>.internal(
+  postService,
+  name: r'postServiceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userServiceHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$postServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UserServiceRef = AutoDisposeProviderRef<UserService>;
+typedef PostServiceRef = AutoDisposeProviderRef<PostService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
