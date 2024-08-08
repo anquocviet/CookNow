@@ -20,6 +20,7 @@ class Post with _$Post {
     required List<Step> steps,
     required Owner owner,
     required List<Emoji> emojis,
+    @JsonKey(name: 'qty_comments') required int qtyComments,
   }) = _Post;
 
   @JsonSerializable(fieldRename: FieldRename.snake)

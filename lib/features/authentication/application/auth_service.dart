@@ -28,7 +28,7 @@ class AuthService {
     await StoreLocalData().saveData(StoreVariable.token, token);
     final decodedToken = decodeToken(token);
     final Account account = Account.fromJson(decodedToken);
-    await userService.fetchUser(decodedToken['id']);
+    await userService.fetchUserWhenLogin(decodedToken['id']);
     await userService.setAccount(account);
   }
 

@@ -75,7 +75,7 @@ GoRouter goRouter(GoRouterRef ref) {
     if (token != null) {
       authService.validateToken().then((_) async {
         final decodedToken = decodeToken(token);
-        await userService.fetchUser(decodedToken['id']);
+        await userService.fetchUserWhenLogin(decodedToken['id']);
         await userService.setAccount(Account.fromJson(decodedToken));
       }).catchError((error) {
         if (error is TokenExpiredException) {

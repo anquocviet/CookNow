@@ -35,6 +35,7 @@ class PostApi {
           v
           qty
         }
+        qty_comments
       }
     }
   ''';

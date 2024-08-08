@@ -34,6 +34,8 @@ mixin _$Post {
   List<Step> get steps => throw _privateConstructorUsedError;
   Owner get owner => throw _privateConstructorUsedError;
   List<Emoji> get emojis => throw _privateConstructorUsedError;
+  @JsonKey(name: 'qty_comments')
+  int get qtyComments => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,7 +58,8 @@ abstract class $PostCopyWith<$Res> {
       List<String> ingredients,
       List<Step> steps,
       Owner owner,
-      List<Emoji> emojis});
+      List<Emoji> emojis,
+      @JsonKey(name: 'qty_comments') int qtyComments});
 
   $OwnerCopyWith<$Res> get owner;
 }
@@ -85,6 +88,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? steps = null,
     Object? owner = null,
     Object? emojis = null,
+    Object? qtyComments = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -131,6 +135,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.emojis
           : emojis // ignore: cast_nullable_to_non_nullable
               as List<Emoji>,
+      qtyComments: null == qtyComments
+          ? _value.qtyComments
+          : qtyComments // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -161,7 +169,8 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       List<String> ingredients,
       List<Step> steps,
       Owner owner,
-      List<Emoji> emojis});
+      List<Emoji> emojis,
+      @JsonKey(name: 'qty_comments') int qtyComments});
 
   @override
   $OwnerCopyWith<$Res> get owner;
@@ -188,6 +197,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? steps = null,
     Object? owner = null,
     Object? emojis = null,
+    Object? qtyComments = null,
   }) {
     return _then(_$PostImpl(
       id: null == id
@@ -234,6 +244,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value._emojis
           : emojis // ignore: cast_nullable_to_non_nullable
               as List<Emoji>,
+      qtyComments: null == qtyComments
+          ? _value.qtyComments
+          : qtyComments // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -252,7 +266,8 @@ class _$PostImpl implements _Post {
       required final List<String> ingredients,
       required final List<Step> steps,
       required this.owner,
-      required final List<Emoji> emojis})
+      required final List<Emoji> emojis,
+      @JsonKey(name: 'qty_comments') required this.qtyComments})
       : _ingredients = ingredients,
         _steps = steps,
         _emojis = emojis;
@@ -305,8 +320,12 @@ class _$PostImpl implements _Post {
   }
 
   @override
+  @JsonKey(name: 'qty_comments')
+  final int qtyComments;
+
+  @override
   String toString() {
-    return 'Post(id: $id, name: $name, image: $image, nopEat: $nopEat, prepareTime: $prepareTime, dateTimePost: $dateTimePost, category: $category, ingredients: $ingredients, steps: $steps, owner: $owner, emojis: $emojis)';
+    return 'Post(id: $id, name: $name, image: $image, nopEat: $nopEat, prepareTime: $prepareTime, dateTimePost: $dateTimePost, category: $category, ingredients: $ingredients, steps: $steps, owner: $owner, emojis: $emojis, qtyComments: $qtyComments)';
   }
 
   @override
@@ -328,7 +347,9 @@ class _$PostImpl implements _Post {
                 .equals(other._ingredients, _ingredients) &&
             const DeepCollectionEquality().equals(other._steps, _steps) &&
             (identical(other.owner, owner) || other.owner == owner) &&
-            const DeepCollectionEquality().equals(other._emojis, _emojis));
+            const DeepCollectionEquality().equals(other._emojis, _emojis) &&
+            (identical(other.qtyComments, qtyComments) ||
+                other.qtyComments == qtyComments));
   }
 
   @JsonKey(ignore: true)
@@ -345,7 +366,8 @@ class _$PostImpl implements _Post {
       const DeepCollectionEquality().hash(_ingredients),
       const DeepCollectionEquality().hash(_steps),
       owner,
-      const DeepCollectionEquality().hash(_emojis));
+      const DeepCollectionEquality().hash(_emojis),
+      qtyComments);
 
   @JsonKey(ignore: true)
   @override
@@ -363,17 +385,19 @@ class _$PostImpl implements _Post {
 
 abstract class _Post implements Post {
   const factory _Post(
-      {required final String id,
-      required final String name,
-      required final String image,
-      @JsonKey(name: 'nop_eat') required final int nopEat,
-      @JsonKey(name: 'prepare_time') required final String prepareTime,
-      @JsonKey(name: 'date_time_post') required final String dateTimePost,
-      required final String category,
-      required final List<String> ingredients,
-      required final List<Step> steps,
-      required final Owner owner,
-      required final List<Emoji> emojis}) = _$PostImpl;
+          {required final String id,
+          required final String name,
+          required final String image,
+          @JsonKey(name: 'nop_eat') required final int nopEat,
+          @JsonKey(name: 'prepare_time') required final String prepareTime,
+          @JsonKey(name: 'date_time_post') required final String dateTimePost,
+          required final String category,
+          required final List<String> ingredients,
+          required final List<Step> steps,
+          required final Owner owner,
+          required final List<Emoji> emojis,
+          @JsonKey(name: 'qty_comments') required final int qtyComments}) =
+      _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -402,6 +426,9 @@ abstract class _Post implements Post {
   Owner get owner;
   @override
   List<Emoji> get emojis;
+  @override
+  @JsonKey(name: 'qty_comments')
+  int get qtyComments;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>

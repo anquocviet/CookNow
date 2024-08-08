@@ -24,6 +24,7 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       emojis: (json['emojis'] as List<dynamic>)
           .map((e) => Emoji.fromJson(e as Map<String, dynamic>))
           .toList(),
+      qtyComments: (json['qty_comments'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -39,4 +40,5 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'steps': instance.steps,
       'owner': instance.owner,
       'emojis': instance.emojis,
+      'qty_comments': instance.qtyComments,
     };

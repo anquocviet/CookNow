@@ -24,10 +24,16 @@ class UserRepositoryImp implements UserRepository {
   User? get currentAccount => _userState.value;
 
   @override
-  Future<void> fetchUser(String id) => _getData(
+  Future<User> fetchUser(String id) => _getData(
+        options: userApi.getUser(id),
+        builder: (data) => User.fromJson(data['user']),
+      );
+
+  @override
+  Future<void> fetchUserWhenLogin(String id) => _getData(
         options: userApi.getUser(id),
         builder: (data) {
-          final user = User.fromJson(data['user']);
+          User user = User.fromJson(data['user']);
           _userState.value = user;
         },
       );
