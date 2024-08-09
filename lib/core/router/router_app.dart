@@ -81,7 +81,7 @@ GoRouter goRouter(GoRouterRef ref) {
         if (error is TokenExpiredException) {
           showError(_key.currentContext!, error.message);
         } else {
-          showError(_key.currentContext!, error.toString());
+          showError(_key.currentContext!, (error as AppException).message);
         }
       });
     }

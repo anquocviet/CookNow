@@ -1,5 +1,5 @@
+import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/page/post/post.dart';
-import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart' as d;
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +10,14 @@ class CommunityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final postService = ref.watch(postServiceProvider);
-    final listPost = postService.watchListPost();
+    final feedService = ref.watch(feedServiceProvider);
+    final listPost = feedService.watchListPost();
     final user = ref.read(userRepositoryProvider).currentAccount;
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await postService.fetchPostOfUser(user?.id ?? '');
+          await feedService.fetchPostOfUser(user?.id ?? '');
         },
         child: StreamBuilder<List<d.Post?>>(
             stream: listPost,

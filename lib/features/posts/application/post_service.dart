@@ -1,6 +1,6 @@
-import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
-import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/core/service/image_pick_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_service.g.dart';
@@ -10,14 +10,10 @@ class PostService {
 
   final Ref ref;
 
-  Future<void> fetchPostOfUser(String id) async {
-    final postRepository = ref.read(postRepositoryProvider);
-    await postRepository.fetchPostOfUser(id);
-  }
-
-  Stream<List<Post?>> watchListPost() {
-    final postRepository = ref.read(postRepositoryProvider);
-    return postRepository.postStateChanges();
+  Future<String> chooseImage() async {
+    final imagePick = ref.read(imagePickServiceProvider);
+    final List<XFile> list = await imagePick.pickImage(ImageSource.gallery);
+    return list.first.path;
   }
 }
 

@@ -8,6 +8,11 @@ part 'image_pick_service.g.dart';
 class ImagePickService {
   final ImagePicker _picker = ImagePicker();
 
+  /// Picks an image from the device's gallery or camera.
+  ///
+  /// Returns a list of [XFile] objects representing the selected image(s).
+  ///
+  /// Throws an exception if the image picking process fails.
   Future<List<XFile>> pickImage(
     ImageSource source, {
     bool isMedia = false,

@@ -1,7 +1,7 @@
+import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/page/community/community_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/follower/follower_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/ingredient/ingredient_screen.dart';
-import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/search/presentation/widget/custom_search.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,9 @@ class HomeFeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userRepository = ref.read(userRepositoryProvider);
-    final postService = ref.read(postServiceProvider);
+    final feedService = ref.read(feedServiceProvider);
     final user = userRepository.currentUser;
-    postService.fetchPostOfUser(user?.id ?? '');
+    feedService.fetchPostOfUser(user?.id ?? '');
 
     return Scaffold(
       appBar: AppBar(

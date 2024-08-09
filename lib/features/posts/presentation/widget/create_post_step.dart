@@ -5,43 +5,44 @@ import 'package:video_player/video_player.dart';
 class Item {
   int? item;
   String? text;
+  final Set<XFile>? medias;
 
-  Item(this.item, this.text);
+  Item(this.item, this.text, this.medias);
 }
 
 class CreatePostStep extends StatefulWidget {
-  const CreatePostStep({super.key});
+  const CreatePostStep({super.key, required this.items});
+
+  final List<Item> items;
 
   @override
   State<CreatePostStep> createState() => _CreatePostStepState();
 }
 
 class _CreatePostStepState extends State<CreatePostStep> {
-  final List<Item> _items =
-      List<Item>.generate(2, (int index) => Item(index, ''));
   final ImagePicker _picker = ImagePicker();
-  final Set<XFile>? _medias = {};
-
-  Future getImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    image != null
-        ? setState(() {
-            _medias!.add(image);
-          })
-        : null;
-  }
-
-  Future getVideo() async {
-    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-    video != null
-        ? setState(() {
-            _medias!.add(video);
-          })
-        : null;
-  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Item> items = widget.items;
+
+    Future getImage(int index, String type) async {
+      final XFile? file = type == 'image'
+          ? await _picker.pickImage(source: ImageSource.gallery)
+          : await _picker.pickVideo(source: ImageSource.gallery);
+      file != null
+          ? setState(() {
+              items[index].medias!.add(file);
+            })
+          : null;
+    }
+
+    void removeItem(int index) {
+      setState(() {
+        items.removeAt(index);
+      });
+    }
+
     return Column(
       children: [
         const Padding(
@@ -58,19 +59,23 @@ class _CreatePostStepState extends State<CreatePostStep> {
           ),
         ),
         SizedBox(
-          height: _items.length * 200.0,
+          height: items.length * 135.0 +
+              items.length * 50 +
+              items.fold(0,
+                  (prev, item) => prev + 60 * (item.medias!.isEmpty ? 0 : 1)),
           child: ReorderableListView.builder(
             onReorderStart: (_) {
               FocusScope.of(context).unfocus();
             },
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _items.length,
+            itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
+                titleAlignment: ListTileTitleAlignment.titleHeight,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                key: ObjectKey(_items[index]),
+                key: ObjectKey(items[index]),
                 leading: Container(
-                  margin: const EdgeInsets.only(left: 8),
+                  margin: const EdgeInsets.only(top: 8, left: 8),
                   width: 24,
                   height: 24,
                   decoration: const BoxDecoration(
@@ -89,18 +94,18 @@ class _CreatePostStepState extends State<CreatePostStep> {
                     ),
                   ),
                 ),
-                trailing: ReorderableDragStartListener(
-                  index: index,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Icon(Icons.drag_handle),
+                trailing: Container(
+                  margin: const EdgeInsets.only(top: 8, right: 8),
+                  child: ReorderableDragStartListener(
+                    index: index,
+                    child: const Icon(Icons.drag_handle),
                   ),
                 ),
                 title: TextFormField(
-                  initialValue: _items[index].text,
+                  initialValue: items[index].text,
                   onChanged: (String? value) {
                     setState(() {
-                      _items[index].text = value!;
+                      items[index].text = value!;
                     });
                   },
                   decoration: InputDecoration(
@@ -113,20 +118,21 @@ class _CreatePostStepState extends State<CreatePostStep> {
                     children: [
                       SizedBox(
                         width: 300,
-                        height: 60,
+                        height: 60 * (items[index].medias!.isEmpty ? 0 : 1),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: _medias?.length ?? 0,
+                          itemCount: items[index].medias!.length,
                           shrinkWrap: true,
-                          itemBuilder: ((context, index) {
+                          itemBuilder: ((context, indexMedia) {
                             return Card(
                               margin: const EdgeInsets.all(4),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child:
                                     RegExp(r'^(mp4|mov)$', caseSensitive: false)
-                                            .hasMatch(_medias!
-                                                .elementAt(index)
+                                            .hasMatch(items[index]
+                                                .medias!
+                                                .elementAt(indexMedia)
                                                 .path
                                                 .split('.')
                                                 .last)
@@ -134,7 +140,10 @@ class _CreatePostStepState extends State<CreatePostStep> {
                                             aspectRatio: 16 / 9,
                                             child: VideoPlayer(
                                               VideoPlayerController.asset(
-                                                _medias.elementAt(index).path,
+                                                items[index]
+                                                    .medias!
+                                                    .elementAt(indexMedia)
+                                                    .path,
                                                 videoPlayerOptions:
                                                     VideoPlayerOptions(
                                                         mixWithOthers: true),
@@ -142,7 +151,10 @@ class _CreatePostStepState extends State<CreatePostStep> {
                                             ),
                                           )
                                         : Image.asset(
-                                            _medias.elementAt(index).path,
+                                            items[index]
+                                                .medias!
+                                                .elementAt(indexMedia)
+                                                .path,
                                             width: 60,
                                             height: 60,
                                             fit: BoxFit.cover,
@@ -155,7 +167,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                       Row(
                         children: [
                           IconButton.filledTonal(
-                            onPressed: getImage,
+                            onPressed: () => getImage(index, 'image'),
                             icon: const Icon(Icons.camera_alt_rounded),
                             style: ButtonStyle(
                               padding: WidgetStateProperty.all(
@@ -170,7 +182,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                           ),
                           const SizedBox(width: 8),
                           IconButton.filledTonal(
-                            onPressed: getVideo,
+                            onPressed: () => getImage(index, 'video'),
                             icon: const Icon(Icons.video_camera_back_rounded),
                             style: ButtonStyle(
                               padding: WidgetStateProperty.all(
@@ -185,6 +197,13 @@ class _CreatePostStepState extends State<CreatePostStep> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 4),
+                      IconButton.filledTonal(
+                        onPressed: items.length <= 1
+                            ? null
+                            : () => showAlertDialog(context),
+                        icon: const Icon(Icons.delete),
+                      ),
                     ],
                   ),
                 ),
@@ -195,8 +214,8 @@ class _CreatePostStepState extends State<CreatePostStep> {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
-                final Item listItem = _items.removeAt(oldIndex);
-                _items.insert(newIndex, listItem);
+                final Item listItem = items.removeAt(oldIndex);
+                items.insert(newIndex, listItem);
               });
             },
           ),
@@ -204,7 +223,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
         TextButton.icon(
           onPressed: () {
             setState(() {
-              _items.add(Item(_items.length, ''));
+              items.add(Item(items.length, '', {}));
             });
           },
           icon: const Icon(Icons.add),
@@ -219,4 +238,112 @@ class _CreatePostStepState extends State<CreatePostStep> {
       ],
     );
   }
+}
+
+_showConfirmRemove(BuildContext context, void Function()? onConfirm) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("Không"),
+    onPressed: () {},
+  );
+  Widget confirmButton = TextButton(
+    onPressed: onConfirm,
+    child: const Text("Đồng ý"),
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Thông báo"),
+    content: const Text(
+        "Bạn có chắc chắn muốn xóa bước này không? Mọi thông tin đã nhập sẽ bị mất."),
+    actions: [
+      cancelButton,
+      confirmButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+void showAlertDialog(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: "Barrier",
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: const Duration(milliseconds: 300),
+    pageBuilder: (context, animation1, animation2) {
+      return Align(
+        alignment: Alignment.center,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                // Local state variables
+                bool isChecked = false;
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "AlertDialog",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "Would you like to continue learning how to use Flutter alerts?",
+                      textAlign: TextAlign.center,
+                    ),
+                    CheckboxListTile(
+                      title: const Text("Check me!"),
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value ?? false;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .maybePop(); // Đóng dialog khi nhấn "Cancel"
+                          },
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .maybePop(); // Đóng dialog khi nhấn "Continue"
+                          },
+                          child: const Text("Continue"),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
