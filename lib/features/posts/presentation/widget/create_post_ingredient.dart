@@ -1,3 +1,4 @@
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:flutter/material.dart';
 
 class Item {
@@ -20,6 +21,12 @@ class _CreatePostIngredientState extends State<CreatePostIngredient> {
   @override
   Widget build(BuildContext context) {
     final List<Item> items = widget.items;
+
+    void removeItem(int index) {
+      setState(() {
+        items.removeAt(index);
+      });
+    }
 
     return Column(
       children: [
@@ -47,7 +54,12 @@ class _CreatePostIngredientState extends State<CreatePostIngredient> {
                 key: ObjectKey(items[index]),
                 leading: IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () {},
+                  onPressed: items.length <= 1
+                      ? null
+                      : () => showConfirmRemove(
+                          context, () => removeItem(index),
+                          content:
+                              'Bạn có chắc chắn muốn xóa nguyên liệu này không?'),
                 ),
                 trailing: ReorderableDragStartListener(
                   index: index,

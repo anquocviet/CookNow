@@ -1,6 +1,7 @@
+import 'package:cooknow/core/widget/show_alert.dart';
+import 'package:cooknow/features/posts/presentation/widget/media_step.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 
 class Item {
   int? item;
@@ -40,6 +41,12 @@ class _CreatePostStepState extends State<CreatePostStep> {
     void removeItem(int index) {
       setState(() {
         items.removeAt(index);
+      });
+    }
+
+    void removeMediaOfItem(int index, int indexMedia) {
+      setState(() {
+        items[index].medias!.remove(items[index].medias!.elementAt(indexMedia));
       });
     }
 
@@ -124,41 +131,20 @@ class _CreatePostStepState extends State<CreatePostStep> {
                           itemCount: items[index].medias!.length,
                           shrinkWrap: true,
                           itemBuilder: ((context, indexMedia) {
+                            final List<String> currentMedias = items[index]
+                                .medias!
+                                .map((e) => e.path)
+                                .toList();
                             return Card(
                               margin: const EdgeInsets.all(4),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child:
-                                    RegExp(r'^(mp4|mov)$', caseSensitive: false)
-                                            .hasMatch(items[index]
-                                                .medias!
-                                                .elementAt(indexMedia)
-                                                .path
-                                                .split('.')
-                                                .last)
-                                        ? AspectRatio(
-                                            aspectRatio: 16 / 9,
-                                            child: VideoPlayer(
-                                              VideoPlayerController.asset(
-                                                items[index]
-                                                    .medias!
-                                                    .elementAt(indexMedia)
-                                                    .path,
-                                                videoPlayerOptions:
-                                                    VideoPlayerOptions(
-                                                        mixWithOthers: true),
-                                              ),
-                                            ),
-                                          )
-                                        : Image.asset(
-                                            items[index]
-                                                .medias!
-                                                .elementAt(indexMedia)
-                                                .path,
-                                            width: 60,
-                                            height: 60,
-                                            fit: BoxFit.cover,
-                                          ),
+                                child: MediaStep(
+                                    listPath: currentMedias,
+                                    currentPath:
+                                        currentMedias.elementAt(indexMedia),
+                                    onRemove: () =>
+                                        removeMediaOfItem(index, indexMedia)),
                               ),
                             );
                           }),
@@ -201,7 +187,12 @@ class _CreatePostStepState extends State<CreatePostStep> {
                       IconButton.filledTonal(
                         onPressed: items.length <= 1
                             ? null
-                            : () => showAlertDialog(context),
+                            : () => showConfirmRemove(
+                                  context,
+                                  () => removeItem(index),
+                                  content:
+                                      'Bạn có chắc chắn muốn xóa bước này?',
+                                ),
                         icon: const Icon(Icons.delete),
                       ),
                     ],
@@ -238,112 +229,4 @@ class _CreatePostStepState extends State<CreatePostStep> {
       ],
     );
   }
-}
-
-_showConfirmRemove(BuildContext context, void Function()? onConfirm) {
-  // set up the buttons
-  Widget cancelButton = TextButton(
-    child: const Text("Không"),
-    onPressed: () {},
-  );
-  Widget confirmButton = TextButton(
-    onPressed: onConfirm,
-    child: const Text("Đồng ý"),
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: const Text("Thông báo"),
-    content: const Text(
-        "Bạn có chắc chắn muốn xóa bước này không? Mọi thông tin đã nhập sẽ bị mất."),
-    actions: [
-      cancelButton,
-      confirmButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-void showAlertDialog(BuildContext context) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true,
-    barrierLabel: "Barrier",
-    barrierColor: Colors.black.withOpacity(0.5),
-    transitionDuration: const Duration(milliseconds: 300),
-    pageBuilder: (context, animation1, animation2) {
-      return Align(
-        alignment: Alignment.center,
-        child: Material(
-          type: MaterialType.transparency,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.75,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                // Local state variables
-                bool isChecked = false;
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "AlertDialog",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 15),
-                    const Text(
-                      "Would you like to continue learning how to use Flutter alerts?",
-                      textAlign: TextAlign.center,
-                    ),
-                    CheckboxListTile(
-                      title: const Text("Check me!"),
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value ?? false;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .maybePop(); // Đóng dialog khi nhấn "Cancel"
-                          },
-                          child: const Text("Cancel"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .maybePop(); // Đóng dialog khi nhấn "Continue"
-                          },
-                          child: const Text("Continue"),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    },
-  );
 }
