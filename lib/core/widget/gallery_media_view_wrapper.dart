@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -34,6 +35,8 @@ class GalleryMediaViewWrapper extends StatefulWidget {
 
 class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
   late int currentIndex = widget.initialIndex;
+  late List<VideoPlayerController> _videoPlayerControllers;
+  late List<ChewieController> _chewieControllers;
 
   void onPageChanged(int index) {
     setState(() {
@@ -41,30 +44,27 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
     });
   }
 
-  late VideoPlayerController _controller;
-  late bool _isVideo;
   @override
   void initState() {
     const String regexCheckVideo = r'^(mp4|mov)$';
-    _isVideo = RegExp(regexCheckVideo, caseSensitive: false)
-        .hasMatch(widget.galleryItems.elementAt(currentIndex).split('.').last);
-    if (_isVideo) {
-      _controller = VideoPlayerController.file(
-        File(widget.galleryItems.elementAt(currentIndex)),
-      )..initialize().then((_) {
-          setState(() {
-            _controller.play();
-          });
-        });
-    }
+    _videoPlayerControllers = widget.galleryItems
+        .where(
+          (e) => RegExp(regexCheckVideo, caseSensitive: false)
+              .hasMatch(e.split('.').last),
+        )
+        .map((e) => VideoPlayerController.file(File(e)))
+        .toList();
+    _chewieControllers = _videoPlayerControllers
+        .map((e) => ChewieController(videoPlayerController: e))
+        .toList();
+
     super.initState();
   }
 
   @override
   dispose() {
-    if (_isVideo) {
-      _controller.dispose();
-    }
+    _videoPlayerControllers.forEach((element) => element.dispose());
+    _chewieControllers.forEach((element) => element.dispose());
     super.dispose();
   }
 
@@ -77,23 +77,18 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
           height: MediaQuery.of(context).size.height,
         ),
         child: Stack(
-          alignment: _isVideo ? Alignment.center : Alignment.bottomCenter,
+          alignment: Alignment.center,
           children: <Widget>[
-            _isVideo
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
-                : PhotoViewGallery.builder(
-                    scrollPhysics: const BouncingScrollPhysics(),
-                    builder: _buildItem,
-                    itemCount: widget.galleryItems.length,
-                    loadingBuilder: widget.loadingBuilder,
-                    backgroundDecoration: widget.backgroundDecoration,
-                    pageController: widget.pageController,
-                    onPageChanged: onPageChanged,
-                    scrollDirection: widget.scrollDirection,
-                  ),
+            PhotoViewGallery.builder(
+              scrollPhysics: const BouncingScrollPhysics(),
+              builder: _buildItem,
+              itemCount: widget.galleryItems.length,
+              loadingBuilder: widget.loadingBuilder,
+              backgroundDecoration: widget.backgroundDecoration,
+              pageController: widget.pageController,
+              onPageChanged: onPageChanged,
+              scrollDirection: widget.scrollDirection,
+            ),
             Positioned(
               top: 32,
               right: 16,
@@ -108,18 +103,18 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
                 ),
               ),
             ),
-            if (!_isVideo)
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "Image ${currentIndex + 1}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 17.0,
-                    decoration: null,
-                  ),
-                ),
-              )
+            // if (!_isVideo)
+            // Container(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Text(
+            //     "Image ${currentIndex + 1}",
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 17.0,
+            //       decoration: null,
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
@@ -134,6 +129,48 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       heroAttributes: PhotoViewHeroAttributes(tag: item),
+      // When link is video, show video
+      errorBuilder: (context, error, stackTrace) {
+        final index = _videoPlayerControllers.indexWhere(
+          (element) => element.dataSource.contains(item),
+        );
+        if (index == -1) {
+          return const Center(
+            child: Text(
+              'Error loading image',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
+          );
+        }
+        if (!_videoPlayerControllers.elementAt(index).value.isInitialized) {
+          _videoPlayerControllers.elementAt(index).initialize().then((_) {
+            setState(() {});
+          });
+        }
+        return Center(
+          child: _videoPlayerControllers.elementAt(index).value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _videoPlayerControllers
+                      .elementAt(index)
+                      .value
+                      .aspectRatio,
+                  child: Chewie(
+                    controller: _chewieControllers.elementAt(index),
+                  ),
+                )
+              : const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                    Text('Loading'),
+                  ],
+                ),
+        );
+      },
     );
   }
 }
