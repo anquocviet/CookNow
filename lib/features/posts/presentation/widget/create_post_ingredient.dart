@@ -1,3 +1,4 @@
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:flutter/material.dart';
 
 class Item {
@@ -8,18 +9,25 @@ class Item {
 }
 
 class CreatePostIngredient extends StatefulWidget {
-  const CreatePostIngredient({super.key});
+  const CreatePostIngredient({super.key, required this.items});
+
+  final List<Item> items;
 
   @override
   State<CreatePostIngredient> createState() => _CreatePostIngredientState();
 }
 
 class _CreatePostIngredientState extends State<CreatePostIngredient> {
-  final List<Item> _items =
-      List<Item>.generate(2, (int index) => Item(index, ''));
-
   @override
   Widget build(BuildContext context) {
+    final List<Item> items = widget.items;
+
+    void removeItem(int index) {
+      setState(() {
+        items.removeAt(index);
+      });
+    }
+
     return Column(
       children: [
         const Padding(
@@ -36,33 +44,35 @@ class _CreatePostIngredientState extends State<CreatePostIngredient> {
           ),
         ),
         SizedBox(
-          height: _items.length * 72.0,
+          height: items.length * 72.0,
           child: ReorderableListView.builder(
-            onReorderStart: (_) {
-              FocusScope.of(context).unfocus();
-            },
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _items.length,
+            itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                key: ObjectKey(_items[index]),
+                key: ObjectKey(items[index]),
                 leading: IconButton(
-                  icon: const Icon(Icons.more_horiz),
-                  onPressed: () {},
+                  icon: const Icon(Icons.delete),
+                  onPressed: items.length <= 1
+                      ? null
+                      : () => showConfirmRemove(
+                          context, () => removeItem(index),
+                          content:
+                              'Bạn có chắc chắn muốn xóa nguyên liệu này không?'),
                 ),
                 trailing: ReorderableDragStartListener(
                   index: index,
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.only(right: 8),
                     child: Icon(Icons.drag_handle),
                   ),
                 ),
                 title: TextFormField(
-                  initialValue: _items[index].text,
+                  initialValue: items[index].text,
                   onChanged: (String? value) {
                     setState(() {
-                      _items[index].text = value!;
+                      items[index].text = value!;
                     });
                   },
                   decoration: const InputDecoration(
@@ -76,8 +86,8 @@ class _CreatePostIngredientState extends State<CreatePostIngredient> {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
-                final Item listItem = _items.removeAt(oldIndex);
-                _items.insert(newIndex, listItem);
+                final Item listItem = items.removeAt(oldIndex);
+                items.insert(newIndex, listItem);
               });
             },
           ),
@@ -85,7 +95,7 @@ class _CreatePostIngredientState extends State<CreatePostIngredient> {
         TextButton.icon(
           onPressed: () {
             setState(() {
-              _items.add(Item(_items.length, ''));
+              items.add(Item(items.length, ''));
             });
           },
           icon: const Icon(Icons.add),

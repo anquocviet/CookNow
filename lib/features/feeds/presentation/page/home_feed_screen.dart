@@ -1,8 +1,9 @@
-import 'package:cooknow/core/socket/socket_cli.dart';
+import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/page/community/community_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/follower/follower_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/ingredient/ingredient_screen.dart';
 import 'package:cooknow/features/search/presentation/widget/custom_search.dart';
+import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tab_container/tab_container.dart';
@@ -12,7 +13,10 @@ class HomeFeedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(socketProvider);
+    final userRepository = ref.read(userRepositoryProvider);
+    final feedService = ref.read(feedServiceProvider);
+    final user = userRepository.currentUser;
+    feedService.fetchPostOfUser(user?.id ?? '');
 
     return Scaffold(
       appBar: AppBar(

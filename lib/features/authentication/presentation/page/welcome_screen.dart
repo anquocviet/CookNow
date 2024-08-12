@@ -1,4 +1,4 @@
-// import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -49,53 +49,53 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
         ),
-        // CarouselSlider(
-        //   options: CarouselOptions(
-        //     viewportFraction: 1,
-        //     height: 400,
-        //     autoPlay: true,
-        //     onPageChanged: (index, reason) {
-        //       setState(() {
-        //         _currentIndex = index;
-        //       });
-        //     },
-        //   ),
-        //   items: items.map((i) {
-        //     return Builder(
-        //       builder: (BuildContext context) {
-        //         return SizedBox(
-        //             width: MediaQuery.of(context).size.width,
-        //             child: Column(
-        //               children: [
-        //                 Image.network(i['image']!),
-        //                 Container(
-        //                   margin: const EdgeInsets.only(top: 20.0),
-        //                   width: 240,
-        //                   child: Text(
-        //                     i['title']!,
-        //                     textAlign: TextAlign.center,
-        //                     style: const TextStyle(
-        //                       fontSize: 20.0,
-        //                       fontWeight: FontWeight.bold,
-        //                     ),
-        //                   ),
-        //                 ),
-        //                 SizedBox(
-        //                   width: 240,
-        //                   child: Text(
-        //                     i['desc']!,
-        //                     textAlign: TextAlign.center,
-        //                     style: const TextStyle(
-        //                       fontSize: 16.0,
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ],
-        //             ));
-        //       },
-        //     );
-        //   }).toList(),
-        // ),
+        CarouselSlider(
+          options: CarouselOptions(
+            viewportFraction: 1,
+            height: 400,
+            autoPlay: true,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
+          items: items.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        Image.network(i['image']!),
+                        Container(
+                          margin: const EdgeInsets.only(top: 20.0),
+                          width: 240,
+                          child: Text(
+                            i['title']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 240,
+                          child: Text(
+                            i['desc']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
+              },
+            );
+          }).toList(),
+        ),
         Container(
           margin: const EdgeInsets.only(bottom: 20.0),
           child: Row(

@@ -39,13 +39,31 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
   String get bio => _bioController.text;
   String get email => _emailController.text;
   String get phone => _phoneController.text;
-
   late int gender;
   Map<int, String> genderMap = {
     1: 'Nam',
     0: 'Nữ',
     -1: 'Khác',
   };
+  bool isValid = false;
+
+  void _checkValid(User? user) {
+    setState(() {
+      isValid = (name != user?.name ||
+              username != user?.account!.username ||
+              age != '${user?.age}' ||
+              gender != user?.gender ||
+              living != user?.living ||
+              bio != user?.bio ||
+              email != user?.email ||
+              phone != user?.phone) &&
+          fullNameErrorText(name) == null &&
+          usernameErrorText(username) == null &&
+          ageErrorText(age) == null &&
+          emailErrorText(email) == null &&
+          phoneNumberErrorText(phone) == null;
+    });
+  }
 
   void _submit(String userId, String avatar) async {
     try {
@@ -74,6 +92,20 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
   }
 
   @override
+  void initState() {
+    final User? user = ref.read(userRepositoryProvider).currentUser;
+    _nameController.text = user!.name;
+    _usernameController.text = user.account?.username ?? '';
+    _ageController.text = user.age.toString();
+    gender = user.gender;
+    _livingController.text = user.living;
+    _bioController.text = user.bio;
+    _emailController.text = user.email;
+    _phoneController.text = user.phone;
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _usernameController.dispose();
@@ -90,35 +122,30 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
     final AsyncValue<void> state =
         ref.watch(changeProfileScreenControllerProvider);
     final Stream<User?> user = ref.watch(userServiceProvider).watchUser();
-    final User? currentUser = ref.read(userRepositoryProvider).currentAccount;
-    _nameController.text = currentUser!.name;
-    _usernameController.text = currentUser.account?.username ?? '';
-    _ageController.text = currentUser.age.toString();
-    gender = currentUser.gender;
-    _livingController.text = currentUser.living;
-    _bioController.text = currentUser.bio;
-    _emailController.text = currentUser.email;
-    _phoneController.text = currentUser.phone;
 
     return GestureDetector(
       onTap: () => _node.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: FocusScope(
-            node: _node,
-            child: Form(
-              key: _formKey,
-              child: StreamBuilder<User?>(
-                stream: user,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final user = snapshot.data!;
+      child: StreamBuilder<User?>(
+        stream: user,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final user = snapshot.data!;
 
-                  return Column(
+          return Scaffold(
+            appBar: AppBar(),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: FocusScope(
+                node: _node,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
                       CircleAvatar(
                         radius: 50,
@@ -144,7 +171,7 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
                         'Tên',
                         controller: _nameController,
                         validator: (name) => fullNameErrorText(name ?? ''),
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       CustomTextField(
@@ -152,14 +179,14 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
                         controller: _usernameController,
                         validator: (username) =>
                             usernameErrorText(username ?? ''),
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       CustomTextField(
                         'Tuổi',
                         controller: _ageController,
                         validator: (age) => ageErrorText(age ?? ''),
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       const Align(
@@ -193,42 +220,43 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
                       CustomTextField(
                         'Nơi sống',
                         controller: _livingController,
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       CustomTextField(
                         'Tiểu sử',
                         controller: _bioController,
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       CustomTextField(
                         'Email',
                         controller: _emailController,
                         validator: (email) => emailErrorText(email ?? ''),
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
                       const SizedBox(height: 12),
                       CustomTextField(
                         'Số điện thoại',
                         controller: _phoneController,
                         validator: (phone) => phoneNumberErrorText(phone ?? ''),
-                        onChanged: (_) {},
+                        onChanged: (_) => _checkValid(user),
                       ),
-                      const SizedBox(height: 24),
-                      state.isLoading
-                          ? const CircularProgressIndicator()
-                          : CustomButton(
-                              'Lưu',
-                              onPressed: () => _submit(user.id, user.avatar),
-                            ),
+                      const SizedBox(height: 56),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+            bottomSheet: state.isLoading
+                ? const CircularProgressIndicator()
+                : CustomButton(
+                    'Lưu',
+                    onPressed:
+                        isValid ? () => _submit(user.id, user.avatar) : null,
+                  ),
+          );
+        },
       ),
     );
   }

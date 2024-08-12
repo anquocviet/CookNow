@@ -15,9 +15,14 @@ class UserService {
 
   final Ref ref;
 
-  Future<void> fetchUser(String id) async {
+  Future<User?> fetchUser(String id) async {
     final userRepository = ref.read(userRepositoryProvider);
-    await userRepository.fetchUser(id);
+    return userRepository.fetchUser(id);
+  }
+
+  Future<void> fetchUserWhenLogin(String id) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.fetchUserWhenLogin(id);
   }
 
   Future<void> disposeUser() async {
@@ -56,7 +61,13 @@ class UserService {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 UserService userService(UserServiceRef ref) {
   return UserService(ref);
+}
+
+@riverpod
+Future<User?> fetchUser(FetchUserRef ref, String id) async {
+  final userService = ref.read(userServiceProvider);
+  return userService.fetchUser(id);
 }
