@@ -7,7 +7,7 @@ part 'step.g.dart';
 class Step with _$Step {
   const factory Step({
     required String content,
-    required List<String> images,
+    required List<String> medias,
   }) = _Step;
 
   factory Step.fromJson(Map<String, dynamic> json) => _$StepFromJson(json);

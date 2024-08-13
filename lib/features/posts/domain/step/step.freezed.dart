@@ -21,7 +21,7 @@ Step _$StepFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Step {
   String get content => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
+  List<String> get medias => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +33,7 @@ abstract class $StepCopyWith<$Res> {
   factory $StepCopyWith(Step value, $Res Function(Step) then) =
       _$StepCopyWithImpl<$Res, Step>;
   @useResult
-  $Res call({String content, List<String> images});
+  $Res call({String content, List<String> medias});
 }
 
 /// @nodoc
@@ -50,16 +50,16 @@ class _$StepCopyWithImpl<$Res, $Val extends Step>
   @override
   $Res call({
     Object? content = null,
-    Object? images = null,
+    Object? medias = null,
   }) {
     return _then(_value.copyWith(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      images: null == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
+      medias: null == medias
+          ? _value.medias
+          : medias // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -72,7 +72,7 @@ abstract class _$$StepImplCopyWith<$Res> implements $StepCopyWith<$Res> {
       __$$StepImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String content, List<String> images});
+  $Res call({String content, List<String> medias});
 }
 
 /// @nodoc
@@ -86,16 +86,16 @@ class __$$StepImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? content = null,
-    Object? images = null,
+    Object? medias = null,
   }) {
     return _then(_$StepImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
+      medias: null == medias
+          ? _value._medias
+          : medias // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -104,25 +104,25 @@ class __$$StepImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$StepImpl implements _Step {
-  const _$StepImpl({required this.content, required final List<String> images})
-      : _images = images;
+  const _$StepImpl({required this.content, required final List<String> medias})
+      : _medias = medias;
 
   factory _$StepImpl.fromJson(Map<String, dynamic> json) =>
       _$$StepImplFromJson(json);
 
   @override
   final String content;
-  final List<String> _images;
+  final List<String> _medias;
   @override
-  List<String> get images {
-    if (_images is EqualUnmodifiableListView) return _images;
+  List<String> get medias {
+    if (_medias is EqualUnmodifiableListView) return _medias;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_images);
+    return EqualUnmodifiableListView(_medias);
   }
 
   @override
   String toString() {
-    return 'Step(content: $content, images: $images)';
+    return 'Step(content: $content, medias: $medias)';
   }
 
   @override
@@ -131,13 +131,13 @@ class _$StepImpl implements _Step {
         (other.runtimeType == runtimeType &&
             other is _$StepImpl &&
             (identical(other.content, content) || other.content == content) &&
-            const DeepCollectionEquality().equals(other._images, _images));
+            const DeepCollectionEquality().equals(other._medias, _medias));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, content, const DeepCollectionEquality().hash(_images));
+      runtimeType, content, const DeepCollectionEquality().hash(_medias));
 
   @JsonKey(ignore: true)
   @override
@@ -156,14 +156,14 @@ class _$StepImpl implements _Step {
 abstract class _Step implements Step {
   const factory _Step(
       {required final String content,
-      required final List<String> images}) = _$StepImpl;
+      required final List<String> medias}) = _$StepImpl;
 
   factory _Step.fromJson(Map<String, dynamic> json) = _$StepImpl.fromJson;
 
   @override
   String get content;
   @override
-  List<String> get images;
+  List<String> get medias;
   @override
   @JsonKey(ignore: true)
   _$$StepImplCopyWith<_$StepImpl> get copyWith =>

@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cooknow/core/api/user_api.dart';
 import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
+import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
+import 'package:cooknow/core/graphql/__generated/user.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
@@ -15,8 +16,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'user_repository_imp.g.dart';
 
 class UserRepositoryImp implements UserRepository {
-  UserRepositoryImp({required this.userApi});
-  final UserApi userApi;
+  UserRepositoryImp({required this.client});
+  final GraphQLClient client;
 
   final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
@@ -25,33 +26,54 @@ class UserRepositoryImp implements UserRepository {
 
   @override
   Future<User> fetchUser(String id) => _getData(
-        options: userApi.getUser(id),
-        builder: (data) => User.fromJson(data['user']),
+        query: client.query$User(
+          Options$Query$User(
+            variables: Variables$Query$User(
+              id: id,
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) => User.fromJson((data as Query$User).user.toJson()),
       );
 
   @override
   Future<void> fetchUserWhenLogin(String id) => _getData(
-        options: userApi.getUser(id),
+        query: client.query$User(
+          Options$Query$User(
+            variables: Variables$Query$User(
+              id: id,
+            ),
+          ),
+        ),
         builder: (data) {
-          User user = User.fromJson(data['user']);
+          User user = User.fromJson((data as Query$User).user.toJson());
           _userState.value = user;
         },
       );
 
   @override
   Future<void> updateUser(UpdateUserDto dto) => _getData(
-      options: userApi.updateUser(dto),
+      query: client.mutate$UpdateUser(
+        Options$Mutation$UpdateUser(
+          variables: Variables$Mutation$UpdateUser(
+            data: Input$UpdateUserDto.fromJson(
+              dto.toJson(),
+            ),
+          ),
+        ),
+      ),
       builder: (data) {
-        UpdateUserDto dto = UpdateUserDto.fromJson(data['updateUser']);
+        final result = (data as Mutation$UpdateUser).updateUser;
         _userState.value = _userState.value?.copyWith(
-          name: dto.name,
-          age: dto.age,
-          gender: dto.gender,
-          email: dto.email,
-          phone: dto.phone,
-          living: dto.living,
-          bio: dto.bio,
-          avatar: dto.avatar,
+          name: result.name,
+          age: result.age.toInt(),
+          gender: result.gender.toInt(),
+          email: result.email,
+          phone: result.phone,
+          living: result.living,
+          bio: result.bio,
+          avatar: result.avatar,
         );
       });
 
@@ -69,20 +91,16 @@ class UserRepositoryImp implements UserRepository {
   }
 
   Future<T> _getData<T>({
-    required dynamic options,
+    required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
   }) async {
-    assert(options is! QueryOptions || options is! MutationOptions,
-        'Options must be QueryOptions or MutationOptions');
     try {
-      final QueryResult result = options is QueryOptions
-          ? await GraphqlClient.client.value.query(options)
-          : await GraphqlClient.client.value.mutate(options);
+      final result = await query;
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-      log('UserRepositoryError: $error');
+      log(error, name: 'UserRepositoryImp');
       if (error.isEmpty) {
-        final data = result.data!;
+        final data = result.parsedData;
         return builder(data);
       } else {
         throw ex.UnknownException();
@@ -97,7 +115,7 @@ class UserRepositoryImp implements UserRepository {
 
 @Riverpod(keepAlive: true)
 UserRepositoryImp userRepository(UserRepositoryRef ref) {
-  final userRepository = UserRepositoryImp(userApi: UserApi());
+  final userRepository = UserRepositoryImp(client: GraphqlClient.client.value);
   return userRepository;
 }
 

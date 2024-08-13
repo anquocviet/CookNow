@@ -1,0 +1,19 @@
+query Login($username: String!, $password: String!) {
+  login(data: { username: $username, password: $password }) {
+    access_token
+  }
+}
+
+mutation Register($data: CreateUserDto!) {
+  register(data: $data) {
+    access_token
+  }
+}
+
+query ValidateToken($token: String!) {
+  validateToken(token: $token)
+}
+
+query UserNotExists($data: String!) {
+  userNotExists(data: $data)
+}
