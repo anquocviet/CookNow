@@ -1,6 +1,8 @@
 import 'package:cooknow/core/widget/show_alert.dart';
+import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/posts/presentation/widget/media_step.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Item {
@@ -11,44 +13,47 @@ class Item {
   Item(this.item, this.text, this.medias);
 }
 
-class CreatePostStep extends StatefulWidget {
+class CreatePostStep extends ConsumerStatefulWidget {
   const CreatePostStep({super.key, required this.items});
 
   final List<Item> items;
 
   @override
-  State<CreatePostStep> createState() => _CreatePostStepState();
+  ConsumerState<CreatePostStep> createState() => _CreatePostStepState();
 }
 
-class _CreatePostStepState extends State<CreatePostStep> {
-  final ImagePicker _picker = ImagePicker();
+class _CreatePostStepState extends ConsumerState<CreatePostStep> {
+  Future<void> _onChooseImage(int index, String type) async {
+    try {
+      final List<String> chooseMedia = await ref
+          .read(postServiceProvider)
+          .chooseMedia(true, type == 'video');
+      if (chooseMedia.isNotEmpty) {
+        setState(() {
+          widget.items[index].medias!.addAll(chooseMedia.map((e) => XFile(e)));
+        });
+      }
+    } catch (e) {
+      showError(context, 'Có lỗi xảy ra: $e');
+    }
+  }
+
+  void _removeItem(int index) {
+    setState(() {
+      widget.items.removeAt(index);
+    });
+  }
+
+  void _removeMediaOfItem(int index, int indexMedia) {
+    setState(() {
+      widget.items[index].medias!
+          .remove(widget.items[index].medias!.elementAt(indexMedia));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<Item> items = widget.items;
-
-    Future getImage(int index, String type) async {
-      final XFile? file = type == 'image'
-          ? await _picker.pickImage(source: ImageSource.gallery)
-          : await _picker.pickVideo(source: ImageSource.gallery);
-      file != null
-          ? setState(() {
-              items[index].medias!.add(file);
-            })
-          : null;
-    }
-
-    void removeItem(int index) {
-      setState(() {
-        items.removeAt(index);
-      });
-    }
-
-    void removeMediaOfItem(int index, int indexMedia) {
-      setState(() {
-        items[index].medias!.remove(items[index].medias!.elementAt(indexMedia));
-      });
-    }
 
     return Column(
       children: [
@@ -144,7 +149,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                                     currentPath:
                                         currentMedias.elementAt(indexMedia),
                                     onRemove: () =>
-                                        removeMediaOfItem(index, indexMedia)),
+                                        _removeMediaOfItem(index, indexMedia)),
                               ),
                             );
                           }),
@@ -153,7 +158,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                       Row(
                         children: [
                           IconButton.filledTonal(
-                            onPressed: () => getImage(index, 'image'),
+                            onPressed: () => _onChooseImage(index, 'image'),
                             icon: const Icon(Icons.camera_alt_rounded),
                             style: ButtonStyle(
                               padding: WidgetStateProperty.all(
@@ -168,7 +173,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                           ),
                           const SizedBox(width: 8),
                           IconButton.filledTonal(
-                            onPressed: () => getImage(index, 'video'),
+                            onPressed: () => _onChooseImage(index, 'video'),
                             icon: const Icon(Icons.video_camera_back_rounded),
                             style: ButtonStyle(
                               padding: WidgetStateProperty.all(
@@ -189,7 +194,7 @@ class _CreatePostStepState extends State<CreatePostStep> {
                             ? null
                             : () => showConfirmRemove(
                                   context,
-                                  () => removeItem(index),
+                                  () => _removeItem(index),
                                   content:
                                       'Bạn có chắc chắn muốn xóa bước này?',
                                 ),

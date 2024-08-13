@@ -39,6 +39,7 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
   late List<ChewieController> _chewieControllers;
 
   void onPageChanged(int index) {
+    _videoPlayerControllers.forEach((element) => element.pause());
     setState(() {
       currentIndex = index;
     });
@@ -64,7 +65,9 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
   @override
   dispose() {
     _videoPlayerControllers.forEach((element) => element.dispose());
+    _videoPlayerControllers.clear();
     _chewieControllers.forEach((element) => element.dispose());
+    _chewieControllers.clear();
     super.dispose();
   }
 

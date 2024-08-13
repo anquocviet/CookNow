@@ -1,0 +1,170 @@
+type Account {
+  username: String!
+  password: String!
+}
+
+type User {
+  id: ID!
+  name: String!
+  gender: Float!
+  age: Float!
+  living: String!
+  account: Account!
+  bio: String!
+  email: String!
+  phone: String!
+  avatar: String!
+  date_created: String!
+  date_closed: String!
+  following: [String!]!
+  follower: [String!]!
+  blocks: [String!]!
+}
+
+type Step {
+  content: String!
+  medias: [String!]!
+}
+
+type Emoji {
+  k: String!
+  v: [String!]!
+  qty: Float!
+}
+
+type Owner {
+  user_id: String!
+  name: String!
+  avatar: String!
+}
+
+type Post {
+  id: ID!
+  name: String!
+  image: String!
+  nop_eat: Float!
+  prepare_time: String!
+  date_time_post: String!
+  delete_at: String!
+  category: String!
+  ingredients: [String!]!
+  owner: Owner!
+  steps: [Step!]!
+  emojis: [Emoji!]!
+  qty_comments: Float!
+}
+
+type Comment {
+  id: String!
+  user_id: String!
+  username: String!
+  name: String!
+  avatar: String!
+  post_id: String!
+  content: String!
+  image: String!
+  date_time_comment: String!
+}
+
+type AuthResponseDto {
+  access_token: String!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+  posts: [Post!]!
+  post(id: String!): Post!
+  postsByOwner(owner_id: String!): [Post!]!
+  getCommentsByPostId(postId: String!): [Comment!]!
+  login(data: LoginDto!): AuthResponseDto!
+  validateToken(token: String!): String!
+  refreshToken(token: String!): String!
+  userNotExists(data: String!): Boolean!
+}
+
+input LoginDto {
+  username: String!
+  password: String!
+}
+
+type Mutation {
+  updateUser(data: UpdateUserDto!): User!
+  deleteUser(id: String!): User!
+  createPost(data: CreatePostDto!): Post!
+  updatePost(id: String!, data: UpdatePostDto!): Post!
+  deletePost(id: String!): Post!
+  createComment(data: CreateCommentDto!): Comment!
+  updateComment(id: String!, data: UpdateCommentDto!): Comment!
+  deleteComment(id: String!): Comment!
+  register(data: CreateUserDto!): AuthResponseDto!
+}
+
+input UpdateUserDto {
+  id: String!
+  name: String!
+  gender: Float!
+  age: Float!
+  living: String!
+  bio: String
+  email: String
+  phone: String
+  avatar: String
+}
+
+input CreatePostDto {
+  name: String!
+  image: String!
+  nop_eat: Float!
+  prepare_time: String!
+  category: String!
+  ingredients: [String!]!
+  steps: [CreateStepDto!]! = []
+  owner_id: ID!
+}
+
+input CreateStepDto {
+  content: String!
+  medias: [String!]! = []
+}
+
+input UpdatePostDto {
+  name: String!
+  image: String!
+  nop_eat: Float!
+  prepare_time: String!
+  category: String!
+  ingredients: [String!]!
+}
+
+input CreateCommentDto {
+  user_id: String!
+  post_id: String!
+  content: String!
+  image: String! = ""
+  date_time_comment: String!
+}
+
+input UpdateCommentDto {
+  content: String!
+  image: [String!]! = []
+}
+
+input CreateUserDto {
+  name: String!
+  gender: Float!
+  age: Float!
+  living: String! = ""
+  account: CreateAccountDto!
+  bio: String! = ""
+  email: String! = ""
+  phone: String! = ""
+  avatar: String! = ""
+  date_created: String! = ""
+  date_closed: String! = ""
+}
+
+input CreateAccountDto {
+  username: String!
+  password: String!
+}

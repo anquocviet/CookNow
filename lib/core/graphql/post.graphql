@@ -1,0 +1,57 @@
+mutation CreatePost($data: CreatePostDto!) {
+  createPost(data: $data) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    date_time_post
+    delete_at
+    category
+    ingredients
+    owner {
+      user_id
+      name
+      avatar
+    }
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+    qty_comments
+  }
+}
+
+query PostsByOwner($owner_id: String!) {
+  postsByOwner(owner_id: $owner_id) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    date_time_post
+    delete_at
+    category
+    ingredients
+    owner {
+      user_id
+      name
+      avatar
+    }
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+    qty_comments
+  }
+}

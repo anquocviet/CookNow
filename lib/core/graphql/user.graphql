@@ -1,0 +1,32 @@
+query User($id: String!) {
+  user(id: $id) {
+    id
+    name
+    gender
+    age
+    living
+    bio
+    email
+    phone
+    avatar
+    date_created
+    date_closed
+    following
+    follower
+    blocks
+  }
+}
+
+mutation UpdateUser($data: UpdateUserDto!) {
+  updateUser(data: $data) {
+    id
+    name
+    age
+    gender
+    living
+    bio
+    email
+    phone
+    avatar
+  }
+}

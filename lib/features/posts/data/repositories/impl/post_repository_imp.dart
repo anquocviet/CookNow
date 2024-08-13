@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cooknow/core/api/post_api.dart';
 import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
+import 'package:cooknow/core/graphql/__generated/post.graphql.dart';
+import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
@@ -14,41 +15,66 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'post_repository_imp.g.dart';
 
 class PostRepositoryImp implements PostRepository {
-  PostRepositoryImp({required this.postApi});
-  final PostApi postApi;
+  PostRepositoryImp({required this.client});
+
+  final GraphQLClient client;
 
   final _listPostState = ims.InMemoryStore<List<Post?>>([]);
   List<Post?> get posts => _listPostState.value;
   Stream<List<Post?>> postStateChanges() => _listPostState.stream;
 
   @override
-  Future<void> createPost(CreatePostDto dto) {
-    // TODO: implement createPost
-    throw UnimplementedError();
-  }
+  Future<void> createPost(CreatePostDto dto) => _getData(
+      query: client.mutate$CreatePost(
+        Options$Mutation$CreatePost(
+          variables: Variables$Mutation$CreatePost(
+            data: Input$CreatePostDto.fromJson(
+              dto.toJson(),
+            ),
+          ),
+        ),
+      ),
+      builder: (data) {
+        final result = (data as Mutation$CreatePost).createPost;
+        _listPostState.value = [
+          ..._listPostState.value,
+          Post.fromJson(result.toJson())
+        ];
+      });
 
+  // @override
+  // Future<void> fetchPostOfUser(String id) => _getData(
+  //       options: postApi.fetchPostOfUser(id),
+  //       builder: (data) => _listPostState.value =
+  //           data['postsByOwner'].map<Post?>((e) => Post.fromJson(e)).toList(),
+  //     );
   @override
   Future<void> fetchPostOfUser(String id) => _getData(
-        options: postApi.fetchPostOfUser(id),
-        builder: (data) => _listPostState.value =
-            data['postsByOwner'].map<Post?>((e) => Post.fromJson(e)).toList(),
-      );
+      query: client.query$PostsByOwner(
+        Options$Query$PostsByOwner(
+          variables: Variables$Query$PostsByOwner(
+            owner_id: id,
+          ),
+          fetchPolicy: FetchPolicy.noCache,
+        ),
+      ),
+      builder: (data) {
+        final result = (data as Query$PostsByOwner).postsByOwner;
+        _listPostState.value =
+            result.map((e) => Post.fromJson(e.toJson())).toList();
+      });
 
   Future<T> _getData<T>({
-    required dynamic options,
+    required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
   }) async {
-    assert(options is! QueryOptions || options is! MutationOptions,
-        'Options must be QueryOptions or MutationOptions');
     try {
-      final QueryResult result = options is QueryOptions
-          ? await GraphqlClient.client.value.query(options)
-          : await GraphqlClient.client.value.mutate(options);
+      final result = await query;
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-      log('PostRepositoryError: $error');
+      log(error, name: 'PostRepositoryImp');
       if (error.isEmpty) {
-        final data = result.data!;
+        final data = result.parsedData;
         return builder(data);
       } else {
         throw ex.UnknownException();
@@ -63,7 +89,7 @@ class PostRepositoryImp implements PostRepository {
 
 @Riverpod(keepAlive: true)
 PostRepositoryImp postRepository(PostRepositoryRef ref) {
-  return PostRepositoryImp(postApi: PostApi());
+  return PostRepositoryImp(client: GraphqlClient.client.value);
 }
 
 @Riverpod(keepAlive: true)

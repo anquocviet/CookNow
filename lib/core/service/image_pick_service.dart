@@ -9,6 +9,7 @@ class ImagePickService {
   final ImagePicker _picker = ImagePicker();
 
   /// Picks an image from the device's gallery or camera.
+  /// Default is choose an image from gallery.
   ///
   /// Returns a list of [XFile] objects representing the selected image(s).
   ///

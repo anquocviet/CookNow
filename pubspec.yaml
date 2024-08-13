@@ -43,6 +43,7 @@ dev_dependencies:
   riverpod_lint: ^2.3.10
   freezed: ^2.5.2
   json_serializable: ^6.8.0
+  graphql_codegen: ^0.14.0
 
 flutter:
   uses-material-design: true
