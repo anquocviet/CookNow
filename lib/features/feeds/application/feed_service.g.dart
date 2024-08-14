@@ -20,5 +20,20 @@ final feedServiceProvider = AutoDisposeProvider<FeedService>.internal(
 );
 
 typedef FeedServiceRef = AutoDisposeProviderRef<FeedService>;
+String _$lengthUserPostHash() => r'449f20f1deaadbe13864334dd29d7302ec6fe2f8';
+
+/// See also [lengthUserPost].
+@ProviderFor(lengthUserPost)
+final lengthUserPostProvider = AutoDisposeProvider<int>.internal(
+  lengthUserPost,
+  name: r'lengthUserPostProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$lengthUserPostHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef LengthUserPostRef = AutoDisposeProviderRef<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

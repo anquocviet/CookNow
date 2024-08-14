@@ -13,6 +13,11 @@ class FeedService {
     await postRepository.fetchPostOfUser(id);
   }
 
+  List<Post?> getListPost() {
+    final postRepository = ref.read(postRepositoryProvider);
+    return postRepository.posts;
+  }
+
   Stream<List<Post?>> watchListPost() {
     final postRepository = ref.read(postRepositoryProvider);
     return postRepository.postStateChanges();
@@ -22,4 +27,9 @@ class FeedService {
 @riverpod
 FeedService feedService(FeedServiceRef ref) {
   return FeedService(ref: ref);
+}
+
+@riverpod
+int lengthUserPost(LengthUserPostRef ref) {
+  return ref.read(feedServiceProvider).getListPost().length;
 }

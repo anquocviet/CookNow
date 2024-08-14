@@ -42,12 +42,6 @@ class PostRepositoryImp implements PostRepository {
         ];
       });
 
-  // @override
-  // Future<void> fetchPostOfUser(String id) => _getData(
-  //       options: postApi.fetchPostOfUser(id),
-  //       builder: (data) => _listPostState.value =
-  //           data['postsByOwner'].map<Post?>((e) => Post.fromJson(e)).toList(),
-  //     );
   @override
   Future<void> fetchPostOfUser(String id) => _getData(
       query: client.query$PostsByOwner(

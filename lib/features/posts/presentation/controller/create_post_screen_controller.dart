@@ -13,6 +13,11 @@ class CreatePostScreenController extends _$CreatePostScreenController {
     final postService = ref.read(postServiceProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => postService.createPost(dto));
+    if (state.hasError) throw state.error!;
+  }
+
+  void resetState() {
+    state = const AsyncValue.data(null);
   }
 }
 
