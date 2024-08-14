@@ -215,6 +215,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
 
               // Add CreatePostIngredient
               ing.CreatePostIngredient(items: listIngredient),

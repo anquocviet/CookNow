@@ -12,8 +12,10 @@ import 'package:cooknow/features/authentication/presentation/page/register/regis
 import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
 import 'package:cooknow/features/authentication/presentation/page/welcome_screen.dart';
+import 'package:cooknow/features/feeds/presentation/page/detail_post_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
+import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
@@ -30,6 +32,7 @@ part 'router_app.g.dart';
 
 class RouteName {
   static const home = '/';
+  static const detailPost = 'detail-post';
   static const search = '/search';
   static const createPost = '/create-post';
   static const notification = '/notification';
@@ -111,6 +114,7 @@ GoRouter goRouter(GoRouterRef ref) {
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
+          // ScaffoldWithNestedNavigation is a custom widget that wraps the navigationShell
           return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
         },
         branches: RouteName.bottomRouteMap.entries
@@ -123,20 +127,27 @@ GoRouter goRouter(GoRouterRef ref) {
                     path: entry.key,
                     pageBuilder: (context, state) =>
                         NoTransitionPage(child: entry.value),
-                    routes: entry.key == RouteName.profile
-                        ? [
-                            GoRoute(
-                              path: RouteName.settings,
-                              builder: (context, state) =>
-                                  const SettingScreen(),
-                            ),
-                            GoRoute(
-                              path: RouteName.changeInfoProfile,
-                              builder: (context, state) =>
-                                  const ChangeProfileScreen(),
-                            )
-                          ]
-                        : [],
+                    routes: [
+                      if (entry.key == RouteName.profile) ...[
+                        GoRoute(
+                          path: RouteName.settings,
+                          builder: (context, state) => const SettingScreen(),
+                        ),
+                        GoRoute(
+                          path: RouteName.changeInfoProfile,
+                          builder: (context, state) =>
+                              const ChangeProfileScreen(),
+                        )
+                      ],
+                      if (entry.key == RouteName.home) ...[
+                        GoRoute(
+                          path: RouteName.detailPost,
+                          builder: (context, state) => DetailPostScreen(
+                            post: state.extra as Post,
+                          ),
+                        )
+                      ]
+                    ],
                   )
                 ],
               ),

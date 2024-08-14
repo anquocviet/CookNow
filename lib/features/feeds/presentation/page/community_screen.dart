@@ -1,6 +1,6 @@
 import 'package:cooknow/features/feeds/application/feed_service.dart';
-import 'package:cooknow/features/feeds/presentation/page/post/post.dart';
-import 'package:cooknow/features/posts/domain/post/post.dart' as d;
+import 'package:cooknow/features/feeds/presentation/widget/post_widget.dart';
+import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,16 +19,16 @@ class CommunityScreen extends ConsumerWidget {
         onRefresh: () async {
           await feedService.fetchPostOfUser(user?.id ?? '');
         },
-        child: StreamBuilder<List<d.Post?>>(
+        child: StreamBuilder<List<Post?>>(
             stream: listPost,
             builder: (context, snapshot) {
-              final List<d.Post?> posts = snapshot.data ?? [];
+              final List<Post?> posts = snapshot.data ?? [];
               if (posts.isEmpty) {
                 return const CircularProgressIndicator();
               }
               return ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
-                  return Post(
+                  return PostWidget(
                     post: posts[index]!,
                   );
                 },
