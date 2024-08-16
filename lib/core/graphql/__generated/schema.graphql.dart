@@ -1079,6 +1079,154 @@ class _CopyWithStubImpl$Input$UpdatePostDto<TRes>
       _res;
 }
 
+class Input$UpdateEmojiDto {
+  factory Input$UpdateEmojiDto({
+    required String postId,
+    required String userId,
+    required String typeEmoji,
+  }) =>
+      Input$UpdateEmojiDto._({
+        r'postId': postId,
+        r'userId': userId,
+        r'typeEmoji': typeEmoji,
+      });
+
+  Input$UpdateEmojiDto._(this._$data);
+
+  factory Input$UpdateEmojiDto.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$postId = data['postId'];
+    result$data['postId'] = (l$postId as String);
+    final l$userId = data['userId'];
+    result$data['userId'] = (l$userId as String);
+    final l$typeEmoji = data['typeEmoji'];
+    result$data['typeEmoji'] = (l$typeEmoji as String);
+    return Input$UpdateEmojiDto._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get postId => (_$data['postId'] as String);
+
+  String get userId => (_$data['userId'] as String);
+
+  String get typeEmoji => (_$data['typeEmoji'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$postId = postId;
+    result$data['postId'] = l$postId;
+    final l$userId = userId;
+    result$data['userId'] = l$userId;
+    final l$typeEmoji = typeEmoji;
+    result$data['typeEmoji'] = l$typeEmoji;
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateEmojiDto<Input$UpdateEmojiDto> get copyWith =>
+      CopyWith$Input$UpdateEmojiDto(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$UpdateEmojiDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$postId = postId;
+    final lOther$postId = other.postId;
+    if (l$postId != lOther$postId) {
+      return false;
+    }
+    final l$userId = userId;
+    final lOther$userId = other.userId;
+    if (l$userId != lOther$userId) {
+      return false;
+    }
+    final l$typeEmoji = typeEmoji;
+    final lOther$typeEmoji = other.typeEmoji;
+    if (l$typeEmoji != lOther$typeEmoji) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$postId = postId;
+    final l$userId = userId;
+    final l$typeEmoji = typeEmoji;
+    return Object.hashAll([
+      l$postId,
+      l$userId,
+      l$typeEmoji,
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateEmojiDto<TRes> {
+  factory CopyWith$Input$UpdateEmojiDto(
+    Input$UpdateEmojiDto instance,
+    TRes Function(Input$UpdateEmojiDto) then,
+  ) = _CopyWithImpl$Input$UpdateEmojiDto;
+
+  factory CopyWith$Input$UpdateEmojiDto.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateEmojiDto;
+
+  TRes call({
+    String? postId,
+    String? userId,
+    String? typeEmoji,
+  });
+}
+
+class _CopyWithImpl$Input$UpdateEmojiDto<TRes>
+    implements CopyWith$Input$UpdateEmojiDto<TRes> {
+  _CopyWithImpl$Input$UpdateEmojiDto(
+    this._instance,
+    this._then,
+  );
+
+  final Input$UpdateEmojiDto _instance;
+
+  final TRes Function(Input$UpdateEmojiDto) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? postId = _undefined,
+    Object? userId = _undefined,
+    Object? typeEmoji = _undefined,
+  }) =>
+      _then(Input$UpdateEmojiDto._({
+        ..._instance._$data,
+        if (postId != _undefined && postId != null)
+          'postId': (postId as String),
+        if (userId != _undefined && userId != null)
+          'userId': (userId as String),
+        if (typeEmoji != _undefined && typeEmoji != null)
+          'typeEmoji': (typeEmoji as String),
+      }));
+}
+
+class _CopyWithStubImpl$Input$UpdateEmojiDto<TRes>
+    implements CopyWith$Input$UpdateEmojiDto<TRes> {
+  _CopyWithStubImpl$Input$UpdateEmojiDto(this._res);
+
+  TRes _res;
+
+  call({
+    String? postId,
+    String? userId,
+    String? typeEmoji,
+  }) =>
+      _res;
+}
+
 class Input$CreateCommentDto {
   factory Input$CreateCommentDto({
     required String user_id,

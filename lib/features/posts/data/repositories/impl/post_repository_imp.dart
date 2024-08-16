@@ -7,7 +7,9 @@ import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
+import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/post_repository.dart';
+import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -57,6 +59,31 @@ class PostRepositoryImp implements PostRepository {
         _listPostState.value =
             result.map((e) => Post.fromJson(e.toJson())).toList();
       });
+
+  @override
+  Future<void> updateEmojiOfPost(UpdateEmojiDto dto) => _getData(
+        query: client.mutate$UpdateEmojiOfPost(
+          Options$Mutation$UpdateEmojiOfPost(
+            variables: Variables$Mutation$UpdateEmojiOfPost(
+              data: Input$UpdateEmojiDto.fromJson(
+                dto.toJson(),
+              ),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Mutation$UpdateEmojiOfPost).updateEmojiOfPost;
+          _listPostState.value = _listPostState.value.map((e) {
+            if (e?.id == result.id) {
+              final listEmoji =
+                  result.emojis.map((e) => Emoji.fromJson(e.toJson())).toList();
+              return e?.copyWith(emojis: listEmoji);
+            }
+            return e;
+          }).toList();
+        },
+      );
 
   Future<T> _getData<T>({
     required Future<QueryResult<dynamic>> query,

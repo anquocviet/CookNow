@@ -10,10 +10,12 @@ class CustomTextField extends StatelessWidget {
     this.enableSuggestions = true,
     this.autocorrect = true,
     this.keyboardType = TextInputType.text,
+    this.borderRadius = const BorderRadius.all(Radius.circular(16)),
     this.controller,
     this.validator,
     this.onEditingComplete,
     this.onChanged,
+    this.contentPadding,
   });
 
   final String label;
@@ -23,6 +25,8 @@ class CustomTextField extends StatelessWidget {
   final bool enableSuggestions;
   final bool autocorrect;
   final TextInputType keyboardType;
+  final BorderRadius borderRadius;
+  final EdgeInsetsGeometry? contentPadding;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function()? onEditingComplete;
@@ -42,8 +46,9 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: borderRadius,
         ),
+        contentPadding: contentPadding,
         errorMaxLines: 3,
       ),
       onChanged: onChanged,

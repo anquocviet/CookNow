@@ -1,4 +1,8 @@
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
+import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
+import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
@@ -16,10 +20,23 @@ class PostWidget extends ConsumerStatefulWidget {
 }
 
 class _PostState extends ConsumerState<PostWidget> {
+  Future<void> _reactToPost(
+      String postId, String userId, EnumEmoji emoji) async {
+    try {
+      await ref.read(feedControllerProvider.notifier).reactToPost(
+          UpdateEmojiDto(postId: postId, userId: userId, emoji: emoji));
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Post post = widget.post;
     final user = ref.read(userRepositoryProvider).currentAccount;
+    final controllerState = ref.watch(feedControllerProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -117,7 +134,10 @@ class _PostState extends ConsumerState<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: controllerState.isLoading
+                      ? null
+                      : () =>
+                          _reactToPost(post.id, user?.id ?? "", EnumEmoji.love),
                   icon: Icon(
                     Icons.favorite,
                     color:
@@ -126,10 +146,20 @@ class _PostState extends ConsumerState<PostWidget> {
                             : null,
                   )),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.comment_outlined)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.ios_share)),
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.comment_outlined,
+                  )),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.bookmark_outline))
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.ios_share,
+                  )),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.bookmark_outline,
+                  ))
             ],
           ),
         ],

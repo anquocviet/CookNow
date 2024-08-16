@@ -3152,3 +3152,933 @@ class _CopyWithStubImpl$Query$PostsByOwner$postsByOwner$emojis<TRes>
   }) =>
       _res;
 }
+
+class Variables$Mutation$UpdateEmojiOfPost {
+  factory Variables$Mutation$UpdateEmojiOfPost(
+          {required Input$UpdateEmojiDto data}) =>
+      Variables$Mutation$UpdateEmojiOfPost._({
+        r'data': data,
+      });
+
+  Variables$Mutation$UpdateEmojiOfPost._(this._$data);
+
+  factory Variables$Mutation$UpdateEmojiOfPost.fromJson(
+      Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$data = data['data'];
+    result$data['data'] =
+        Input$UpdateEmojiDto.fromJson((l$data as Map<String, dynamic>));
+    return Variables$Mutation$UpdateEmojiOfPost._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  Input$UpdateEmojiDto get data => (_$data['data'] as Input$UpdateEmojiDto);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$data = data;
+    result$data['data'] = l$data.toJson();
+    return result$data;
+  }
+
+  CopyWith$Variables$Mutation$UpdateEmojiOfPost<
+          Variables$Mutation$UpdateEmojiOfPost>
+      get copyWith => CopyWith$Variables$Mutation$UpdateEmojiOfPost(
+            this,
+            (i) => i,
+          );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Mutation$UpdateEmojiOfPost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$data = data;
+    return Object.hashAll([l$data]);
+  }
+}
+
+abstract class CopyWith$Variables$Mutation$UpdateEmojiOfPost<TRes> {
+  factory CopyWith$Variables$Mutation$UpdateEmojiOfPost(
+    Variables$Mutation$UpdateEmojiOfPost instance,
+    TRes Function(Variables$Mutation$UpdateEmojiOfPost) then,
+  ) = _CopyWithImpl$Variables$Mutation$UpdateEmojiOfPost;
+
+  factory CopyWith$Variables$Mutation$UpdateEmojiOfPost.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Mutation$UpdateEmojiOfPost;
+
+  TRes call({Input$UpdateEmojiDto? data});
+}
+
+class _CopyWithImpl$Variables$Mutation$UpdateEmojiOfPost<TRes>
+    implements CopyWith$Variables$Mutation$UpdateEmojiOfPost<TRes> {
+  _CopyWithImpl$Variables$Mutation$UpdateEmojiOfPost(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Mutation$UpdateEmojiOfPost _instance;
+
+  final TRes Function(Variables$Mutation$UpdateEmojiOfPost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? data = _undefined}) =>
+      _then(Variables$Mutation$UpdateEmojiOfPost._({
+        ..._instance._$data,
+        if (data != _undefined && data != null)
+          'data': (data as Input$UpdateEmojiDto),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Mutation$UpdateEmojiOfPost<TRes>
+    implements CopyWith$Variables$Mutation$UpdateEmojiOfPost<TRes> {
+  _CopyWithStubImpl$Variables$Mutation$UpdateEmojiOfPost(this._res);
+
+  TRes _res;
+
+  call({Input$UpdateEmojiDto? data}) => _res;
+}
+
+class Mutation$UpdateEmojiOfPost {
+  Mutation$UpdateEmojiOfPost({
+    required this.updateEmojiOfPost,
+    this.$__typename = 'Mutation',
+  });
+
+  factory Mutation$UpdateEmojiOfPost.fromJson(Map<String, dynamic> json) {
+    final l$updateEmojiOfPost = json['updateEmojiOfPost'];
+    final l$$__typename = json['__typename'];
+    return Mutation$UpdateEmojiOfPost(
+      updateEmojiOfPost: Mutation$UpdateEmojiOfPost$updateEmojiOfPost.fromJson(
+          (l$updateEmojiOfPost as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final Mutation$UpdateEmojiOfPost$updateEmojiOfPost updateEmojiOfPost;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$updateEmojiOfPost = updateEmojiOfPost;
+    _resultData['updateEmojiOfPost'] = l$updateEmojiOfPost.toJson();
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$updateEmojiOfPost = updateEmojiOfPost;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$updateEmojiOfPost,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$UpdateEmojiOfPost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$updateEmojiOfPost = updateEmojiOfPost;
+    final lOther$updateEmojiOfPost = other.updateEmojiOfPost;
+    if (l$updateEmojiOfPost != lOther$updateEmojiOfPost) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$UpdateEmojiOfPost
+    on Mutation$UpdateEmojiOfPost {
+  CopyWith$Mutation$UpdateEmojiOfPost<Mutation$UpdateEmojiOfPost>
+      get copyWith => CopyWith$Mutation$UpdateEmojiOfPost(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Mutation$UpdateEmojiOfPost<TRes> {
+  factory CopyWith$Mutation$UpdateEmojiOfPost(
+    Mutation$UpdateEmojiOfPost instance,
+    TRes Function(Mutation$UpdateEmojiOfPost) then,
+  ) = _CopyWithImpl$Mutation$UpdateEmojiOfPost;
+
+  factory CopyWith$Mutation$UpdateEmojiOfPost.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$UpdateEmojiOfPost;
+
+  TRes call({
+    Mutation$UpdateEmojiOfPost$updateEmojiOfPost? updateEmojiOfPost,
+    String? $__typename,
+  });
+  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes>
+      get updateEmojiOfPost;
+}
+
+class _CopyWithImpl$Mutation$UpdateEmojiOfPost<TRes>
+    implements CopyWith$Mutation$UpdateEmojiOfPost<TRes> {
+  _CopyWithImpl$Mutation$UpdateEmojiOfPost(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$UpdateEmojiOfPost _instance;
+
+  final TRes Function(Mutation$UpdateEmojiOfPost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? updateEmojiOfPost = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$UpdateEmojiOfPost(
+        updateEmojiOfPost:
+            updateEmojiOfPost == _undefined || updateEmojiOfPost == null
+                ? _instance.updateEmojiOfPost
+                : (updateEmojiOfPost
+                    as Mutation$UpdateEmojiOfPost$updateEmojiOfPost),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+
+  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes>
+      get updateEmojiOfPost {
+    final local$updateEmojiOfPost = _instance.updateEmojiOfPost;
+    return CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+        local$updateEmojiOfPost, (e) => call(updateEmojiOfPost: e));
+  }
+}
+
+class _CopyWithStubImpl$Mutation$UpdateEmojiOfPost<TRes>
+    implements CopyWith$Mutation$UpdateEmojiOfPost<TRes> {
+  _CopyWithStubImpl$Mutation$UpdateEmojiOfPost(this._res);
+
+  TRes _res;
+
+  call({
+    Mutation$UpdateEmojiOfPost$updateEmojiOfPost? updateEmojiOfPost,
+    String? $__typename,
+  }) =>
+      _res;
+
+  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes>
+      get updateEmojiOfPost =>
+          CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost.stub(_res);
+}
+
+const documentNodeMutationUpdateEmojiOfPost = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'UpdateEmojiOfPost'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'data')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'UpdateEmojiDto'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'updateEmojiOfPost'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'name'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'emojis'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'k'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'v'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'qty'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: '__typename'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
+]);
+Mutation$UpdateEmojiOfPost _parserFn$Mutation$UpdateEmojiOfPost(
+        Map<String, dynamic> data) =>
+    Mutation$UpdateEmojiOfPost.fromJson(data);
+typedef OnMutationCompleted$Mutation$UpdateEmojiOfPost = FutureOr<void>
+    Function(
+  Map<String, dynamic>?,
+  Mutation$UpdateEmojiOfPost?,
+);
+
+class Options$Mutation$UpdateEmojiOfPost
+    extends graphql.MutationOptions<Mutation$UpdateEmojiOfPost> {
+  Options$Mutation$UpdateEmojiOfPost({
+    String? operationName,
+    required Variables$Mutation$UpdateEmojiOfPost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$UpdateEmojiOfPost? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$UpdateEmojiOfPost? onCompleted,
+    graphql.OnMutationUpdate<Mutation$UpdateEmojiOfPost>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null
+                        ? null
+                        : _parserFn$Mutation$UpdateEmojiOfPost(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationUpdateEmojiOfPost,
+          parserFn: _parserFn$Mutation$UpdateEmojiOfPost,
+        );
+
+  final OnMutationCompleted$Mutation$UpdateEmojiOfPost? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+class WatchOptions$Mutation$UpdateEmojiOfPost
+    extends graphql.WatchQueryOptions<Mutation$UpdateEmojiOfPost> {
+  WatchOptions$Mutation$UpdateEmojiOfPost({
+    String? operationName,
+    required Variables$Mutation$UpdateEmojiOfPost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$UpdateEmojiOfPost? typedOptimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeMutationUpdateEmojiOfPost,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Mutation$UpdateEmojiOfPost,
+        );
+}
+
+extension ClientExtension$Mutation$UpdateEmojiOfPost on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Mutation$UpdateEmojiOfPost>>
+      mutate$UpdateEmojiOfPost(
+              Options$Mutation$UpdateEmojiOfPost options) async =>
+          await this.mutate(options);
+  graphql.ObservableQuery<Mutation$UpdateEmojiOfPost>
+      watchMutation$UpdateEmojiOfPost(
+              WatchOptions$Mutation$UpdateEmojiOfPost options) =>
+          this.watchMutation(options);
+}
+
+class Mutation$UpdateEmojiOfPost$HookResult {
+  Mutation$UpdateEmojiOfPost$HookResult(
+    this.runMutation,
+    this.result,
+  );
+
+  final RunMutation$Mutation$UpdateEmojiOfPost runMutation;
+
+  final graphql.QueryResult<Mutation$UpdateEmojiOfPost> result;
+}
+
+Mutation$UpdateEmojiOfPost$HookResult useMutation$UpdateEmojiOfPost(
+    [WidgetOptions$Mutation$UpdateEmojiOfPost? options]) {
+  final result = graphql_flutter
+      .useMutation(options ?? WidgetOptions$Mutation$UpdateEmojiOfPost());
+  return Mutation$UpdateEmojiOfPost$HookResult(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
+      variables.toJson(),
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+    ),
+    result.result,
+  );
+}
+
+graphql.ObservableQuery<Mutation$UpdateEmojiOfPost>
+    useWatchMutation$UpdateEmojiOfPost(
+            WatchOptions$Mutation$UpdateEmojiOfPost options) =>
+        graphql_flutter.useWatchMutation(options);
+
+class WidgetOptions$Mutation$UpdateEmojiOfPost
+    extends graphql.MutationOptions<Mutation$UpdateEmojiOfPost> {
+  WidgetOptions$Mutation$UpdateEmojiOfPost({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$UpdateEmojiOfPost? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$UpdateEmojiOfPost? onCompleted,
+    graphql.OnMutationUpdate<Mutation$UpdateEmojiOfPost>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null
+                        ? null
+                        : _parserFn$Mutation$UpdateEmojiOfPost(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationUpdateEmojiOfPost,
+          parserFn: _parserFn$Mutation$UpdateEmojiOfPost,
+        );
+
+  final OnMutationCompleted$Mutation$UpdateEmojiOfPost? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+typedef RunMutation$Mutation$UpdateEmojiOfPost
+    = graphql.MultiSourceResult<Mutation$UpdateEmojiOfPost> Function(
+  Variables$Mutation$UpdateEmojiOfPost, {
+  Object? optimisticResult,
+  Mutation$UpdateEmojiOfPost? typedOptimisticResult,
+});
+typedef Builder$Mutation$UpdateEmojiOfPost = widgets.Widget Function(
+  RunMutation$Mutation$UpdateEmojiOfPost,
+  graphql.QueryResult<Mutation$UpdateEmojiOfPost>?,
+);
+
+class Mutation$UpdateEmojiOfPost$Widget
+    extends graphql_flutter.Mutation<Mutation$UpdateEmojiOfPost> {
+  Mutation$UpdateEmojiOfPost$Widget({
+    widgets.Key? key,
+    WidgetOptions$Mutation$UpdateEmojiOfPost? options,
+    required Builder$Mutation$UpdateEmojiOfPost builder,
+  }) : super(
+          key: key,
+          options: options ?? WidgetOptions$Mutation$UpdateEmojiOfPost(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+              typedOptimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
+            ),
+            result,
+          ),
+        );
+}
+
+class Mutation$UpdateEmojiOfPost$updateEmojiOfPost {
+  Mutation$UpdateEmojiOfPost$updateEmojiOfPost({
+    required this.id,
+    required this.name,
+    required this.emojis,
+    this.$__typename = 'Post',
+  });
+
+  factory Mutation$UpdateEmojiOfPost$updateEmojiOfPost.fromJson(
+      Map<String, dynamic> json) {
+    final l$id = json['id'];
+    final l$name = json['name'];
+    final l$emojis = json['emojis'];
+    final l$$__typename = json['__typename'];
+    return Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+      id: (l$id as String),
+      name: (l$name as String),
+      emojis: (l$emojis as List<dynamic>)
+          .map((e) =>
+              Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis.fromJson(
+                  (e as Map<String, dynamic>)))
+          .toList(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String id;
+
+  final String name;
+
+  final List<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis> emojis;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
+    final l$name = name;
+    _resultData['name'] = l$name;
+    final l$emojis = emojis;
+    _resultData['emojis'] = l$emojis.map((e) => e.toJson()).toList();
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$name = name;
+    final l$emojis = emojis;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$id,
+      l$name,
+      Object.hashAll(l$emojis.map((v) => v)),
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$UpdateEmojiOfPost$updateEmojiOfPost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$emojis = emojis;
+    final lOther$emojis = other.emojis;
+    if (l$emojis.length != lOther$emojis.length) {
+      return false;
+    }
+    for (int i = 0; i < l$emojis.length; i++) {
+      final l$emojis$entry = l$emojis[i];
+      final lOther$emojis$entry = lOther$emojis[i];
+      if (l$emojis$entry != lOther$emojis$entry) {
+        return false;
+      }
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$UpdateEmojiOfPost$updateEmojiOfPost
+    on Mutation$UpdateEmojiOfPost$updateEmojiOfPost {
+  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<
+          Mutation$UpdateEmojiOfPost$updateEmojiOfPost>
+      get copyWith => CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes> {
+  factory CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+    Mutation$UpdateEmojiOfPost$updateEmojiOfPost instance,
+    TRes Function(Mutation$UpdateEmojiOfPost$updateEmojiOfPost) then,
+  ) = _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost;
+
+  factory CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost;
+
+  TRes call({
+    String? id,
+    String? name,
+    List<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>? emojis,
+    String? $__typename,
+  });
+  TRes emojis(
+      Iterable<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis> Function(
+              Iterable<
+                  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
+                      Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>>)
+          _fn);
+}
+
+class _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes>
+    implements CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes> {
+  _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$UpdateEmojiOfPost$updateEmojiOfPost _instance;
+
+  final TRes Function(Mutation$UpdateEmojiOfPost$updateEmojiOfPost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? name = _undefined,
+    Object? emojis = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$UpdateEmojiOfPost$updateEmojiOfPost(
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        name: name == _undefined || name == null
+            ? _instance.name
+            : (name as String),
+        emojis: emojis == _undefined || emojis == null
+            ? _instance.emojis
+            : (emojis
+                as List<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+
+  TRes emojis(
+          Iterable<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis> Function(
+                  Iterable<
+                      CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
+                          Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>>)
+              _fn) =>
+      call(
+          emojis: _fn(_instance.emojis.map((e) =>
+              CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+                e,
+                (i) => i,
+              ))).toList());
+}
+
+class _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes>
+    implements CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost<TRes> {
+  _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? name,
+    List<Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>? emojis,
+    String? $__typename,
+  }) =>
+      _res;
+
+  emojis(_fn) => _res;
+}
+
+class Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis {
+  Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis({
+    required this.k,
+    required this.v,
+    required this.qty,
+    this.$__typename = 'Emoji',
+  });
+
+  factory Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis.fromJson(
+      Map<String, dynamic> json) {
+    final l$k = json['k'];
+    final l$v = json['v'];
+    final l$qty = json['qty'];
+    final l$$__typename = json['__typename'];
+    return Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+      k: (l$k as String),
+      v: (l$v as List<dynamic>).map((e) => (e as String)).toList(),
+      qty: (l$qty as num).toDouble(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String k;
+
+  final List<String> v;
+
+  final double qty;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$k = k;
+    _resultData['k'] = l$k;
+    final l$v = v;
+    _resultData['v'] = l$v.map((e) => e).toList();
+    final l$qty = qty;
+    _resultData['qty'] = l$qty;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$k = k;
+    final l$v = v;
+    final l$qty = qty;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$k,
+      Object.hashAll(l$v.map((v) => v)),
+      l$qty,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$k = k;
+    final lOther$k = other.k;
+    if (l$k != lOther$k) {
+      return false;
+    }
+    final l$v = v;
+    final lOther$v = other.v;
+    if (l$v.length != lOther$v.length) {
+      return false;
+    }
+    for (int i = 0; i < l$v.length; i++) {
+      final l$v$entry = l$v[i];
+      final lOther$v$entry = lOther$v[i];
+      if (l$v$entry != lOther$v$entry) {
+        return false;
+      }
+    }
+    final l$qty = qty;
+    final lOther$qty = other.qty;
+    if (l$qty != lOther$qty) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis
+    on Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis {
+  CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
+          Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis>
+      get copyWith =>
+          CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
+    TRes> {
+  factory CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+    Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis instance,
+    TRes Function(Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis) then,
+  ) = _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis;
+
+  factory CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis.stub(
+          TRes res) =
+      _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis;
+
+  TRes call({
+    String? k,
+    List<String>? v,
+    double? qty,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<TRes>
+    implements
+        CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<TRes> {
+  _CopyWithImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis _instance;
+
+  final TRes Function(Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis)
+      _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? k = _undefined,
+    Object? v = _undefined,
+    Object? qty = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+        k: k == _undefined || k == null ? _instance.k : (k as String),
+        v: v == _undefined || v == null ? _instance.v : (v as List<String>),
+        qty: qty == _undefined || qty == null ? _instance.qty : (qty as double),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
+        TRes>
+    implements
+        CopyWith$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<TRes> {
+  _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis(
+      this._res);
+
+  TRes _res;
+
+  call({
+    String? k,
+    List<String>? v,
+    double? qty,
+    String? $__typename,
+  }) =>
+      _res;
+}

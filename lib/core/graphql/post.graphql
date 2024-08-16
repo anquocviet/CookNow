@@ -55,3 +55,15 @@ query PostsByOwner($owner_id: String!) {
     qty_comments
   }
 }
+
+mutation UpdateEmojiOfPost($data: UpdateEmojiDto!) {
+  updateEmojiOfPost(data: $data) {
+    id
+    name
+    emojis {
+      k
+      v
+      qty
+    }
+  }
+}
