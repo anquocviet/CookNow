@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cooknow/core/utils/check_formats.dart';
 import 'package:cooknow/core/widget/gallery_media_view_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -9,12 +10,12 @@ class MediaStep extends StatefulWidget {
     super.key,
     required this.listPath,
     required this.currentPath,
-    required this.onRemove,
+    this.onRemove,
   });
 
   final List<String> listPath;
   final String currentPath;
-  final void Function() onRemove;
+  final void Function()? onRemove;
 
   @override
   State<MediaStep> createState() => _MediaStepState();
@@ -29,11 +30,19 @@ class _MediaStepState extends State<MediaStep> {
     // Listen to the change of the current path to determine if it is a video
     _isVideo.addListener(() {
       if (_isVideo.value) {
-        _controller = VideoPlayerController.file(
-          File(widget.currentPath),
-        )..initialize().then((_) {
-            setState(() {});
-          });
+        if (isLinkOnline(widget.currentPath)) {
+          _controller = VideoPlayerController.networkUrl(
+            Uri.parse(widget.currentPath),
+          )..initialize().then((_) {
+              if (mounted) setState(() {});
+            });
+        } else {
+          _controller = VideoPlayerController.file(
+            File(widget.currentPath),
+          )..initialize().then((_) {
+              setState(() {});
+            });
+        }
       }
     });
     super.initState();
@@ -57,7 +66,9 @@ class _MediaStepState extends State<MediaStep> {
 
   @override
   void dispose() {
-    if (_isVideo.value) _controller.dispose();
+    if (_isVideo.value) {
+      _controller.dispose();
+    }
     _isVideo.dispose();
     super.dispose();
   }
@@ -66,9 +77,7 @@ class _MediaStepState extends State<MediaStep> {
   Widget build(BuildContext context) {
     // Check if the current path is a video
     setState(() {
-      const String regexCheckVideo = r'^(mp4|mov)$';
-      _isVideo.value = RegExp(regexCheckVideo, caseSensitive: false)
-          .hasMatch(widget.currentPath.split('.').last);
+      _isVideo.value = isVideo(widget.currentPath);
     });
 
     return ValueListenableBuilder(
@@ -88,26 +97,32 @@ class _MediaStepState extends State<MediaStep> {
                   )
                 : GestureDetector(
                     onTap: _openMedia,
-                    child: Image.asset(
-                      widget.currentPath,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                    ),
+                    child: isLinkOnline(widget.currentPath)
+                        ? Image.network(
+                            widget.currentPath,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            widget.currentPath,
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
                   ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () => widget.onRemove()
-                //
-                ,
-                child: const Icon(
-                  Icons.remove_circle_rounded,
-                  size: 18,
+            if (widget.onRemove != null)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () => widget.onRemove!()
+                  //
+                  ,
+                  child: const Icon(
+                    Icons.remove_circle_rounded,
+                    size: 18,
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },

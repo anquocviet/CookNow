@@ -5,3 +5,14 @@ bool isPhone(String phone) {
 bool isEmail(String email) {
   return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
 }
+
+bool isVideo(String url) {
+  return url.toLowerCase().contains('.mp4') ||
+      url.toLowerCase().contains('.avi') ||
+      url.toLowerCase().contains('.mov');
+}
+
+bool isLinkOnline(String url) {
+  return RegExp(r'^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$')
+      .hasMatch(url);
+}

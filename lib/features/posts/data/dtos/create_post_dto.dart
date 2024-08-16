@@ -17,6 +17,16 @@ class CreateStep {
       medias: List<String>.from(map['medias']),
     );
   }
+
+  CreateStep copyWith({
+    String? content,
+    List<String>? medias,
+  }) {
+    return CreateStep(
+      content: content ?? this.content,
+      medias: medias ?? this.medias,
+    );
+  }
 }
 
 class CreatePostDto {
@@ -64,6 +74,28 @@ class CreatePostDto {
       ingredients: List<String>.from(map['ingredients']),
       steps: List<CreateStep>.from(
           map['steps']?.map((x) => CreateStep.fromJson(x))),
+    );
+  }
+
+  CreatePostDto copyWith({
+    String? name,
+    String? image,
+    int? nopEat,
+    String? category,
+    String? prepareTime,
+    String? ownerId,
+    List<String>? ingredients,
+    List<CreateStep>? steps,
+  }) {
+    return CreatePostDto(
+      name: name ?? this.name,
+      image: image ?? this.image,
+      nopEat: nopEat ?? this.nopEat,
+      category: category ?? this.category,
+      prepareTime: prepareTime ?? this.prepareTime,
+      ownerId: ownerId ?? this.ownerId,
+      ingredients: ingredients ?? this.ingredients,
+      steps: steps ?? this.steps,
     );
   }
 }

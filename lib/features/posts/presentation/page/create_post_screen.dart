@@ -1,4 +1,5 @@
 import 'package:cooknow/core/exceptions/app_exception.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
@@ -10,6 +11,7 @@ import 'package:cooknow/features/posts/presentation/widget/create_post_step.dart
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CreatePostScreen extends ConsumerStatefulWidget {
   const CreatePostScreen({super.key});
@@ -45,6 +47,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
 
   Future<void> _submit() async {
     try {
+      if (!_checkValid()) {
+        showError(context, 'Vui lòng điền đầy đủ thông tin');
+        return;
+      }
       final currentUser = ref.read(userRepositoryProvider).currentAccount;
       final dto = CreatePostDto(
         name: nameDish,
@@ -53,8 +59,12 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
         category: 'Món ăn',
         prepareTime: timeCooking,
         ownerId: currentUser!.id,
-        ingredients: listIngredient.map((e) => e.text!).toList(),
+        ingredients: listIngredient
+            .where((e) => e.text?.isNotEmpty ?? false)
+            .map((e) => e.text!)
+            .toList(),
         steps: listStep
+            .where((e) => e.text?.isNotEmpty ?? false || e.medias!.isNotEmpty)
             .map((step) => CreateStep.fromJson({
                   'content': step.text,
                   'medias': step.medias!.map((m) => m.path)
@@ -64,9 +74,49 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
       await ref
           .read(createPostScreenControllerProvider.notifier)
           .createPost(dto);
+
+      // Reset state and navigate to home
+      if (mounted) {
+        ref.read(createPostScreenControllerProvider.notifier).resetState();
+        listIngredient.clear();
+        listStep.clear();
+        listIngredient.addAll(
+            List<ing.Item>.generate(2, (int index) => ing.Item(index, '')));
+        listStep.addAll(List<step.Item>.generate(
+            2, (int index) => step.Item(index, '', {})));
+        _previousImagePath = null;
+        _nameDish.text = '';
+        _nopEating.text = '';
+        _timeCooking.text = '';
+        _node.requestFocus(FocusNode());
+        context.go(RouteName.home);
+      }
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
     } on Exception catch (e) {
-      if (mounted) showError(context, (e as AppException).message);
+      if (mounted) showError(context, 'Có lỗi xảy ra: $e');
     }
+  }
+
+  bool _checkValid() {
+    return _previousImagePath?.value?.first != 'assets/create_post_image.png' &&
+        _nameDish.text.isNotEmpty &&
+        _nopEating.text.isNotEmpty &&
+        _timeCooking.text.isNotEmpty &&
+        listIngredient.any((e) => e.text?.isNotEmpty ?? false);
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    _node.dispose();
+    _nameDish.dispose();
+    _nopEating.dispose();
+    _timeCooking.dispose();
+    _previousImagePath = null;
+    listIngredient.clear();
+    listStep.clear();
+    super.dispose();
   }
 
   @override
@@ -165,6 +215,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
 
               // Add CreatePostIngredient
               ing.CreatePostIngredient(items: listIngredient),
@@ -177,10 +228,12 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
             ],
           ),
         ),
-        bottomSheet: CustomButton(
-          "Đăng tải",
-          onPressed: controller.isLoading ? null : _submit,
-        ),
+        bottomSheet: controller.isLoading
+            ? const LinearProgressIndicator()
+            : CustomButton(
+                "Đăng tải",
+                onPressed: controller.isLoading ? null : _submit,
+              ),
       ),
     );
   }

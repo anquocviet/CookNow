@@ -1,3 +1,4 @@
+import 'package:cooknow/core/service/firebase_service.dart';
 import 'package:cooknow/core/service/image_pick_service.dart';
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
@@ -14,6 +15,18 @@ class PostService {
 
   Future<void> createPost(CreatePostDto dto) async {
     final postRepository = ref.read(postRepositoryProvider);
+    final firebase = ref.read(firebaseServiceProvider);
+    final imagePost = await firebase
+        .uploadFile(XFile(dto.image, name: dto.image.split('/').last));
+    dto = dto.copyWith(image: imagePost);
+    for (var step in dto.steps) {
+      final List<Future<String>> listFeatureMedia = step.medias
+          .map((media) async => await firebase
+              .uploadFile(XFile(media, name: media.split('/').last)))
+          .toList();
+      final listMedia = await Future.wait(listFeatureMedia);
+      dto.steps[dto.steps.indexOf(step)] = step.copyWith(medias: listMedia);
+    }
     await postRepository.createPost(dto);
   }
 

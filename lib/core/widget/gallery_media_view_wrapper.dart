@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
+import 'package:cooknow/core/utils/check_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -47,13 +49,11 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
 
   @override
   void initState() {
-    const String regexCheckVideo = r'^(mp4|mov)$';
     _videoPlayerControllers = widget.galleryItems
-        .where(
-          (e) => RegExp(regexCheckVideo, caseSensitive: false)
-              .hasMatch(e.split('.').last),
-        )
-        .map((e) => VideoPlayerController.file(File(e)))
+        .where((e) => isVideo(e))
+        .map((e) => isLinkOnline(e)
+            ? VideoPlayerController.networkUrl(Uri.parse(e))
+            : VideoPlayerController.file(File(e)))
         .toList();
     _chewieControllers = _videoPlayerControllers
         .map((e) => ChewieController(videoPlayerController: e))
@@ -64,9 +64,14 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
 
   @override
   dispose() {
-    _videoPlayerControllers.forEach((element) => element.dispose());
+    for (var element in _videoPlayerControllers) {
+      log('GalleryMediaViewWrapper dispose controller');
+      element.dispose();
+    }
     _videoPlayerControllers.clear();
-    _chewieControllers.forEach((element) => element.dispose());
+    for (var element in _chewieControllers) {
+      element.dispose();
+    }
     _chewieControllers.clear();
     super.dispose();
   }
@@ -127,7 +132,7 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final String item = widget.galleryItems[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: AssetImage(item),
+      imageProvider: isLinkOnline(item) ? NetworkImage(item) : AssetImage(item),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
