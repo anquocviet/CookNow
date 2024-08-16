@@ -35,18 +35,19 @@ class CommentRepositoryImp implements CommentRepository {
 
   @override
   Future<void> fetchCommentOfPost(String postId) => _getData(
-        query: client.query$GetCommentsByPostId(
-          Options$Query$GetCommentsByPostId(
-            variables: Variables$Query$GetCommentsByPostId(
-              postId: postId,
-            ),
-            fetchPolicy: FetchPolicy.noCache,
+      query: client.query$GetCommentsByPostId(
+        Options$Query$GetCommentsByPostId(
+          variables: Variables$Query$GetCommentsByPostId(
+            postId: postId,
           ),
+          fetchPolicy: FetchPolicy.noCache,
         ),
-        builder: (data) => _listCommentState.value = data['getCommentsByPostId']
-            .map<Comment?>((e) => Comment.fromJson(e))
-            .toList(),
-      );
+      ),
+      builder: (data) {
+        final result = (data as Query$GetCommentsByPostId).getCommentsByPostId;
+        _listCommentState.value =
+            result.map((e) => Comment.fromJson(e.toJson())).toList();
+      });
 
   @override
   Future<void> updateComment(String id, String content) {

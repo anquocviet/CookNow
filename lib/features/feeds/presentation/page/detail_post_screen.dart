@@ -1,8 +1,12 @@
+import 'package:cooknow/core/widget/custom_text_field.dart';
+import 'package:cooknow/features/feeds/application/comment_service.dart';
+import 'package:cooknow/features/posts/domain/comment/comment.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/posts/presentation/widget/media_step.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailPostScreen extends ConsumerWidget {
   const DetailPostScreen({super.key, required this.post});
@@ -11,12 +15,23 @@ class DetailPostScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(commentServiceProvider).fetchCommentOfPost(post.id);
+
+    final commentService = ref.watch(commentServiceProvider);
+    final streamListComment = commentService.watchListComment();
+
     return Scaffold(
       body: NestedScrollView(
         floatHeaderSlivers: true,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  context.canPop() ? context.pop() : context.go('/feeds');
+                },
+              ),
               expandedHeight: 300,
               floating: false,
               pinned: true,
@@ -227,10 +242,83 @@ class DetailPostScreen extends ConsumerWidget {
                     )
                     .values
                     .toList(),
-              )
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.comment_outlined,
+                    size: 28,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Bình luận (${post.qtyComments})",
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              StreamBuilder(
+                stream: streamListComment,
+                builder: (context, snapshot) {
+                  final List<Comment?> comments = snapshot.data ?? [];
+                  return Column(
+                    children: comments
+                        .map(
+                          (comment) => ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: CircleAvatar(
+                              radius: 20,
+                              child: Image.network(
+                                comment!.avatar,
+                              ),
+                            ),
+                            title: Text(
+                              comment.name,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            subtitle: Text(
+                              comment.content,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
             ],
           ),
         ),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(width: 4),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: const CustomTextField(
+                'Viết bình luận...',
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton.filledTonal(
+            onPressed: () {},
+            icon: const Icon(Icons.send),
+          ),
+        ],
       ),
     );
   }

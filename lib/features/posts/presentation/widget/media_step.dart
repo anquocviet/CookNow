@@ -34,7 +34,7 @@ class _MediaStepState extends State<MediaStep> {
           _controller = VideoPlayerController.networkUrl(
             Uri.parse(widget.currentPath),
           )..initialize().then((_) {
-              setState(() {});
+              if (mounted) setState(() {});
             });
         } else {
           _controller = VideoPlayerController.file(
@@ -66,7 +66,9 @@ class _MediaStepState extends State<MediaStep> {
 
   @override
   void dispose() {
-    if (_isVideo.value) _controller.dispose();
+    if (_isVideo.value) {
+      _controller.dispose();
+    }
     _isVideo.dispose();
     super.dispose();
   }

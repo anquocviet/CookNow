@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
@@ -63,9 +64,14 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
 
   @override
   dispose() {
-    _videoPlayerControllers.forEach((element) => element.dispose());
+    for (var element in _videoPlayerControllers) {
+      log('GalleryMediaViewWrapper dispose controller');
+      element.dispose();
+    }
     _videoPlayerControllers.clear();
-    _chewieControllers.forEach((element) => element.dispose());
+    for (var element in _chewieControllers) {
+      element.dispose();
+    }
     _chewieControllers.clear();
     super.dispose();
   }
