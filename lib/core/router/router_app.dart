@@ -143,7 +143,10 @@ GoRouter goRouter(GoRouterRef ref) {
                         GoRoute(
                           path: RouteName.detailPost,
                           builder: (context, state) => DetailPostScreen(
-                            post: state.extra as Post,
+                            post: (state.extra as Map<String, dynamic>)['post']
+                                as Post,
+                            isScrollToComment: (state.extra as Map<String,
+                                dynamic>)['isScrollToComment'] as bool,
                           ),
                         )
                       ]

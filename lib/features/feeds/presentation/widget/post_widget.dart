@@ -32,6 +32,13 @@ class _PostState extends ConsumerState<PostWidget> {
     }
   }
 
+  void _navigateToPostDetail({bool isScrollToComment = false}) {
+    context.push('${RouteName.home}${RouteName.detailPost}', extra: {
+      'post': widget.post,
+      'isScrollToComment': isScrollToComment,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Post post = widget.post;
@@ -61,8 +68,7 @@ class _PostState extends ConsumerState<PostWidget> {
             ],
           ),
           GestureDetector(
-            onTap: () => context
-                .push('${RouteName.home}${RouteName.detailPost}', extra: post),
+            onTap: _navigateToPostDetail,
             child: Column(
               children: [
                 Text(post.name),
@@ -146,7 +152,8 @@ class _PostState extends ConsumerState<PostWidget> {
                             : null,
                   )),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () =>
+                      _navigateToPostDetail(isScrollToComment: true),
                   icon: const Icon(
                     Icons.comment_outlined,
                   )),
