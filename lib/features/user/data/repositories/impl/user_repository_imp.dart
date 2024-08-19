@@ -8,7 +8,6 @@ import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
 import 'package:cooknow/features/user/data/repositories/user_repository.dart';
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,7 +21,6 @@ class UserRepositoryImp implements UserRepository {
   final _userState = ims.InMemoryStore<User?>(null);
   User? get currentUser => _userState.value;
   Stream<User?> userStateChanges() => _userState.stream;
-  User? get currentAccount => _userState.value;
 
   @override
   Future<User> fetchUser(String id) => _getData(
@@ -41,10 +39,10 @@ class UserRepositoryImp implements UserRepository {
   Future<void> fetchUserWhenLogin(String id) => _getData(
         query: client.query$User(
           Options$Query$User(
-            variables: Variables$Query$User(
-              id: id,
-            ),
-          ),
+              variables: Variables$Query$User(
+                id: id,
+              ),
+              fetchPolicy: FetchPolicy.noCache),
         ),
         builder: (data) {
           User user = User.fromJson((data as Query$User).user.toJson());
@@ -78,16 +76,12 @@ class UserRepositoryImp implements UserRepository {
       });
 
   @override
-  Future<void> setAccount(Account account) async {
-    _userState.value = _userState.value!.copyWith(account: account);
-  }
-
-  @override
   Stream<User?> get watchUser => _userState.stream;
 
   @override
   Future<void> dispose() async {
     _userState.value = null;
+    _userState.close();
   }
 
   Future<T> _getData<T>({
@@ -96,6 +90,7 @@ class UserRepositoryImp implements UserRepository {
   }) async {
     try {
       final result = await query;
+      log(result.toString());
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
       log(error, name: 'UserRepositoryImp');

@@ -8,6 +8,9 @@ query User($id: String!) {
     bio
     email
     phone
+    account {
+      username
+    }
     avatar
     date_created
     date_closed

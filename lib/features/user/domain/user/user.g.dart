@@ -12,9 +12,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       gender: (json['gender'] as num).toInt(),
       age: (json['age'] as num).toInt(),
       living: json['living'] as String,
-      account: json['account'] == null
-          ? null
-          : Account.fromJson(json['account'] as Map<String, dynamic>),
+      account: Account.fromJson(json['account'] as Map<String, dynamic>),
       bio: json['bio'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
@@ -48,4 +46,14 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'following': instance.following,
       'followers': instance.followers,
       'blocks': instance.blocks,
+    };
+
+_$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
+    _$AccountImpl(
+      username: json['username'] as String,
+    );
+
+Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
+    <String, dynamic>{
+      'username': instance.username,
     };

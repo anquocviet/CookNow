@@ -2,7 +2,6 @@ import 'package:cooknow/core/service/firebase_service.dart';
 import 'package:cooknow/core/service/image_pick_service.dart';
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,11 +37,6 @@ class UserService {
   Stream<User?> watchUser() {
     final userRepository = ref.read(userRepositoryProvider);
     return userRepository.watchUser;
-  }
-
-  Future<void> setAccount(Account account) async {
-    final userRepository = ref.read(userRepositoryProvider);
-    await userRepository.setAccount(account);
   }
 
   Future<void> changeAvatar() async {

@@ -55,3 +55,31 @@ query PostsByOwner($owner_id: String!) {
     qty_comments
   }
 }
+
+mutation UpdatePost($data: UpdatePostDto!) {
+  updatePost(data: $data) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    category
+    ingredients
+    steps {
+      content
+      medias
+    }
+  }
+}
+
+mutation UpdateEmojiOfPost($data: UpdateEmojiDto!) {
+  updateEmojiOfPost(data: $data) {
+    id
+    name
+    emojis {
+      k
+      v
+      qty
+    }
+  }
+}

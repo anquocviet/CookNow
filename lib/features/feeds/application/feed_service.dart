@@ -13,6 +13,11 @@ class FeedService {
     await postRepository.fetchPostOfUser(id);
   }
 
+  Future<List<Post>> getPostOfUser(String id) async {
+    final postRepository = ref.read(postRepositoryProvider);
+    return await postRepository.getPostOfUser(id);
+  }
+
   List<Post?> getListPost() {
     final postRepository = ref.read(postRepositoryProvider);
     return postRepository.posts;

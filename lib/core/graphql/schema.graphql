@@ -92,8 +92,9 @@ type Mutation {
   updateUser(data: UpdateUserDto!): User!
   deleteUser(id: String!): User!
   createPost(data: CreatePostDto!): Post!
-  updatePost(id: String!, data: UpdatePostDto!): Post!
+  updatePost(data: UpdatePostDto!): Post!
   deletePost(id: String!): Post!
+  updateEmojiOfPost(data: UpdateEmojiDto!): Post!
   createComment(data: CreateCommentDto!): Comment!
   updateComment(id: String!, data: UpdateCommentDto!): Comment!
   deleteComment(id: String!): Comment!
@@ -129,12 +130,20 @@ input CreateStepDto {
 }
 
 input UpdatePostDto {
+  id: String!
   name: String!
   image: String!
   nop_eat: Float!
   prepare_time: String!
   category: String!
   ingredients: [String!]!
+  steps: [CreateStepDto!]!
+}
+
+input UpdateEmojiDto {
+  postId: String!
+  userId: String!
+  typeEmoji: String!
 }
 
 input CreateCommentDto {

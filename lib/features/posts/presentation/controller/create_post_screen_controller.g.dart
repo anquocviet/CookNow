@@ -7,7 +7,7 @@ part of 'create_post_screen_controller.dart';
 // **************************************************************************
 
 String _$createPostScreenControllerHash() =>
-    r'5e365c9f8b72e00c4216e83a61ca39c3be386564';
+    r'60f2be88d2c884c36b600f9932f1175014340dd2';
 
 /// See also [CreatePostScreenController].
 @ProviderFor(CreatePostScreenController)
@@ -24,7 +24,7 @@ final createPostScreenControllerProvider =
 
 typedef _$CreatePostScreenController = AutoDisposeAsyncNotifier<void>;
 String _$valueCreatePostScreenControllerHash() =>
-    r'85b747bb076e86c00cbdca7d10506eb4773eab7f';
+    r'a632c5bbbb890744dbbf6d8e970fd2032c3f0a17';
 
 /// See also [ValueCreatePostScreenController].
 @ProviderFor(ValueCreatePostScreenController)
