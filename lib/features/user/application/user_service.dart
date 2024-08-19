@@ -1,5 +1,7 @@
 import 'package:cooknow/core/service/firebase_service.dart';
 import 'package:cooknow/core/service/image_pick_service.dart';
+import 'package:cooknow/core/utils/decode_token.dart';
+import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:cooknow/features/user/domain/account/account.dart';
@@ -21,8 +23,11 @@ class UserService {
   }
 
   Future<void> fetchUserWhenLogin(String id) async {
+    final authService = ref.read(authServiceProvider);
     final userRepository = ref.read(userRepositoryProvider);
     await userRepository.fetchUserWhenLogin(id);
+    Account account = Account.fromJson(decodeToken(await authService.token));
+    await setAccount(account);
   }
 
   Future<void> disposeUser() async {

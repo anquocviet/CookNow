@@ -57,21 +57,31 @@ class _PostState extends ConsumerState<PostWidget> {
                   post.owner.avatar,
                 ),
               ),
-              Column(
-                children: [
-                  Text(post.owner.name),
-                  const Text('2 hours ago'),
-                ],
+              const SizedBox(width: 8),
+              Text(
+                post.owner.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
               ),
               const Spacer(),
               IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
             ],
           ),
+          const SizedBox(height: 8),
           GestureDetector(
             onTap: _navigateToPostDetail,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(post.name),
+                Text(
+                  post.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
@@ -125,9 +135,9 @@ class _PostState extends ConsumerState<PostWidget> {
                       children: [
                         if (post.qtyComments != 0)
                           Text('${post.qtyComments} bình luận'),
-                        const SizedBox(width: 4),
-                        if (post.qtyComments != 0)
-                          const Text('10 lượt chia sẻ'),
+                        // const SizedBox(width: 4),
+                        // if (post.qtyComments != 0)
+                        //   const Text('10 lượt chia sẻ'),
                       ],
                     ),
                   ],

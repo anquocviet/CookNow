@@ -41,10 +41,10 @@ class UserRepositoryImp implements UserRepository {
   Future<void> fetchUserWhenLogin(String id) => _getData(
         query: client.query$User(
           Options$Query$User(
-            variables: Variables$Query$User(
-              id: id,
-            ),
-          ),
+              variables: Variables$Query$User(
+                id: id,
+              ),
+              fetchPolicy: FetchPolicy.noCache),
         ),
         builder: (data) {
           User user = User.fromJson((data as Query$User).user.toJson());
@@ -88,6 +88,7 @@ class UserRepositoryImp implements UserRepository {
   @override
   Future<void> dispose() async {
     _userState.value = null;
+    _userState.close();
   }
 
   Future<T> _getData<T>({

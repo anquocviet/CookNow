@@ -11,3 +11,17 @@ query GetCommentsByPostId($postId: String!) {
     date_time_comment
   }
 }
+
+mutation CreateComment($data: CreateCommentDto!) {
+  createComment(data: $data) {
+    id
+    user_id
+    username
+    name
+    avatar
+    post_id
+    content
+    image
+    date_time_comment
+  }
+}

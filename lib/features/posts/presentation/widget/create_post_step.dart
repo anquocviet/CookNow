@@ -3,12 +3,11 @@ import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/posts/presentation/widget/media_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Item {
   int? item;
   String? text;
-  final Set<XFile>? medias;
+  final Set<String>? medias;
 
   Item(this.item, this.text, this.medias);
 }
@@ -30,7 +29,7 @@ class _CreatePostStepState extends ConsumerState<CreatePostStep> {
           .chooseMedia(true, type == 'video');
       if (chooseMedia.isNotEmpty) {
         setState(() {
-          widget.items[index].medias!.addAll(chooseMedia.map((e) => XFile(e)));
+          widget.items[index].medias!.addAll(chooseMedia);
         });
       }
     } catch (e) {
@@ -136,10 +135,8 @@ class _CreatePostStepState extends ConsumerState<CreatePostStep> {
                           itemCount: items[index].medias!.length,
                           shrinkWrap: true,
                           itemBuilder: ((context, indexMedia) {
-                            final List<String> currentMedias = items[index]
-                                .medias!
-                                .map((e) => e.path)
-                                .toList();
+                            final List<String> currentMedias =
+                                items[index].medias!.toList();
                             return Card(
                               margin: const EdgeInsets.all(4),
                               child: ClipRRect(

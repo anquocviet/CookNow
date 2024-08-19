@@ -12,15 +12,16 @@ import 'package:cooknow/features/authentication/presentation/page/register/regis
 import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
 import 'package:cooknow/features/authentication/presentation/page/welcome_screen.dart';
+import 'package:cooknow/features/feeds/presentation/page/detail_emoji_post_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/detail_post_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
+import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:cooknow/features/user/presentation/page/change_profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/profile_screen.dart';
 import 'package:cooknow/features/user/presentation/page/setting_screen.dart';
@@ -33,6 +34,7 @@ part 'router_app.g.dart';
 class RouteName {
   static const home = '/';
   static const detailPost = 'detail-post';
+  static const detailEmojiPost = 'detail-emoji-post';
   static const search = '/search';
   static const createPost = '/create-post';
   static const notification = '/notification';
@@ -79,7 +81,7 @@ GoRouter goRouter(GoRouterRef ref) {
       authService.validateToken().then((_) async {
         final decodedToken = decodeToken(token);
         await userService.fetchUserWhenLogin(decodedToken['id']);
-        await userService.setAccount(Account.fromJson(decodedToken));
+        // await userService.setAccount(Account.fromJson(decodedToken));
       }).catchError((error) {
         if (error is TokenExpiredException) {
           showError(_key.currentContext!, error.message);
@@ -147,6 +149,12 @@ GoRouter goRouter(GoRouterRef ref) {
                                 as Post,
                             isScrollToComment: (state.extra as Map<String,
                                 dynamic>)['isScrollToComment'] as bool,
+                          ),
+                        ),
+                        GoRoute(
+                          path: RouteName.detailEmojiPost,
+                          builder: (context, state) => DetailEmojiPostScreen(
+                            emojis: state.extra as List<Emoji>,
                           ),
                         )
                       ]

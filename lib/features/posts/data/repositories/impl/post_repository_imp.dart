@@ -8,9 +8,11 @@ import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
+import 'package:cooknow/features/posts/data/dtos/update_post_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/post_repository.dart';
 import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/features/posts/domain/step/step.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -79,6 +81,38 @@ class PostRepositoryImp implements PostRepository {
               final listEmoji =
                   result.emojis.map((e) => Emoji.fromJson(e.toJson())).toList();
               return e?.copyWith(emojis: listEmoji);
+            }
+            return e;
+          }).toList();
+        },
+      );
+
+  @override
+  Future<void> updatePost(UpdatePostDto dto) => _getData(
+        query: client.mutate$UpdatePost(
+          Options$Mutation$UpdatePost(
+            variables: Variables$Mutation$UpdatePost(
+              data: Input$UpdatePostDto.fromJson(
+                dto.toJson(),
+              ),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Mutation$UpdatePost).updatePost;
+          _listPostState.value = _listPostState.value.map((e) {
+            if (e?.id == result.id) {
+              return e!.copyWith(
+                name: result.name,
+                image: result.image,
+                nopEat: result.nop_eat.toInt(),
+                category: result.category,
+                prepareTime: result.prepare_time,
+                ingredients: result.ingredients,
+                steps:
+                    result.steps.map((e) => Step.fromJson(e.toJson())).toList(),
+              );
             }
             return e;
           }).toList();

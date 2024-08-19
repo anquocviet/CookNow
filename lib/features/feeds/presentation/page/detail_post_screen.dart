@@ -1,17 +1,23 @@
 import 'package:cooknow/core/exceptions/app_exception.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/custom_text_field.dart';
+import 'package:cooknow/core/widget/gallery_media_view_wrapper.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/application/comment_service.dart';
+import 'package:cooknow/features/feeds/presentation/controller/detail_post_screen_controller.dart';
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
+import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/domain/comment/comment.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/posts/presentation/widget/media_step.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
@@ -29,14 +35,62 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 
 class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
   final _commentKey = GlobalKey();
+  final _commentController = TextEditingController();
+
+  String get commentContent => _commentController.text;
 
   @override
   void initState() {
-    super.initState();
+    ref.read(commentServiceProvider).fetchCommentOfPost(widget.post.id);
     if (widget.isScrollToComment) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollToComment();
       });
+    }
+    super.initState();
+  }
+
+  void _viewImage(List<String> listPath, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GalleryMediaViewWrapper(
+          initialIndex: index,
+          galleryItems: listPath,
+          scrollDirection: Axis.horizontal,
+          backgroundDecoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openDetailEmojiPostScreen() {
+    context.push(
+      '${RouteName.home}${RouteName.detailEmojiPost}',
+      extra: widget.post.emojis,
+    );
+  }
+
+  String _timeAgoSinceDate(DateTime specificTime) {
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(specificTime);
+
+    if (difference.inDays > 365) {
+      int years = (difference.inDays / 365).floor();
+      return '$years năm trước';
+    } else if (difference.inDays > 30) {
+      int months = (difference.inDays / 30).floor();
+      return '$months tháng trước';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} ngày trước';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} giờ trước';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} phút trước';
+    } else {
+      return 'Mới đây';
     }
   }
 
@@ -45,6 +99,25 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     try {
       await ref.read(feedControllerProvider.notifier).reactToPost(
           UpdateEmojiDto(postId: postId, userId: userId, emoji: emoji));
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
+  Future<void> _commentToPost() async {
+    try {
+      final dto = CreateCommentDto(
+        postId: widget.post.id,
+        userId: ref.read(userRepositoryProvider).currentAccount?.id ?? "",
+        content: commentContent,
+        dateTimeComment: DateTime.now().toIso8601String(),
+      );
+      await ref
+          .read(detailPostScreenControllerProvider.notifier)
+          .commentToPost(dto);
+      _commentController.clear();
     } on AppException catch (e) {
       if (mounted) showError(context, e.message);
     } catch (e) {
@@ -68,8 +141,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.read(commentServiceProvider).fetchCommentOfPost(widget.post.id);
     final controllerState = ref.watch(feedControllerProvider);
+    final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
     final streamListComment = commentService.watchListComment();
     final user = ref.watch(userRepositoryProvider).currentAccount;
@@ -86,20 +159,37 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                   context.canPop() ? context.pop() : context.go('/feeds');
                 },
               ),
+              centerTitle: false,
+              title: Text(widget.post.name),
               actions: [
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.bookmark_border),
                 ),
+                if (user!.id == widget.post.owner.userId)
+                  IconButton(
+                    onPressed: () {
+                      showCupertinoModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return CreatePostScreen(post: widget.post);
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.edit),
+                  ),
               ],
               expandedHeight: 300,
               floating: false,
               pinned: true,
               forceElevated: innerBoxIsScrolled,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.network(
-                  widget.post.image,
-                  fit: BoxFit.cover,
+                background: GestureDetector(
+                  onTap: () => _viewImage([widget.post.image], 0),
+                  child: Image.network(
+                    widget.post.image,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -166,9 +256,12 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                             },
                           ),
                         ),
-                        Text('${widget.post.emojis.length} luợt thích',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        GestureDetector(
+                          onTap: _openDetailEmojiPostScreen,
+                          child: Text('${widget.post.emojis.length} luợt thích',
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w600)),
+                        ),
                       ])
                     : const Text(
                         'Chưa có tương tác',
@@ -276,6 +369,9 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                             minLeadingWidth: 0,
                             contentPadding: EdgeInsets.zero,
                             leading: Container(
+                              margin: step.medias.isNotEmpty
+                                  ? const EdgeInsets.only(top: 0)
+                                  : const EdgeInsets.only(top: 6),
                               width: 24,
                               height: 24,
                               decoration: const BoxDecoration(
@@ -302,7 +398,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                               ),
                             ),
                             subtitle: SizedBox(
-                              height: 100,
+                              height: 100 * step.medias.length.toDouble(),
                               child: ListView.builder(
                                 itemCount: step.medias.length,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -349,17 +445,21 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: CustomTextField(
                         'Viết bình luận...',
-                        contentPadding: EdgeInsets.all(8),
+                        contentPadding: const EdgeInsets.all(8),
+                        controller: _commentController,
+                        onChanged: (text) =>
+                            setState(() => _commentController.text = text),
                       ),
                     ),
                     const SizedBox(width: 8),
-                    IconButton.filledTonal(
-                      onPressed: () {},
-                      icon: const Icon(Icons.send),
-                    ),
+                    if (commentContent.isNotEmpty)
+                      IconButton.filledTonal(
+                        onPressed: state.isLoading ? null : _commentToPost,
+                        icon: const Icon(Icons.send, size: 20),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -386,11 +486,23 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle: Text(
-                                comment.content,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    comment.content,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(
+                                    _timeAgoSinceDate(comment.dateTimeComment),
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           )

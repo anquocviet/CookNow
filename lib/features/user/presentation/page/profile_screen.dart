@@ -36,7 +36,7 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await feedService.fetchPostOfUser(userValue?.id ?? '');
+          await userService.fetchUserWhenLogin(userValue?.id ?? '');
           await feedService.fetchPostOfUser(userValue?.id ?? '');
         },
         child: StreamBuilder<User?>(

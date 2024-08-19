@@ -5,4 +5,5 @@ abstract class CommentRepository {
   Future<void> createComment(CreateCommentDto dto);
   Future<void> updateComment(String id, String content);
   Future<void> deleteComment(String id);
+  Future<void> dispose();
 }

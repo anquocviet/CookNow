@@ -867,26 +867,32 @@ class _CopyWithStubImpl$Input$CreateStepDto<TRes>
 
 class Input$UpdatePostDto {
   factory Input$UpdatePostDto({
+    required String id,
     required String name,
     required String image,
     required double nop_eat,
     required String prepare_time,
     required String category,
     required List<String> ingredients,
+    required List<Input$CreateStepDto> steps,
   }) =>
       Input$UpdatePostDto._({
+        r'id': id,
         r'name': name,
         r'image': image,
         r'nop_eat': nop_eat,
         r'prepare_time': prepare_time,
         r'category': category,
         r'ingredients': ingredients,
+        r'steps': steps,
       });
 
   Input$UpdatePostDto._(this._$data);
 
   factory Input$UpdatePostDto.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
     final l$name = data['name'];
     result$data['name'] = (l$name as String);
     final l$image = data['image'];
@@ -900,10 +906,16 @@ class Input$UpdatePostDto {
     final l$ingredients = data['ingredients'];
     result$data['ingredients'] =
         (l$ingredients as List<dynamic>).map((e) => (e as String)).toList();
+    final l$steps = data['steps'];
+    result$data['steps'] = (l$steps as List<dynamic>)
+        .map((e) => Input$CreateStepDto.fromJson((e as Map<String, dynamic>)))
+        .toList();
     return Input$UpdatePostDto._(result$data);
   }
 
   Map<String, dynamic> _$data;
+
+  String get id => (_$data['id'] as String);
 
   String get name => (_$data['name'] as String);
 
@@ -917,8 +929,13 @@ class Input$UpdatePostDto {
 
   List<String> get ingredients => (_$data['ingredients'] as List<String>);
 
+  List<Input$CreateStepDto> get steps =>
+      (_$data['steps'] as List<Input$CreateStepDto>);
+
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
+    final l$id = id;
+    result$data['id'] = l$id;
     final l$name = name;
     result$data['name'] = l$name;
     final l$image = image;
@@ -931,6 +948,8 @@ class Input$UpdatePostDto {
     result$data['category'] = l$category;
     final l$ingredients = ingredients;
     result$data['ingredients'] = l$ingredients.map((e) => e).toList();
+    final l$steps = steps;
+    result$data['steps'] = l$steps.map((e) => e.toJson()).toList();
     return result$data;
   }
 
@@ -946,6 +965,11 @@ class Input$UpdatePostDto {
       return true;
     }
     if (!(other is Input$UpdatePostDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$name = name;
@@ -985,24 +1009,40 @@ class Input$UpdatePostDto {
         return false;
       }
     }
+    final l$steps = steps;
+    final lOther$steps = other.steps;
+    if (l$steps.length != lOther$steps.length) {
+      return false;
+    }
+    for (int i = 0; i < l$steps.length; i++) {
+      final l$steps$entry = l$steps[i];
+      final lOther$steps$entry = lOther$steps[i];
+      if (l$steps$entry != lOther$steps$entry) {
+        return false;
+      }
+    }
     return true;
   }
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$name = name;
     final l$image = image;
     final l$nop_eat = nop_eat;
     final l$prepare_time = prepare_time;
     final l$category = category;
     final l$ingredients = ingredients;
+    final l$steps = steps;
     return Object.hashAll([
+      l$id,
       l$name,
       l$image,
       l$nop_eat,
       l$prepare_time,
       l$category,
       Object.hashAll(l$ingredients.map((v) => v)),
+      Object.hashAll(l$steps.map((v) => v)),
     ]);
   }
 }
@@ -1017,13 +1057,19 @@ abstract class CopyWith$Input$UpdatePostDto<TRes> {
       _CopyWithStubImpl$Input$UpdatePostDto;
 
   TRes call({
+    String? id,
     String? name,
     String? image,
     double? nop_eat,
     String? prepare_time,
     String? category,
     List<String>? ingredients,
+    List<Input$CreateStepDto>? steps,
   });
+  TRes steps(
+      Iterable<Input$CreateStepDto> Function(
+              Iterable<CopyWith$Input$CreateStepDto<Input$CreateStepDto>>)
+          _fn);
 }
 
 class _CopyWithImpl$Input$UpdatePostDto<TRes>
@@ -1040,15 +1086,18 @@ class _CopyWithImpl$Input$UpdatePostDto<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? id = _undefined,
     Object? name = _undefined,
     Object? image = _undefined,
     Object? nop_eat = _undefined,
     Object? prepare_time = _undefined,
     Object? category = _undefined,
     Object? ingredients = _undefined,
+    Object? steps = _undefined,
   }) =>
       _then(Input$UpdatePostDto._({
         ..._instance._$data,
+        if (id != _undefined && id != null) 'id': (id as String),
         if (name != _undefined && name != null) 'name': (name as String),
         if (image != _undefined && image != null) 'image': (image as String),
         if (nop_eat != _undefined && nop_eat != null)
@@ -1059,7 +1108,19 @@ class _CopyWithImpl$Input$UpdatePostDto<TRes>
           'category': (category as String),
         if (ingredients != _undefined && ingredients != null)
           'ingredients': (ingredients as List<String>),
+        if (steps != _undefined && steps != null)
+          'steps': (steps as List<Input$CreateStepDto>),
       }));
+
+  TRes steps(
+          Iterable<Input$CreateStepDto> Function(
+                  Iterable<CopyWith$Input$CreateStepDto<Input$CreateStepDto>>)
+              _fn) =>
+      call(
+          steps: _fn(_instance.steps.map((e) => CopyWith$Input$CreateStepDto(
+                e,
+                (i) => i,
+              ))).toList());
 }
 
 class _CopyWithStubImpl$Input$UpdatePostDto<TRes>
@@ -1069,14 +1130,18 @@ class _CopyWithStubImpl$Input$UpdatePostDto<TRes>
   TRes _res;
 
   call({
+    String? id,
     String? name,
     String? image,
     double? nop_eat,
     String? prepare_time,
     String? category,
     List<String>? ingredients,
+    List<Input$CreateStepDto>? steps,
   }) =>
       _res;
+
+  steps(_fn) => _res;
 }
 
 class Input$UpdateEmojiDto {

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
 import 'package:cooknow/core/graphql/__generated/comment.graphql.dart';
+import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
@@ -22,10 +23,21 @@ class CommentRepositoryImp implements CommentRepository {
   Stream<List<Comment?>> commentStateChanges() => _listCommentState.stream;
 
   @override
-  Future<void> createComment(CreateCommentDto dto) {
-    // TODO: implement createComment
-    throw UnimplementedError();
-  }
+  Future<void> createComment(CreateCommentDto dto) => _getData(
+      query: client.mutate$CreateComment(
+        Options$Mutation$CreateComment(
+          variables: Variables$Mutation$CreateComment(
+            data: Input$CreateCommentDto.fromJson(dto.toJson()),
+          ),
+        ),
+      ),
+      builder: (data) {
+        final result = (data as Mutation$CreateComment).createComment;
+        _listCommentState.value = [
+          ..._listCommentState.value,
+          Comment.fromJson(result.toJson())
+        ];
+      });
 
   @override
   Future<void> deleteComment(String id) {
@@ -53,6 +65,11 @@ class CommentRepositoryImp implements CommentRepository {
   Future<void> updateComment(String id, String content) {
     // TODO: implement updateComment
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> dispose() async {
+    _listCommentState.close();
   }
 
   Future<T> _getData<T>({
