@@ -36,5 +36,155 @@ final postStateChangesProvider = StreamProvider<List<Post?>>.internal(
 );
 
 typedef PostStateChangesRef = StreamProviderRef<List<Post?>>;
+String _$currentPostStateChangesHash() =>
+    r'81c129bd2ffa13f2c973b6c2e102c49031544c16';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [currentPostStateChanges].
+@ProviderFor(currentPostStateChanges)
+const currentPostStateChangesProvider = CurrentPostStateChangesFamily();
+
+/// See also [currentPostStateChanges].
+class CurrentPostStateChangesFamily extends Family<AsyncValue<Post?>> {
+  /// See also [currentPostStateChanges].
+  const CurrentPostStateChangesFamily();
+
+  /// See also [currentPostStateChanges].
+  CurrentPostStateChangesProvider call(
+    String id,
+  ) {
+    return CurrentPostStateChangesProvider(
+      id,
+    );
+  }
+
+  @override
+  CurrentPostStateChangesProvider getProviderOverride(
+    covariant CurrentPostStateChangesProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'currentPostStateChangesProvider';
+}
+
+/// See also [currentPostStateChanges].
+class CurrentPostStateChangesProvider extends AutoDisposeStreamProvider<Post?> {
+  /// See also [currentPostStateChanges].
+  CurrentPostStateChangesProvider(
+    String id,
+  ) : this._internal(
+          (ref) => currentPostStateChanges(
+            ref as CurrentPostStateChangesRef,
+            id,
+          ),
+          from: currentPostStateChangesProvider,
+          name: r'currentPostStateChangesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$currentPostStateChangesHash,
+          dependencies: CurrentPostStateChangesFamily._dependencies,
+          allTransitiveDependencies:
+              CurrentPostStateChangesFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  CurrentPostStateChangesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    Stream<Post?> Function(CurrentPostStateChangesRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CurrentPostStateChangesProvider._internal(
+        (ref) => create(ref as CurrentPostStateChangesRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<Post?> createElement() {
+    return _CurrentPostStateChangesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CurrentPostStateChangesProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin CurrentPostStateChangesRef on AutoDisposeStreamProviderRef<Post?> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _CurrentPostStateChangesProviderElement
+    extends AutoDisposeStreamProviderElement<Post?>
+    with CurrentPostStateChangesRef {
+  _CurrentPostStateChangesProviderElement(super.provider);
+
+  @override
+  String get id => (origin as CurrentPostStateChangesProvider).id;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

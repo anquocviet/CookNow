@@ -19,8 +19,9 @@ class CreatePostScreenController extends _$CreatePostScreenController {
 
   Future<void> updatePost(UpdatePostDto dto) async {
     final postService = ref.read(postServiceProvider);
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() => postService.updatePost(dto));
+    state = await AsyncValue.guard(
+      () async => await postService.updatePost(dto),
+    );
     if (state.hasError) throw state.error!;
   }
 }
@@ -39,7 +40,7 @@ class ValueCreatePostScreenController
 
   Future<void> chooseMedia({bool? isMultiImage, bool? isVideo}) async {
     final postService = ref.read(postServiceProvider);
-    state = const AsyncLoading();
+    state = const AsyncValue.loading();
     state = await AsyncValue.guard(
         () => postService.chooseMedia(isMultiImage ?? false, isVideo ?? false));
     if (state.hasError) throw state.error!;

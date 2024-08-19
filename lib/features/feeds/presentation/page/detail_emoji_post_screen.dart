@@ -1,7 +1,10 @@
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
+import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailEmojiPostScreen extends ConsumerWidget {
   const DetailEmojiPostScreen({super.key, required this.emojis});
@@ -10,12 +13,14 @@ class DetailEmojiPostScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.read(userRepositoryProvider).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Yêu thích'),
       ),
       body: ListView.builder(
-        itemCount: emojis.length,
+        itemCount: emojis.first.v.length,
         itemBuilder: (context, index) {
           final emoji = emojis[0];
           final user =
@@ -24,6 +29,11 @@ class DetailEmojiPostScreen extends ConsumerWidget {
             future: user,
             builder: (context, snapshot) => snapshot.hasData
                 ? ListTile(
+                    onTap: () => snapshot.data!.id == currentUser?.id
+                        ? context.go(RouteName.profile)
+                        : context.push(
+                            '${RouteName.home}${RouteName.profileUser}',
+                            extra: snapshot.data!.id),
                     leading: CircleAvatar(
                       radius: 20,
                       child: Image.network(

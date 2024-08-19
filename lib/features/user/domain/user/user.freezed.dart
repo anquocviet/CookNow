@@ -25,7 +25,7 @@ mixin _$User {
   int get gender => throw _privateConstructorUsedError;
   int get age => throw _privateConstructorUsedError;
   String get living => throw _privateConstructorUsedError;
-  Account? get account => throw _privateConstructorUsedError;
+  Account get account => throw _privateConstructorUsedError;
   String get bio => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $UserCopyWith<$Res> {
       int gender,
       int age,
       String living,
-      Account? account,
+      Account account,
       String bio,
       String email,
       String phone,
@@ -60,7 +60,7 @@ abstract class $UserCopyWith<$Res> {
       List<String> followers,
       List<String> blocks});
 
-  $AccountCopyWith<$Res>? get account;
+  $AccountCopyWith<$Res> get account;
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? gender = null,
     Object? age = null,
     Object? living = null,
-    Object? account = freezed,
+    Object? account = null,
     Object? bio = null,
     Object? email = null,
     Object? phone = null,
@@ -111,10 +111,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.living
           : living // ignore: cast_nullable_to_non_nullable
               as String,
-      account: freezed == account
+      account: null == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as Account?,
+              as Account,
       bio: null == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
@@ -148,12 +148,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
 
   @override
   @pragma('vm:prefer-inline')
-  $AccountCopyWith<$Res>? get account {
-    if (_value.account == null) {
-      return null;
-    }
-
-    return $AccountCopyWith<$Res>(_value.account!, (value) {
+  $AccountCopyWith<$Res> get account {
+    return $AccountCopyWith<$Res>(_value.account, (value) {
       return _then(_value.copyWith(account: value) as $Val);
     });
   }
@@ -172,7 +168,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       int gender,
       int age,
       String living,
-      Account? account,
+      Account account,
       String bio,
       String email,
       String phone,
@@ -182,7 +178,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       List<String> blocks});
 
   @override
-  $AccountCopyWith<$Res>? get account;
+  $AccountCopyWith<$Res> get account;
 }
 
 /// @nodoc
@@ -200,7 +196,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? gender = null,
     Object? age = null,
     Object? living = null,
-    Object? account = freezed,
+    Object? account = null,
     Object? bio = null,
     Object? email = null,
     Object? phone = null,
@@ -230,10 +226,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.living
           : living // ignore: cast_nullable_to_non_nullable
               as String,
-      account: freezed == account
+      account: null == account
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
-              as Account?,
+              as Account,
       bio: null == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
@@ -275,7 +271,7 @@ class _$UserImpl implements _User {
       required this.gender,
       required this.age,
       required this.living,
-      this.account,
+      required this.account,
       required this.bio,
       required this.email,
       required this.phone,
@@ -301,7 +297,7 @@ class _$UserImpl implements _User {
   @override
   final String living;
   @override
-  final Account? account;
+  final Account account;
   @override
   final String bio;
   @override
@@ -405,7 +401,7 @@ abstract class _User implements User {
       required final int gender,
       required final int age,
       required final String living,
-      final Account? account,
+      required final Account account,
       required final String bio,
       required final String email,
       required final String phone,
@@ -427,7 +423,7 @@ abstract class _User implements User {
   @override
   String get living;
   @override
-  Account? get account;
+  Account get account;
   @override
   String get bio;
   @override
@@ -445,5 +441,138 @@ abstract class _User implements User {
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Account _$AccountFromJson(Map<String, dynamic> json) {
+  return _Account.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Account {
+  String get username => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AccountCopyWith<Account> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AccountCopyWith<$Res> {
+  factory $AccountCopyWith(Account value, $Res Function(Account) then) =
+      _$AccountCopyWithImpl<$Res, Account>;
+  @useResult
+  $Res call({String username});
+}
+
+/// @nodoc
+class _$AccountCopyWithImpl<$Res, $Val extends Account>
+    implements $AccountCopyWith<$Res> {
+  _$AccountCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? username = null,
+  }) {
+    return _then(_value.copyWith(
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AccountImplCopyWith<$Res> implements $AccountCopyWith<$Res> {
+  factory _$$AccountImplCopyWith(
+          _$AccountImpl value, $Res Function(_$AccountImpl) then) =
+      __$$AccountImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String username});
+}
+
+/// @nodoc
+class __$$AccountImplCopyWithImpl<$Res>
+    extends _$AccountCopyWithImpl<$Res, _$AccountImpl>
+    implements _$$AccountImplCopyWith<$Res> {
+  __$$AccountImplCopyWithImpl(
+      _$AccountImpl _value, $Res Function(_$AccountImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? username = null,
+  }) {
+    return _then(_$AccountImpl(
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AccountImpl implements _Account {
+  const _$AccountImpl({required this.username});
+
+  factory _$AccountImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AccountImplFromJson(json);
+
+  @override
+  final String username;
+
+  @override
+  String toString() {
+    return 'Account(username: $username)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AccountImpl &&
+            (identical(other.username, username) ||
+                other.username == username));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, username);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AccountImplCopyWith<_$AccountImpl> get copyWith =>
+      __$$AccountImplCopyWithImpl<_$AccountImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AccountImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Account implements Account {
+  const factory _Account({required final String username}) = _$AccountImpl;
+
+  factory _Account.fromJson(Map<String, dynamic> json) = _$AccountImpl.fromJson;
+
+  @override
+  String get username;
+  @override
+  @JsonKey(ignore: true)
+  _$$AccountImplCopyWith<_$AccountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

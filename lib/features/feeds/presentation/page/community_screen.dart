@@ -12,7 +12,7 @@ class CommunityScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final feedService = ref.watch(feedServiceProvider);
     final listPost = feedService.watchListPost();
-    final user = ref.read(userRepositoryProvider).currentAccount;
+    final user = ref.read(userRepositoryProvider).currentUser;
 
     return Scaffold(
       body: RefreshIndicator(

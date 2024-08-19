@@ -11,28 +11,35 @@ import 'package:go_router/go_router.dart';
 import 'package:tab_container/tab_container.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.userId});
+
+  final String? userId;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userService = ref.watch(userServiceProvider);
     final feedService = ref.watch(feedServiceProvider);
-    final userValue = ref.read(userRepositoryProvider).currentAccount;
-    final Stream<User?> user = userService.watchUser();
+    final userValue = ref.read(userRepositoryProvider).currentUser;
+    final Stream<User?> user = userId == null
+        ? userService.watchUser()
+        : userService.fetchUser(userId!).asStream();
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => context
-                .go('${RouteName.profile}/${RouteName.changeInfoProfile}'),
-            icon: const Icon(Icons.edit),
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () =>
-                context.go('${RouteName.profile}/${RouteName.settings}'),
-          ),
-        ],
+        actions: userId != null
+            ? null
+            : [
+                IconButton(
+                  onPressed: () => context.go(
+                      '${RouteName.profile}/${RouteName.changeInfoProfile}'),
+                  icon: const Icon(Icons.edit),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () =>
+                      context.go('${RouteName.profile}/${RouteName.settings}'),
+                ),
+              ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -84,7 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                             ),
                           ),
                           Text(
-                            '@${user.account?.username}',
+                            '@${user.account.username}',
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black87,
@@ -163,27 +170,29 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
             Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: TabContainer(
-                  tabEdge: TabEdge.top,
-                  selectedTextStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  unselectedTextStyle: const TextStyle(
-                    fontSize: 13.0,
-                  ),
-                  tabs: const [
-                    Text('Bài viết cá nhân'),
-                    Text('Bài viết đã lưu'),
-                  ],
-                  children: const [
-                    TabPersonalPost(),
-                    TabSavedPost(),
-                  ],
-                ),
-              ),
+              child: userId != null
+                  ? TabPersonalPost(user: user)
+                  : AspectRatio(
+                      aspectRatio: 1,
+                      child: TabContainer(
+                        tabEdge: TabEdge.top,
+                        selectedTextStyle: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        unselectedTextStyle: const TextStyle(
+                          fontSize: 13.0,
+                        ),
+                        tabs: const [
+                          Text('Bài viết cá nhân'),
+                          Text('Bài viết đã lưu'),
+                        ],
+                        children: const [
+                          TabPersonalPost(),
+                          TabSavedPost(),
+                        ],
+                      ),
+                    ),
             )
           ],
         ),

@@ -17,7 +17,6 @@ import 'package:cooknow/features/feeds/presentation/page/detail_post_screen.dart
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
 import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
-import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
@@ -39,6 +38,7 @@ class RouteName {
   static const createPost = '/create-post';
   static const notification = '/notification';
   static const profile = '/profile';
+  static const profileUser = 'profile-user'; // Profile of another user
   static const settings = 'settings';
   static const changeInfoProfile = 'change-info-profile';
   static const welcome = '/welcome';
@@ -85,8 +85,10 @@ GoRouter goRouter(GoRouterRef ref) {
       }).catchError((error) {
         if (error is TokenExpiredException) {
           showError(_key.currentContext!, error.message);
+        } else if (error is AppException) {
+          showError(_key.currentContext!, error.message);
         } else {
-          showError(_key.currentContext!, (error as AppException).message);
+          showError(_key.currentContext!, error.toString());
         }
       });
     }
@@ -98,7 +100,7 @@ GoRouter goRouter(GoRouterRef ref) {
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       final path = state.uri.path;
-      if (userRepository.currentAccount != null) {
+      if (userRepository.currentUser != null) {
         if (RouteName.publicRoute.contains(path)) {
           return RouteName.home;
         }
@@ -145,8 +147,8 @@ GoRouter goRouter(GoRouterRef ref) {
                         GoRoute(
                           path: RouteName.detailPost,
                           builder: (context, state) => DetailPostScreen(
-                            post: (state.extra as Map<String, dynamic>)['post']
-                                as Post,
+                            id: (state.extra as Map<String, dynamic>)['id']
+                                as String,
                             isScrollToComment: (state.extra as Map<String,
                                 dynamic>)['isScrollToComment'] as bool,
                           ),
@@ -155,6 +157,12 @@ GoRouter goRouter(GoRouterRef ref) {
                           path: RouteName.detailEmojiPost,
                           builder: (context, state) => DetailEmojiPostScreen(
                             emojis: state.extra as List<Emoji>,
+                          ),
+                        ),
+                        GoRoute(
+                          path: RouteName.profileUser,
+                          builder: (context, state) => ProfileScreen(
+                            userId: state.extra as String,
                           ),
                         )
                       ]

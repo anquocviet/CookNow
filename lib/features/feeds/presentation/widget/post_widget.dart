@@ -34,7 +34,7 @@ class _PostState extends ConsumerState<PostWidget> {
 
   void _navigateToPostDetail({bool isScrollToComment = false}) {
     context.push('${RouteName.home}${RouteName.detailPost}', extra: {
-      'post': widget.post,
+      'id': widget.post.id,
       'isScrollToComment': isScrollToComment,
     });
   }
@@ -42,7 +42,7 @@ class _PostState extends ConsumerState<PostWidget> {
   @override
   Widget build(BuildContext context) {
     final Post post = widget.post;
-    final user = ref.read(userRepositoryProvider).currentAccount;
+    final user = ref.read(userRepositoryProvider).currentUser;
     final controllerState = ref.watch(feedControllerProvider);
 
     return Padding(
@@ -51,18 +51,28 @@ class _PostState extends ConsumerState<PostWidget> {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 20,
-                child: Image.network(
-                  post.owner.avatar,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                post.owner.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18,
+              GestureDetector(
+                onTap: () => post.owner.userId == user?.id
+                    ? context.go(RouteName.profile)
+                    : context.push('${RouteName.home}${RouteName.profileUser}',
+                        extra: post.owner.userId),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      child: Image.network(
+                        post.owner.avatar,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      post.owner.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),
@@ -97,13 +107,18 @@ class _PostState extends ConsumerState<PostWidget> {
                         children: [
                           SizedBox(
                             height: 24,
-                            width: 20 * post.emojis.length.toDouble(),
+                            width: 20 *
+                                (post.emojis.first.v.length > 3
+                                    ? 3
+                                    : post.emojis.first.v.length.toDouble()),
                             child: ListView.separated(
-                              itemCount: post.emojis.length,
+                              itemCount: post.emojis.first.v.length > 3
+                                  ? 3
+                                  : post.emojis.first.v.length,
                               physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                final userId = post.emojis[index].v.first;
+                                final userId = post.emojis.first.v[index];
                                 final user =
                                     ref.watch(fetchUserProvider(userId));
                                 return CircleAvatar(
@@ -128,7 +143,7 @@ class _PostState extends ConsumerState<PostWidget> {
                               },
                             ),
                           ),
-                          Text('${post.emojis.length} luợt thích'),
+                          Text('${post.emojis.first.qty} luợt thích'),
                         ],
                       ),
                     Row(

@@ -86,7 +86,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
         showError(context, 'Vui lòng điền đầy đủ thông tin');
         return;
       }
-      final currentUser = ref.read(userRepositoryProvider).currentAccount;
+      final currentUser = ref.read(userRepositoryProvider).currentUser;
       final dto = CreatePostDto(
         name: nameDish,
         image: _previousImagePath!.asData!.value.first,
@@ -197,10 +197,12 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () {
-                      _submit(false);
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: controller.isLoading
+                        ? null
+                        : () {
+                            _submit(false);
+                            Navigator.of(context).pop();
+                          },
                     child: const Text("Cập nhật",
                         style: TextStyle(color: Colors.black87)),
                   ),
@@ -301,8 +303,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                     "Đăng tải",
                     onPressed: controller.isLoading
                         ? null
-                        : () {
-                            _submit(true);
+                        : () async {
+                            await _submit(true);
                             context.go(RouteName.home);
                           },
                   ),

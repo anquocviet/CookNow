@@ -8,6 +8,7 @@ import 'package:cooknow/features/feeds/presentation/controller/detail_post_scree
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
 import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
+import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
 import 'package:cooknow/features/posts/domain/comment/comment.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
@@ -22,11 +23,11 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
     super.key,
-    required this.post,
+    required this.id,
     this.isScrollToComment = false,
   });
 
-  final Post post;
+  final String id;
   final bool isScrollToComment;
 
   @override
@@ -41,7 +42,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
 
   @override
   void initState() {
-    ref.read(commentServiceProvider).fetchCommentOfPost(widget.post.id);
+    ref.read(commentServiceProvider).fetchCommentOfPost(widget.id);
     if (widget.isScrollToComment) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollToComment();
@@ -66,10 +67,10 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     );
   }
 
-  void _openDetailEmojiPostScreen() {
+  void _openDetailEmojiPostScreen(Post post) {
     context.push(
       '${RouteName.home}${RouteName.detailEmojiPost}',
-      extra: widget.post.emojis,
+      extra: post.emojis,
     );
   }
 
@@ -109,8 +110,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
   Future<void> _commentToPost() async {
     try {
       final dto = CreateCommentDto(
-        postId: widget.post.id,
-        userId: ref.read(userRepositoryProvider).currentAccount?.id ?? "",
+        postId: widget.id,
+        userId: ref.read(userRepositoryProvider).currentUser?.id ?? "",
         content: commentContent,
         dateTimeComment: DateTime.now().toIso8601String(),
       );
@@ -144,376 +145,397 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     final controllerState = ref.watch(feedControllerProvider);
     final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
+    final currentPostState =
+        ref.watch(currentPostStateChangesProvider(widget.id));
     final streamListComment = commentService.watchListComment();
-    final user = ref.watch(userRepositoryProvider).currentAccount;
+    final user = ref.watch(userRepositoryProvider).currentUser;
 
     return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  context.canPop() ? context.pop() : context.go('/feeds');
-                },
-              ),
-              centerTitle: false,
-              title: Text(widget.post.name),
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.bookmark_border),
+      body: currentPostState.when(
+        data: (post) => NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    context.canPop() ? context.pop() : context.go('/feeds');
+                  },
                 ),
-                if (user!.id == widget.post.owner.userId)
+                centerTitle: false,
+                title: Text(post.name),
+                actions: [
                   IconButton(
-                    onPressed: () {
-                      showCupertinoModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return CreatePostScreen(post: widget.post);
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.edit),
+                    onPressed: () {},
+                    icon: const Icon(Icons.bookmark_border),
                   ),
-              ],
-              expandedHeight: 300,
-              floating: false,
-              pinned: true,
-              forceElevated: innerBoxIsScrolled,
-              flexibleSpace: FlexibleSpaceBar(
-                background: GestureDetector(
-                  onTap: () => _viewImage([widget.post.image], 0),
-                  child: Image.network(
-                    widget.post.image,
-                    fit: BoxFit.cover,
+                  if (user!.id == post.owner.userId)
+                    IconButton(
+                      onPressed: () {
+                        showCupertinoModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return CreatePostScreen(post: post);
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                ],
+                expandedHeight: 300,
+                floating: false,
+                pinned: true,
+                forceElevated: innerBoxIsScrolled,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: GestureDetector(
+                    onTap: () => _viewImage([post.image], 0),
+                    child: Image.network(
+                      post.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ];
-        },
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.post.name.toUpperCase(),
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+            ];
+          },
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    post!.name.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 24,
-                      child: Image.network(
-                        widget.post.owner.avatar,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      widget.post.owner.name,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                // Show the number of likes if there are any
-                widget.post.emojis.fold(0, (sum, emoji) => sum + emoji.qty) > 0
-                    ? Row(children: [
-                        SizedBox(
-                          height: 24,
-                          width: 20 * widget.post.emojis.length.toDouble(),
-                          child: ListView.separated(
-                            itemCount: widget.post.emojis.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              final userId = widget.post.emojis[index].v.first;
-                              final user = ref.watch(fetchUserProvider(userId));
-                              return CircleAvatar(
-                                radius: 10,
-                                child: switch (user) {
-                                  AsyncData(:final value) => Image.network(
-                                      value?.avatar ?? "",
-                                    ),
-                                  _ => Image.network(
-                                      "https://www.w3schools.com/w3images/avatar2.png",
-                                    ),
-                                },
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(width: 4);
-                            },
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () => post.owner.userId == user!.id
+                        ? context.go(RouteName.profile)
+                        : context.push(
+                            '${RouteName.home}${RouteName.profileUser}',
+                            extra: post.owner.userId),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 24,
+                          child: Image.network(
+                            post.owner.avatar,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: _openDetailEmojiPostScreen,
-                          child: Text('${widget.post.emojis.length} luợt thích',
-                              style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(width: 12),
+                        Text(
+                          post.owner.name,
+                          style: const TextStyle(fontSize: 20),
                         ),
-                      ])
-                    : const Text(
-                        'Chưa có tương tác',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        onPressed: controllerState.isLoading
-                            ? null
-                            : () => _reactToPost(
-                                widget.post.id, user?.id ?? "", EnumEmoji.love),
-                        icon: Icon(
-                          Icons.favorite,
-                          color: widget.post.emojis
-                                  .any((e) => e.v.any((id) => id == user?.id))
-                              ? Colors.red
-                              : null,
-                        )),
-                    IconButton(
-                        onPressed: _scrollToComment,
-                        icon: const Icon(Icons.comment_outlined)),
-                    IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.ios_share)),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time_outlined),
-                    const SizedBox(width: 8),
-                    Text(
-                      widget.post.prepareTime,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    const Icon(Icons.food_bank_outlined),
-                    const SizedBox(width: 8),
-                    Text(
-                      "Số người ăn: ${widget.post.nopEat}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 26),
-                const Text(
-                  "Nguyên liệu",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: widget.post.ingredients
-                      .map(
-                        (i) => ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          minLeadingWidth: 0,
-                          minTileHeight: 0,
-                          leading: const Text(
-                            "-",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          title: Text(
-                            i,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                  const SizedBox(height: 24),
+                  // Show the number of likes if there are any
+                  post.emojis.fold(0, (sum, emoji) => sum + emoji.qty) <= 0
+                      ? const Text(
+                          'Chưa có tương tác',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        )
+                      : Row(children: [
+                          SizedBox(
+                            height: 24,
+                            width: 25 *
+                                (post.emojis.first.v.length > 3
+                                    ? 3
+                                    : post.emojis.first.v.length.toDouble()),
+                            child: ListView.separated(
+                              itemCount: post.emojis.first.v.length > 3
+                                  ? 3
+                                  : post.emojis.first.v.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                final userId = post.emojis.first.v[index];
+                                final user =
+                                    ref.watch(fetchUserProvider(userId));
+                                return CircleAvatar(
+                                  radius: 10,
+                                  child: switch (user) {
+                                    AsyncData(:final value) => Image.network(
+                                        value?.avatar ?? "",
+                                      ),
+                                    _ => Image.network(
+                                        "https://www.w3schools.com/w3images/avatar2.png",
+                                      ),
+                                  },
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(width: 4);
+                              },
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                ),
-                const SizedBox(height: 26),
-                const Text(
-                  "Hướng dẫn cách làm",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: () => _openDetailEmojiPostScreen(post),
+                            child: Text('${post.emojis.first.qty} luợt thích',
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600)),
+                          ),
+                        ]),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                          onPressed: controllerState.isLoading
+                              ? null
+                              : () => _reactToPost(
+                                  post.id, user?.id ?? "", EnumEmoji.love),
+                          icon: Icon(
+                            Icons.favorite,
+                            color: post.emojis
+                                    .any((e) => e.v.any((id) => id == user?.id))
+                                ? Colors.red
+                                : null,
+                          )),
+                      IconButton(
+                          onPressed: _scrollToComment,
+                          icon: const Icon(Icons.comment_outlined)),
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.ios_share)),
+                    ],
                   ),
-                ),
-                Column(
-                  children: widget.post.steps
-                      .asMap()
-                      .map(
-                        (index, step) => MapEntry(
-                          index,
-                          ListTile(
-                            titleAlignment: ListTileTitleAlignment.top,
-                            minLeadingWidth: 0,
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time_outlined),
+                      const SizedBox(width: 8),
+                      Text(
+                        post.prepareTime,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(Icons.food_bank_outlined),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Số người ăn: ${post.nopEat}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 26),
+                  const Text(
+                    "Nguyên liệu",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: post.ingredients
+                        .map(
+                          (i) => ListTile(
                             contentPadding: EdgeInsets.zero,
-                            leading: Container(
-                              margin: step.medias.isNotEmpty
-                                  ? const EdgeInsets.only(top: 0)
-                                  : const EdgeInsets.only(top: 6),
-                              width: 24,
-                              height: 24,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black,
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '${index + 1}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
+                            minLeadingWidth: 0,
+                            minTileHeight: 0,
+                            leading: const Text(
+                              "-",
+                              style: TextStyle(fontSize: 16),
                             ),
                             title: Text(
-                              step.content,
+                              i,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            subtitle: SizedBox(
-                              height: 100 * step.medias.length.toDouble(),
-                              child: ListView.builder(
-                                itemCount: step.medias.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    margin: const EdgeInsets.all(4),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: MediaStep(
-                                        listPath: step.medias,
-                                        currentPath: step.medias[index],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
                           ),
-                        ),
-                      )
-                      .values
-                      .toList(),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.comment_outlined,
-                      size: 28,
+                        )
+                        .toList(),
+                  ),
+                  const SizedBox(height: 26),
+                  const Text(
+                    "Hướng dẫn cách làm",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "Bình luận (${widget.post.qtyComments})",
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: CustomTextField(
-                        'Viết bình luận...',
-                        contentPadding: const EdgeInsets.all(8),
-                        controller: _commentController,
-                        onChanged: (text) =>
-                            setState(() => _commentController.text = text),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    if (commentContent.isNotEmpty)
-                      IconButton.filledTonal(
-                        onPressed: state.isLoading ? null : _commentToPost,
-                        icon: const Icon(Icons.send, size: 20),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                StreamBuilder(
-                  key: _commentKey,
-                  stream: streamListComment,
-                  builder: (context, snapshot) {
-                    final List<Comment?> comments = snapshot.data ?? [];
-                    return Column(
-                      children: comments
-                          .map(
-                            (comment) => ListTile(
+                  ),
+                  Column(
+                    children: post.steps
+                        .asMap()
+                        .map(
+                          (index, step) => MapEntry(
+                            index,
+                            ListTile(
+                              titleAlignment: ListTileTitleAlignment.top,
+                              minLeadingWidth: 0,
                               contentPadding: EdgeInsets.zero,
-                              leading: CircleAvatar(
-                                radius: 20,
-                                child: Image.network(
-                                  comment!.avatar,
+                              leading: Container(
+                                margin: step.medias.isNotEmpty
+                                    ? const EdgeInsets.only(top: 0)
+                                    : const EdgeInsets.only(top: 6),
+                                width: 24,
+                                height: 24,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
                               ),
                               title: Text(
-                                comment.name,
+                                step.content,
                                 style: const TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    comment.content,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    _timeAgoSinceDate(comment.dateTimeComment),
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
+                              subtitle: SizedBox(
+                                height: 70 * (step.medias.isEmpty ? 0 : 1),
+                                child: ListView.builder(
+                                  itemCount: step.medias.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Card(
+                                      margin: const EdgeInsets.all(4),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: MediaStep(
+                                          listPath: step.medias,
+                                          currentPath: step.medias[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          )
-                          .toList(),
-                    );
-                  },
-                ),
-              ],
+                          ),
+                        )
+                        .values
+                        .toList(),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.comment_outlined,
+                        size: 28,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Bình luận (${post.qtyComments})",
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          'Viết bình luận...',
+                          contentPadding: const EdgeInsets.all(8),
+                          controller: _commentController,
+                          onChanged: (text) =>
+                              setState(() => _commentController.text = text),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      if (commentContent.isNotEmpty)
+                        IconButton.filledTonal(
+                          onPressed: state.isLoading ? null : _commentToPost,
+                          icon: const Icon(Icons.send, size: 20),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  StreamBuilder(
+                    key: _commentKey,
+                    stream: streamListComment,
+                    builder: (context, snapshot) {
+                      final List<Comment?> comments = snapshot.data ?? [];
+                      return Column(
+                        children: comments
+                            .map(
+                              (comment) => ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: CircleAvatar(
+                                  radius: 20,
+                                  child: Image.network(
+                                    comment!.avatar,
+                                  ),
+                                ),
+                                title: Text(
+                                  comment.name,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      comment.content,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    Text(
+                                      _timeAgoSinceDate(
+                                          comment.dateTimeComment),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text(error.toString())),
       ),
     );
   }

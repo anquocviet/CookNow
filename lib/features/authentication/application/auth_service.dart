@@ -4,7 +4,6 @@ import 'package:cooknow/core/utils/store_local_data.dart';
 import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:cooknow/features/authentication/data/repositories/impl/auth_repository_imp.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,9 +26,7 @@ class AuthService {
     // Must be before fetchUser, because fetchUser will use token to fetch user
     await StoreLocalData().saveData(StoreVariable.token, token);
     final decodedToken = decodeToken(token);
-    final Account account = Account.fromJson(decodedToken);
     await userService.fetchUserWhenLogin(decodedToken['id']);
-    await userService.setAccount(account);
   }
 
   Future<void> register(RegisterDto registerDto) async {

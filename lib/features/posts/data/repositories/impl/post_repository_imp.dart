@@ -63,6 +63,21 @@ class PostRepositoryImp implements PostRepository {
       });
 
   @override
+  Future<List<Post>> getPostOfUser(String id) => _getData(
+      query: client.query$PostsByOwner(
+        Options$Query$PostsByOwner(
+          variables: Variables$Query$PostsByOwner(
+            owner_id: id,
+          ),
+          fetchPolicy: FetchPolicy.noCache,
+        ),
+      ),
+      builder: (data) {
+        final result = (data as Query$PostsByOwner).postsByOwner;
+        return result.map((e) => Post.fromJson(e.toJson())).toList();
+      });
+
+  @override
   Future<void> updateEmojiOfPost(UpdateEmojiDto dto) => _getData(
         query: client.mutate$UpdateEmojiOfPost(
           Options$Mutation$UpdateEmojiOfPost(
@@ -119,6 +134,15 @@ class PostRepositoryImp implements PostRepository {
         },
       );
 
+  void updateQtyOfPost(String id) {
+    _listPostState.value = _listPostState.value.map((post) {
+      if (post?.id == id) {
+        return post!.copyWith(qtyComments: post.qtyComments + 1);
+      }
+      return post;
+    }).toList();
+  }
+
   Future<T> _getData<T>({
     required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
@@ -151,4 +175,13 @@ PostRepositoryImp postRepository(PostRepositoryRef ref) {
 Stream<List<Post?>> postStateChanges(PostStateChangesRef ref) {
   final postRepository = ref.watch(postRepositoryProvider);
   return postRepository.postStateChanges();
+}
+
+@riverpod
+Stream<Post?> currentPostStateChanges(
+    CurrentPostStateChangesRef ref, String id) {
+  final postRepository = ref.watch(postRepositoryProvider);
+  return postRepository
+      .postStateChanges()
+      .map((event) => event.where((post) => post?.id == id).toList().first);
 }

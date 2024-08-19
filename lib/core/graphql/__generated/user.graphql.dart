@@ -314,6 +314,28 @@ const documentNodeQueryUser = DocumentNode(definitions: [
             selectionSet: null,
           ),
           FieldNode(
+            name: NameNode(value: 'account'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'username'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
             name: NameNode(value: 'avatar'),
             alias: null,
             arguments: [],
@@ -532,6 +554,7 @@ class Query$User$user {
     required this.bio,
     required this.email,
     required this.phone,
+    required this.account,
     required this.avatar,
     required this.date_created,
     required this.date_closed,
@@ -550,6 +573,7 @@ class Query$User$user {
     final l$bio = json['bio'];
     final l$email = json['email'];
     final l$phone = json['phone'];
+    final l$account = json['account'];
     final l$avatar = json['avatar'];
     final l$date_created = json['date_created'];
     final l$date_closed = json['date_closed'];
@@ -566,6 +590,8 @@ class Query$User$user {
       bio: (l$bio as String),
       email: (l$email as String),
       phone: (l$phone as String),
+      account:
+          Query$User$user$account.fromJson((l$account as Map<String, dynamic>)),
       avatar: (l$avatar as String),
       date_created: (l$date_created as String),
       date_closed: (l$date_closed as String),
@@ -593,6 +619,8 @@ class Query$User$user {
   final String email;
 
   final String phone;
+
+  final Query$User$user$account account;
 
   final String avatar;
 
@@ -626,6 +654,8 @@ class Query$User$user {
     _resultData['email'] = l$email;
     final l$phone = phone;
     _resultData['phone'] = l$phone;
+    final l$account = account;
+    _resultData['account'] = l$account.toJson();
     final l$avatar = avatar;
     _resultData['avatar'] = l$avatar;
     final l$date_created = date_created;
@@ -653,6 +683,7 @@ class Query$User$user {
     final l$bio = bio;
     final l$email = email;
     final l$phone = phone;
+    final l$account = account;
     final l$avatar = avatar;
     final l$date_created = date_created;
     final l$date_closed = date_closed;
@@ -669,6 +700,7 @@ class Query$User$user {
       l$bio,
       l$email,
       l$phone,
+      l$account,
       l$avatar,
       l$date_created,
       l$date_closed,
@@ -725,6 +757,11 @@ class Query$User$user {
     final l$phone = phone;
     final lOther$phone = other.phone;
     if (l$phone != lOther$phone) {
+      return false;
+    }
+    final l$account = account;
+    final lOther$account = other.account;
+    if (l$account != lOther$account) {
       return false;
     }
     final l$avatar = avatar;
@@ -813,6 +850,7 @@ abstract class CopyWith$Query$User$user<TRes> {
     String? bio,
     String? email,
     String? phone,
+    Query$User$user$account? account,
     String? avatar,
     String? date_created,
     String? date_closed,
@@ -821,6 +859,7 @@ abstract class CopyWith$Query$User$user<TRes> {
     List<String>? blocks,
     String? $__typename,
   });
+  CopyWith$Query$User$user$account<TRes> get account;
 }
 
 class _CopyWithImpl$Query$User$user<TRes>
@@ -845,6 +884,7 @@ class _CopyWithImpl$Query$User$user<TRes>
     Object? bio = _undefined,
     Object? email = _undefined,
     Object? phone = _undefined,
+    Object? account = _undefined,
     Object? avatar = _undefined,
     Object? date_created = _undefined,
     Object? date_closed = _undefined,
@@ -872,6 +912,9 @@ class _CopyWithImpl$Query$User$user<TRes>
         phone: phone == _undefined || phone == null
             ? _instance.phone
             : (phone as String),
+        account: account == _undefined || account == null
+            ? _instance.account
+            : (account as Query$User$user$account),
         avatar: avatar == _undefined || avatar == null
             ? _instance.avatar
             : (avatar as String),
@@ -894,6 +937,12 @@ class _CopyWithImpl$Query$User$user<TRes>
             ? _instance.$__typename
             : ($__typename as String),
       ));
+
+  CopyWith$Query$User$user$account<TRes> get account {
+    final local$account = _instance.account;
+    return CopyWith$Query$User$user$account(
+        local$account, (e) => call(account: e));
+  }
 }
 
 class _CopyWithStubImpl$Query$User$user<TRes>
@@ -911,12 +960,140 @@ class _CopyWithStubImpl$Query$User$user<TRes>
     String? bio,
     String? email,
     String? phone,
+    Query$User$user$account? account,
     String? avatar,
     String? date_created,
     String? date_closed,
     List<String>? following,
     List<String>? follower,
     List<String>? blocks,
+    String? $__typename,
+  }) =>
+      _res;
+
+  CopyWith$Query$User$user$account<TRes> get account =>
+      CopyWith$Query$User$user$account.stub(_res);
+}
+
+class Query$User$user$account {
+  Query$User$user$account({
+    required this.username,
+    this.$__typename = 'Account',
+  });
+
+  factory Query$User$user$account.fromJson(Map<String, dynamic> json) {
+    final l$username = json['username'];
+    final l$$__typename = json['__typename'];
+    return Query$User$user$account(
+      username: (l$username as String),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String username;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$username = username;
+    _resultData['username'] = l$username;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$username = username;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$username,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Query$User$user$account) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$username = username;
+    final lOther$username = other.username;
+    if (l$username != lOther$username) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$User$user$account on Query$User$user$account {
+  CopyWith$Query$User$user$account<Query$User$user$account> get copyWith =>
+      CopyWith$Query$User$user$account(
+        this,
+        (i) => i,
+      );
+}
+
+abstract class CopyWith$Query$User$user$account<TRes> {
+  factory CopyWith$Query$User$user$account(
+    Query$User$user$account instance,
+    TRes Function(Query$User$user$account) then,
+  ) = _CopyWithImpl$Query$User$user$account;
+
+  factory CopyWith$Query$User$user$account.stub(TRes res) =
+      _CopyWithStubImpl$Query$User$user$account;
+
+  TRes call({
+    String? username,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$User$user$account<TRes>
+    implements CopyWith$Query$User$user$account<TRes> {
+  _CopyWithImpl$Query$User$user$account(
+    this._instance,
+    this._then,
+  );
+
+  final Query$User$user$account _instance;
+
+  final TRes Function(Query$User$user$account) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? username = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Query$User$user$account(
+        username: username == _undefined || username == null
+            ? _instance.username
+            : (username as String),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Query$User$user$account<TRes>
+    implements CopyWith$Query$User$user$account<TRes> {
+  _CopyWithStubImpl$Query$User$user$account(this._res);
+
+  TRes _res;
+
+  call({
+    String? username,
     String? $__typename,
   }) =>
       _res;

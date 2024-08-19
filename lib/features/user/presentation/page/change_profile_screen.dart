@@ -50,7 +50,7 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
   void _checkValid(User? user) {
     setState(() {
       isValid = (name != user?.name ||
-              username != user?.account!.username ||
+              username != user?.account.username ||
               age != '${user?.age}' ||
               gender != user?.gender ||
               living != user?.living ||
@@ -95,7 +95,7 @@ class _ChangeProfileScreenState extends ConsumerState<ChangeProfileScreen>
   void initState() {
     final User? user = ref.read(userRepositoryProvider).currentUser;
     _nameController.text = user!.name;
-    _usernameController.text = user.account?.username ?? '';
+    _usernameController.text = user.account.username;
     _ageController.text = user.age.toString();
     gender = user.gender;
     _livingController.text = user.living;

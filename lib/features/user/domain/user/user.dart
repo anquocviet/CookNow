@@ -1,4 +1,3 @@
-import 'package:cooknow/features/user/domain/account/account.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
@@ -12,7 +11,7 @@ class User with _$User {
     required int gender,
     required int age,
     required String living,
-    Account? account,
+    required Account account,
     required String bio,
     required String email,
     required String phone,
@@ -24,4 +23,14 @@ class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@freezed
+class Account with _$Account {
+  const factory Account({
+    required String username,
+  }) = _Account;
+
+  factory Account.fromJson(Map<String, dynamic> json) =>
+      _$AccountFromJson(json);
 }
