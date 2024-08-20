@@ -90,7 +90,6 @@ class UserRepositoryImp implements UserRepository {
   }) async {
     try {
       final result = await query;
-      log(result.toString());
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
       log(error, name: 'UserRepositoryImp');

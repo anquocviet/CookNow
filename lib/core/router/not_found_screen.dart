@@ -8,7 +8,7 @@ class NotFoundScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Text('404 - Page not found!'),
+      body: const Text('404 - Page not found!'),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/utils/format_string.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
@@ -65,12 +66,24 @@ class _PostState extends ConsumerState<PostWidget> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      post.owner.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.owner.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          timeAgoSinceDate(DateTime.parse(post.dateTimePost)),
+                          style: TextStyle(
+                            color: Colors.grey[850],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

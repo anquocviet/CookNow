@@ -1,6 +1,7 @@
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/widget/post_widget.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,9 +19,9 @@ class _TabPersonalPostState extends ConsumerState<TabPersonalPost> {
   @override
   Widget build(BuildContext context) {
     final feedService = ref.watch(feedServiceProvider);
-    final listPost = widget.user == null
-        ? feedService.watchListPost()
-        : feedService.getPostOfUser(widget.user!.id).asStream();
+    final user = ref.read(userRepositoryProvider).currentUser;
+    final listPost =
+        feedService.getPostOfUser(widget.user?.id ?? user!.id).asStream();
 
     return Scaffold(
       body: StreamBuilder<List<Post?>>(
@@ -32,7 +33,7 @@ class _TabPersonalPostState extends ConsumerState<TabPersonalPost> {
               return const Padding(
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  'Người dùng này chưa có bài viết nào',
+                  'Không có bài viết nào được hiển thị',
                   style: TextStyle(
                     fontSize: 16,
                   ),

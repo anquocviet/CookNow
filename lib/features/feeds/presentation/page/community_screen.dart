@@ -17,7 +17,7 @@ class CommunityScreen extends ConsumerWidget {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await feedService.fetchPostOfUser(user?.id ?? '');
+          await feedService.fetchPostForUser(user?.id ?? '');
         },
         child: StreamBuilder<List<Post?>>(
             stream: listPost,

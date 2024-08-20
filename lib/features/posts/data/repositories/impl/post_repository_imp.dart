@@ -47,20 +47,40 @@ class PostRepositoryImp implements PostRepository {
       });
 
   @override
-  Future<void> fetchPostOfUser(String id) => _getData(
-      query: client.query$PostsByOwner(
-        Options$Query$PostsByOwner(
-          variables: Variables$Query$PostsByOwner(
-            owner_id: id,
+  Future<void> fetchPost(String id) => _getData(
+        query: client.query$Post(Options$Query$Post(
+          variables: Variables$Query$Post(
+            id: id,
           ),
           fetchPolicy: FetchPolicy.noCache,
+        )),
+        builder: (data) {
+          final result = (data as Query$Post).post;
+          _listPostState.value = _listPostState.value.map((e) {
+            if (e?.id == result.id) {
+              return Post.fromJson(result.toJson());
+            }
+            return e;
+          }).toList();
+        },
+      );
+
+  @override
+  Future<void> fetchPostForUser(String id) => _getData(
+        query: client.query$PostForUser(
+          Options$Query$PostForUser(
+            variables: Variables$Query$PostForUser(
+              userId: id,
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
         ),
-      ),
-      builder: (data) {
-        final result = (data as Query$PostsByOwner).postsByOwner;
-        _listPostState.value =
-            result.map((e) => Post.fromJson(e.toJson())).toList();
-      });
+        builder: (data) {
+          final result = (data as Query$PostForUser).postForUser;
+          _listPostState.value =
+              result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
 
   @override
   Future<List<Post>> getPostOfUser(String id) => _getData(

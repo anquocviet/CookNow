@@ -8,9 +8,14 @@ class FeedService {
   FeedService({required this.ref});
   final FeedServiceRef ref;
 
-  Future<void> fetchPostOfUser(String id) async {
+  Future<void> fetchPostForUser(String id) async {
     final postRepository = ref.read(postRepositoryProvider);
-    await postRepository.fetchPostOfUser(id);
+    await postRepository.fetchPostForUser(id);
+  }
+
+  Future<void> fetchPost(String id) async {
+    final postRepository = ref.read(postRepositoryProvider);
+    await postRepository.fetchPost(id);
   }
 
   Future<List<Post>> getPostOfUser(String id) async {

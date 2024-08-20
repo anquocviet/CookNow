@@ -27,6 +27,62 @@ mutation CreatePost($data: CreatePostDto!) {
   }
 }
 
+query Post($id: String!) {
+  post(id: $id) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    date_time_post
+    owner {
+      user_id
+      name
+      avatar
+    }
+    category
+    ingredients
+    qty_comments
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+  }
+}
+
+query PostForUser($userId: String!) {
+  postForUser(userId: $userId) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    date_time_post
+    owner {
+      user_id
+      name
+      avatar
+    }
+    category
+    ingredients
+    qty_comments
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+  }
+}
+
 query PostsByOwner($owner_id: String!) {
   postsByOwner(owner_id: $owner_id) {
     id
