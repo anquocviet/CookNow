@@ -25,3 +25,17 @@ mutation CreateComment($data: CreateCommentDto!) {
     date_time_comment
   }
 }
+
+subscription CreateComment($postId: String!) {
+  add_comment(postId: $postId) {
+    id
+    user_id
+    username
+    name
+    avatar
+    post_id
+    content
+    image
+    date_time_comment
+  }
+}

@@ -127,6 +127,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     final controllerState = ref.watch(feedControllerProvider);
     final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
+    commentService.watchCreateComment(widget.id);
+
     final currentPostState =
         ref.watch(currentPostStateChangesProvider(widget.id));
     final streamListComment = commentService.watchListComment();

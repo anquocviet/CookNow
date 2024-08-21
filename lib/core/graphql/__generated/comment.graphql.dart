@@ -1665,3 +1665,671 @@ class _CopyWithStubImpl$Mutation$CreateComment$createComment<TRes>
   }) =>
       _res;
 }
+
+class Variables$Subscription$CreateComment {
+  factory Variables$Subscription$CreateComment({required String postId}) =>
+      Variables$Subscription$CreateComment._({
+        r'postId': postId,
+      });
+
+  Variables$Subscription$CreateComment._(this._$data);
+
+  factory Variables$Subscription$CreateComment.fromJson(
+      Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$postId = data['postId'];
+    result$data['postId'] = (l$postId as String);
+    return Variables$Subscription$CreateComment._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get postId => (_$data['postId'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$postId = postId;
+    result$data['postId'] = l$postId;
+    return result$data;
+  }
+
+  CopyWith$Variables$Subscription$CreateComment<
+          Variables$Subscription$CreateComment>
+      get copyWith => CopyWith$Variables$Subscription$CreateComment(
+            this,
+            (i) => i,
+          );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Subscription$CreateComment) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$postId = postId;
+    final lOther$postId = other.postId;
+    if (l$postId != lOther$postId) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$postId = postId;
+    return Object.hashAll([l$postId]);
+  }
+}
+
+abstract class CopyWith$Variables$Subscription$CreateComment<TRes> {
+  factory CopyWith$Variables$Subscription$CreateComment(
+    Variables$Subscription$CreateComment instance,
+    TRes Function(Variables$Subscription$CreateComment) then,
+  ) = _CopyWithImpl$Variables$Subscription$CreateComment;
+
+  factory CopyWith$Variables$Subscription$CreateComment.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Subscription$CreateComment;
+
+  TRes call({String? postId});
+}
+
+class _CopyWithImpl$Variables$Subscription$CreateComment<TRes>
+    implements CopyWith$Variables$Subscription$CreateComment<TRes> {
+  _CopyWithImpl$Variables$Subscription$CreateComment(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Subscription$CreateComment _instance;
+
+  final TRes Function(Variables$Subscription$CreateComment) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? postId = _undefined}) =>
+      _then(Variables$Subscription$CreateComment._({
+        ..._instance._$data,
+        if (postId != _undefined && postId != null)
+          'postId': (postId as String),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Subscription$CreateComment<TRes>
+    implements CopyWith$Variables$Subscription$CreateComment<TRes> {
+  _CopyWithStubImpl$Variables$Subscription$CreateComment(this._res);
+
+  TRes _res;
+
+  call({String? postId}) => _res;
+}
+
+class Subscription$CreateComment {
+  Subscription$CreateComment({required this.add_comment});
+
+  factory Subscription$CreateComment.fromJson(Map<String, dynamic> json) {
+    final l$add_comment = json['add_comment'];
+    return Subscription$CreateComment(
+        add_comment: Subscription$CreateComment$add_comment.fromJson(
+            (l$add_comment as Map<String, dynamic>)));
+  }
+
+  final Subscription$CreateComment$add_comment add_comment;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$add_comment = add_comment;
+    _resultData['add_comment'] = l$add_comment.toJson();
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$add_comment = add_comment;
+    return Object.hashAll([l$add_comment]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Subscription$CreateComment) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$add_comment = add_comment;
+    final lOther$add_comment = other.add_comment;
+    if (l$add_comment != lOther$add_comment) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Subscription$CreateComment
+    on Subscription$CreateComment {
+  CopyWith$Subscription$CreateComment<Subscription$CreateComment>
+      get copyWith => CopyWith$Subscription$CreateComment(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Subscription$CreateComment<TRes> {
+  factory CopyWith$Subscription$CreateComment(
+    Subscription$CreateComment instance,
+    TRes Function(Subscription$CreateComment) then,
+  ) = _CopyWithImpl$Subscription$CreateComment;
+
+  factory CopyWith$Subscription$CreateComment.stub(TRes res) =
+      _CopyWithStubImpl$Subscription$CreateComment;
+
+  TRes call({Subscription$CreateComment$add_comment? add_comment});
+  CopyWith$Subscription$CreateComment$add_comment<TRes> get add_comment;
+}
+
+class _CopyWithImpl$Subscription$CreateComment<TRes>
+    implements CopyWith$Subscription$CreateComment<TRes> {
+  _CopyWithImpl$Subscription$CreateComment(
+    this._instance,
+    this._then,
+  );
+
+  final Subscription$CreateComment _instance;
+
+  final TRes Function(Subscription$CreateComment) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? add_comment = _undefined}) => _then(
+      Subscription$CreateComment(
+          add_comment: add_comment == _undefined || add_comment == null
+              ? _instance.add_comment
+              : (add_comment as Subscription$CreateComment$add_comment)));
+
+  CopyWith$Subscription$CreateComment$add_comment<TRes> get add_comment {
+    final local$add_comment = _instance.add_comment;
+    return CopyWith$Subscription$CreateComment$add_comment(
+        local$add_comment, (e) => call(add_comment: e));
+  }
+}
+
+class _CopyWithStubImpl$Subscription$CreateComment<TRes>
+    implements CopyWith$Subscription$CreateComment<TRes> {
+  _CopyWithStubImpl$Subscription$CreateComment(this._res);
+
+  TRes _res;
+
+  call({Subscription$CreateComment$add_comment? add_comment}) => _res;
+
+  CopyWith$Subscription$CreateComment$add_comment<TRes> get add_comment =>
+      CopyWith$Subscription$CreateComment$add_comment.stub(_res);
+}
+
+const documentNodeSubscriptionCreateComment = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.subscription,
+    name: NameNode(value: 'CreateComment'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'postId')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'add_comment'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'postId'),
+            value: VariableNode(name: NameNode(value: 'postId')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'user_id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'username'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'name'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'avatar'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'post_id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'content'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'image'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'date_time_comment'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      )
+    ]),
+  ),
+]);
+Subscription$CreateComment _parserFn$Subscription$CreateComment(
+        Map<String, dynamic> data) =>
+    Subscription$CreateComment.fromJson(data);
+
+class Options$Subscription$CreateComment
+    extends graphql.SubscriptionOptions<Subscription$CreateComment> {
+  Options$Subscription$CreateComment({
+    String? operationName,
+    required Variables$Subscription$CreateComment variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Subscription$CreateComment? typedOptimisticResult,
+    graphql.Context? context,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeSubscriptionCreateComment,
+          parserFn: _parserFn$Subscription$CreateComment,
+        );
+}
+
+class WatchOptions$Subscription$CreateComment
+    extends graphql.WatchQueryOptions<Subscription$CreateComment> {
+  WatchOptions$Subscription$CreateComment({
+    String? operationName,
+    required Variables$Subscription$CreateComment variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Subscription$CreateComment? typedOptimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeSubscriptionCreateComment,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Subscription$CreateComment,
+        );
+}
+
+class FetchMoreOptions$Subscription$CreateComment
+    extends graphql.FetchMoreOptions {
+  FetchMoreOptions$Subscription$CreateComment({
+    required graphql.UpdateQuery updateQuery,
+    required Variables$Subscription$CreateComment variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables.toJson(),
+          document: documentNodeSubscriptionCreateComment,
+        );
+}
+
+extension ClientExtension$Subscription$CreateComment on graphql.GraphQLClient {
+  Stream<graphql.QueryResult<Subscription$CreateComment>>
+      subscribe$CreateComment(Options$Subscription$CreateComment options) =>
+          this.subscribe(options);
+  graphql.ObservableQuery<Subscription$CreateComment>
+      watchSubscription$CreateComment(
+              WatchOptions$Subscription$CreateComment options) =>
+          this.watchQuery(options);
+}
+
+graphql.QueryResult<Subscription$CreateComment> useSubscription$CreateComment(
+        Options$Subscription$CreateComment options) =>
+    graphql_flutter.useSubscription(options);
+
+class Subscription$CreateComment$Widget
+    extends graphql_flutter.Subscription<Subscription$CreateComment> {
+  Subscription$CreateComment$Widget({
+    widgets.Key? key,
+    required Options$Subscription$CreateComment options,
+    required graphql_flutter.SubscriptionBuilder<Subscription$CreateComment>
+        builder,
+    graphql_flutter.OnSubscriptionResult<Subscription$CreateComment>?
+        onSubscriptionResult,
+  }) : super(
+          key: key,
+          options: options,
+          builder: builder,
+          onSubscriptionResult: onSubscriptionResult,
+        );
+}
+
+class Subscription$CreateComment$add_comment {
+  Subscription$CreateComment$add_comment({
+    required this.id,
+    required this.user_id,
+    required this.username,
+    required this.name,
+    required this.avatar,
+    required this.post_id,
+    required this.content,
+    required this.image,
+    required this.date_time_comment,
+  });
+
+  factory Subscription$CreateComment$add_comment.fromJson(
+      Map<String, dynamic> json) {
+    final l$id = json['id'];
+    final l$user_id = json['user_id'];
+    final l$username = json['username'];
+    final l$name = json['name'];
+    final l$avatar = json['avatar'];
+    final l$post_id = json['post_id'];
+    final l$content = json['content'];
+    final l$image = json['image'];
+    final l$date_time_comment = json['date_time_comment'];
+    return Subscription$CreateComment$add_comment(
+      id: (l$id as String),
+      user_id: (l$user_id as String),
+      username: (l$username as String),
+      name: (l$name as String),
+      avatar: (l$avatar as String),
+      post_id: (l$post_id as String),
+      content: (l$content as String),
+      image: (l$image as String),
+      date_time_comment: (l$date_time_comment as String),
+    );
+  }
+
+  final String id;
+
+  final String user_id;
+
+  final String username;
+
+  final String name;
+
+  final String avatar;
+
+  final String post_id;
+
+  final String content;
+
+  final String image;
+
+  final String date_time_comment;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
+    final l$user_id = user_id;
+    _resultData['user_id'] = l$user_id;
+    final l$username = username;
+    _resultData['username'] = l$username;
+    final l$name = name;
+    _resultData['name'] = l$name;
+    final l$avatar = avatar;
+    _resultData['avatar'] = l$avatar;
+    final l$post_id = post_id;
+    _resultData['post_id'] = l$post_id;
+    final l$content = content;
+    _resultData['content'] = l$content;
+    final l$image = image;
+    _resultData['image'] = l$image;
+    final l$date_time_comment = date_time_comment;
+    _resultData['date_time_comment'] = l$date_time_comment;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$user_id = user_id;
+    final l$username = username;
+    final l$name = name;
+    final l$avatar = avatar;
+    final l$post_id = post_id;
+    final l$content = content;
+    final l$image = image;
+    final l$date_time_comment = date_time_comment;
+    return Object.hashAll([
+      l$id,
+      l$user_id,
+      l$username,
+      l$name,
+      l$avatar,
+      l$post_id,
+      l$content,
+      l$image,
+      l$date_time_comment,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Subscription$CreateComment$add_comment) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$user_id = user_id;
+    final lOther$user_id = other.user_id;
+    if (l$user_id != lOther$user_id) {
+      return false;
+    }
+    final l$username = username;
+    final lOther$username = other.username;
+    if (l$username != lOther$username) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$avatar = avatar;
+    final lOther$avatar = other.avatar;
+    if (l$avatar != lOther$avatar) {
+      return false;
+    }
+    final l$post_id = post_id;
+    final lOther$post_id = other.post_id;
+    if (l$post_id != lOther$post_id) {
+      return false;
+    }
+    final l$content = content;
+    final lOther$content = other.content;
+    if (l$content != lOther$content) {
+      return false;
+    }
+    final l$image = image;
+    final lOther$image = other.image;
+    if (l$image != lOther$image) {
+      return false;
+    }
+    final l$date_time_comment = date_time_comment;
+    final lOther$date_time_comment = other.date_time_comment;
+    if (l$date_time_comment != lOther$date_time_comment) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Subscription$CreateComment$add_comment
+    on Subscription$CreateComment$add_comment {
+  CopyWith$Subscription$CreateComment$add_comment<
+          Subscription$CreateComment$add_comment>
+      get copyWith => CopyWith$Subscription$CreateComment$add_comment(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Subscription$CreateComment$add_comment<TRes> {
+  factory CopyWith$Subscription$CreateComment$add_comment(
+    Subscription$CreateComment$add_comment instance,
+    TRes Function(Subscription$CreateComment$add_comment) then,
+  ) = _CopyWithImpl$Subscription$CreateComment$add_comment;
+
+  factory CopyWith$Subscription$CreateComment$add_comment.stub(TRes res) =
+      _CopyWithStubImpl$Subscription$CreateComment$add_comment;
+
+  TRes call({
+    String? id,
+    String? user_id,
+    String? username,
+    String? name,
+    String? avatar,
+    String? post_id,
+    String? content,
+    String? image,
+    String? date_time_comment,
+  });
+}
+
+class _CopyWithImpl$Subscription$CreateComment$add_comment<TRes>
+    implements CopyWith$Subscription$CreateComment$add_comment<TRes> {
+  _CopyWithImpl$Subscription$CreateComment$add_comment(
+    this._instance,
+    this._then,
+  );
+
+  final Subscription$CreateComment$add_comment _instance;
+
+  final TRes Function(Subscription$CreateComment$add_comment) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? user_id = _undefined,
+    Object? username = _undefined,
+    Object? name = _undefined,
+    Object? avatar = _undefined,
+    Object? post_id = _undefined,
+    Object? content = _undefined,
+    Object? image = _undefined,
+    Object? date_time_comment = _undefined,
+  }) =>
+      _then(Subscription$CreateComment$add_comment(
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        user_id: user_id == _undefined || user_id == null
+            ? _instance.user_id
+            : (user_id as String),
+        username: username == _undefined || username == null
+            ? _instance.username
+            : (username as String),
+        name: name == _undefined || name == null
+            ? _instance.name
+            : (name as String),
+        avatar: avatar == _undefined || avatar == null
+            ? _instance.avatar
+            : (avatar as String),
+        post_id: post_id == _undefined || post_id == null
+            ? _instance.post_id
+            : (post_id as String),
+        content: content == _undefined || content == null
+            ? _instance.content
+            : (content as String),
+        image: image == _undefined || image == null
+            ? _instance.image
+            : (image as String),
+        date_time_comment:
+            date_time_comment == _undefined || date_time_comment == null
+                ? _instance.date_time_comment
+                : (date_time_comment as String),
+      ));
+}
+
+class _CopyWithStubImpl$Subscription$CreateComment$add_comment<TRes>
+    implements CopyWith$Subscription$CreateComment$add_comment<TRes> {
+  _CopyWithStubImpl$Subscription$CreateComment$add_comment(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? user_id,
+    String? username,
+    String? name,
+    String? avatar,
+    String? post_id,
+    String? content,
+    String? image,
+    String? date_time_comment,
+  }) =>
+      _res;
+}

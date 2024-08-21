@@ -21,6 +21,18 @@ type User {
   blocks: [String!]!
 }
 
+type Comment {
+  id: String!
+  user_id: String!
+  username: String!
+  name: String!
+  avatar: String!
+  post_id: String!
+  content: String!
+  image: String!
+  date_time_comment: String!
+}
+
 type Step {
   content: String!
   medias: [String!]!
@@ -52,18 +64,6 @@ type Post {
   steps: [Step!]!
   emojis: [Emoji!]!
   qty_comments: Float!
-}
-
-type Comment {
-  id: String!
-  user_id: String!
-  username: String!
-  name: String!
-  avatar: String!
-  post_id: String!
-  content: String!
-  image: String!
-  date_time_comment: String!
 }
 
 type AuthResponseDto {
@@ -177,4 +177,8 @@ input CreateUserDto {
 input CreateAccountDto {
   username: String!
   password: String!
+}
+
+type Subscription {
+  add_comment(postId: String!): Comment!
 }
