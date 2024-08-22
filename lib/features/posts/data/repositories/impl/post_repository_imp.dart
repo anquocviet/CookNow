@@ -169,9 +169,9 @@ class PostRepositoryImp implements PostRepository {
   }) async {
     try {
       final result = await query;
+      log(result.exception.toString(), name: 'PostRepositoryImp Exception');
       final String error =
           result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-      log(error, name: 'PostRepositoryImp');
       if (error.isEmpty) {
         final data = result.parsedData;
         return builder(data);

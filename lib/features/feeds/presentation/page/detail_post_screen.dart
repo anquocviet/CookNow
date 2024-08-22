@@ -127,7 +127,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     final controllerState = ref.watch(feedControllerProvider);
     final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
-    commentService.watchCreateComment(widget.id);
+    ref.watch(commentServiceProvider).watchCreateComment(widget.id);
 
     final currentPostState =
         ref.watch(currentPostStateChangesProvider(widget.id));
@@ -172,7 +172,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                         icon: const Icon(Icons.edit),
                       ),
                   ],
-                  expandedHeight: 300,
+                  expandedHeight: 200,
                   floating: false,
                   pinned: true,
                   forceElevated: innerBoxIsScrolled,

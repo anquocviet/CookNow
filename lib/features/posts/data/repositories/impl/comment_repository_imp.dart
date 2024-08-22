@@ -35,8 +35,8 @@ class CommentRepositoryImp implements CommentRepository {
       builder: (data) {
         // final result = (data as Mutation$CreateComment).createComment;
         // _listCommentState.value = [
-        //   ..._listCommentState.value,
         //   Comment.fromJson(result.toJson())
+        //   ..._listCommentState.value,
         // ];
       });
 
@@ -128,6 +128,5 @@ Stream<void> watchCreateComment(WatchCreateCommentRef ref, String id) async* {
   final commentRepository = ref.watch(commentRepositoryProvider);
   final postRepository = ref.read(postRepositoryProvider);
   postRepository.updateQtyOfPost(id);
-
   yield* commentRepository.watchComment(id);
 }
