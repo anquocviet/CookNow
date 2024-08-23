@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/comment.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
@@ -46,14 +46,14 @@ class CommentRepositoryImp implements CommentRepository {
     throw UnimplementedError();
   }
 
-  Stream<void> watchComment(String id) {
+  Stream<void> watchComment(String id) async* {
     final Stream<QueryResult<Subscription$CreateComment>> streamResult =
         client.subscribe$CreateComment(
       Options$Subscription$CreateComment(
         variables: Variables$Subscription$CreateComment(postId: id),
       ),
     );
-    return streamResult.map((event) {
+    yield* streamResult.map((event) {
       final result = event.parsedData?.add_comment;
       _listCommentState.value = [
         Comment.fromJson(result!.toJson()),
@@ -102,12 +102,12 @@ class CommentRepositoryImp implements CommentRepository {
         final data = result.parsedData;
         return builder(data);
       } else {
-        throw ex.UnknownException();
+        throw AppUnknownException();
       }
     } on SocketException {
-      throw ex.NoInternetException();
+      throw NoInternetException();
     } on Exception {
-      throw ex.UnknownException();
+      throw AppUnknownException();
     }
   }
 }

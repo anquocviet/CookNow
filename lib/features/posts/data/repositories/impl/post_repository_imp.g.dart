@@ -186,5 +186,133 @@ class _CurrentPostStateChangesProviderElement
   @override
   String get id => (origin as CurrentPostStateChangesProvider).id;
 }
+
+String _$watchRemovePostHash() => r'e40012fcabeb7202d890d03a4c5459fd6fa6f1e6';
+
+/// See also [watchRemovePost].
+@ProviderFor(watchRemovePost)
+const watchRemovePostProvider = WatchRemovePostFamily();
+
+/// See also [watchRemovePost].
+class WatchRemovePostFamily extends Family<AsyncValue<void>> {
+  /// See also [watchRemovePost].
+  const WatchRemovePostFamily();
+
+  /// See also [watchRemovePost].
+  WatchRemovePostProvider call(
+    String postId,
+  ) {
+    return WatchRemovePostProvider(
+      postId,
+    );
+  }
+
+  @override
+  WatchRemovePostProvider getProviderOverride(
+    covariant WatchRemovePostProvider provider,
+  ) {
+    return call(
+      provider.postId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'watchRemovePostProvider';
+}
+
+/// See also [watchRemovePost].
+class WatchRemovePostProvider extends AutoDisposeStreamProvider<void> {
+  /// See also [watchRemovePost].
+  WatchRemovePostProvider(
+    String postId,
+  ) : this._internal(
+          (ref) => watchRemovePost(
+            ref as WatchRemovePostRef,
+            postId,
+          ),
+          from: watchRemovePostProvider,
+          name: r'watchRemovePostProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$watchRemovePostHash,
+          dependencies: WatchRemovePostFamily._dependencies,
+          allTransitiveDependencies:
+              WatchRemovePostFamily._allTransitiveDependencies,
+          postId: postId,
+        );
+
+  WatchRemovePostProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.postId,
+  }) : super.internal();
+
+  final String postId;
+
+  @override
+  Override overrideWith(
+    Stream<void> Function(WatchRemovePostRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: WatchRemovePostProvider._internal(
+        (ref) => create(ref as WatchRemovePostRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        postId: postId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<void> createElement() {
+    return _WatchRemovePostProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WatchRemovePostProvider && other.postId == postId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, postId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin WatchRemovePostRef on AutoDisposeStreamProviderRef<void> {
+  /// The parameter `postId` of this provider.
+  String get postId;
+}
+
+class _WatchRemovePostProviderElement
+    extends AutoDisposeStreamProviderElement<void> with WatchRemovePostRef {
+  _WatchRemovePostProviderElement(super.provider);
+
+  @override
+  String get postId => (origin as WatchRemovePostProvider).postId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

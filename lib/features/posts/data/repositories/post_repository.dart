@@ -10,4 +10,5 @@ abstract class PostRepository {
   Future<void> createPost(CreatePostDto dto);
   Future<void> updatePost(UpdatePostDto dto);
   Future<void> updateEmojiOfPost(UpdateEmojiDto dto);
+  Future<void> removePost(String postId);
 }

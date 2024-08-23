@@ -1,19 +1,13 @@
-import 'dart:io';
-
 import 'package:cooknow/core/utils/store_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:http/io_client.dart';
 
 class GraphqlClient {
   static final _storeLocalData = StoreLocalData();
 
   static final HttpLink _httpLink = HttpLink(
     dotenv.env['SERVER_HOST']!,
-    httpClient: IOClient(
-      HttpClient()..connectionTimeout = const Duration(seconds: 5),
-    ),
   );
 
   static final AuthLink authLink = AuthLink(getToken: () async {

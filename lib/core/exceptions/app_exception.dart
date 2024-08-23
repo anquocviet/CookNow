@@ -4,20 +4,22 @@ sealed class AppException implements Exception {
   AppException(this.message);
 }
 
+// ================== UNKNOWN EXCEPTIONS ==================
 // Define exceptions unknown from server here
 
 class NoInternetException extends AppException {
   NoInternetException() : super('Không có kết nối internet');
 }
 
-class UnknownException extends AppException {
-  UnknownException() : super('Đã xảy ra lỗi không xác định');
+class AppUnknownException extends AppException {
+  AppUnknownException() : super('Đã xảy ra lỗi không xác định');
 }
 
 class ServerErrorException extends AppException {
   ServerErrorException() : super('Đã xảy ra lỗi trên máy chủ');
 }
 
+// ================== AUTHENTICATION EXCEPTIONS ==================
 // Define authentication exceptions here
 class InvalidUsernameOrPasswordException extends AppException {
   InvalidUsernameOrPasswordException()
@@ -54,8 +56,14 @@ class TokenNotFoundException extends AppException {
       : super('Không tìm thấy thông tin đăng nhập trên thiết bị');
 }
 
-// Define exceptions from Firebase here
+// ================== POST EXCEPTIONS ==================
+// Define exceptions from post here
+class PostNotFoundException extends AppException {
+  PostNotFoundException() : super('Bài viết không tồn tại hoặc đã bị xóa');
+}
 
+// ================== FIREBASE EXCEPTIONS ==================
+// Define exceptions from Firebase here
 class FirebaseInvalidVerificationCodeException extends AppException {
   FirebaseInvalidVerificationCodeException()
       : super('Mã xác minh không hợp lệ');

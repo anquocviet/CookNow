@@ -5,8 +5,14 @@ import 'package:flutter/material.dart';
 /// This widget represents a custom button that can be used in the application.
 /// It is a stateless widget, which means it does not maintain any internal state.
 class CustomButton extends StatelessWidget {
-  const CustomButton(this.text,
-      {super.key, this.width, this.icon, this.color, required this.onPressed});
+  const CustomButton(
+    this.text, {
+    super.key,
+    this.width,
+    this.icon,
+    this.color,
+    required this.onPressed,
+  });
 
   final String text;
   final double? width;

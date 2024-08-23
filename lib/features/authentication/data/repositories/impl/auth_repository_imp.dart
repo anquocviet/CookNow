@@ -77,12 +77,11 @@ class AuthRepositoryImp implements AuthRepository {
     final result = await query;
     final String error =
         result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-    log(error, name: 'AuthRepositoryImp');
     if (error.isEmpty) {
       final data = result.parsedData;
       return builder(data);
     } else {
-      log('Error: ${result.exception}');
+      log('${result.exception}', name: 'AuthRepositoryImp');
       if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
         final error = result.exception!.graphqlErrors.first.message;
         if (error == AuthExceptionFromServer.jwtExpired) {

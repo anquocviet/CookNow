@@ -1,6 +1,7 @@
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/format_string.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:cooknow/core/widget/custom_text_field.dart';
 import 'package:cooknow/core/widget/gallery_media_view_wrapper.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
@@ -8,6 +9,7 @@ import 'package:cooknow/features/feeds/application/comment_service.dart';
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/controller/detail_post_screen_controller.dart';
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
+import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
@@ -44,12 +46,18 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
 
   @override
   void initState() {
-    ref.read(feedServiceProvider).fetchPost(widget.id);
-    ref.read(commentServiceProvider).fetchCommentOfPost(widget.id);
-    if (widget.isScrollToComment) {
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future(() => _scrollToComment());
-      // });
+    try {
+      ref.read(feedServiceProvider).fetchPost(widget.id);
+      ref.read(commentServiceProvider).fetchCommentOfPost(widget.id);
+      if (widget.isScrollToComment) {
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future(() => _scrollToComment());
+        // });
+      }
+    } on AppException catch (e) {
+      showError(context, e.message);
+    } on Exception catch (e) {
+      showError(context, 'Có lỗi xảy ra $e.toString()');
     }
     super.initState();
   }
@@ -82,6 +90,16 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     try {
       await ref.read(feedControllerProvider.notifier).reactToPost(
           UpdateEmojiDto(postId: postId, userId: userId, emoji: emoji));
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
+  Future<void> _fetchPost(String id) async {
+    try {
+      await ref.read(feedServiceProvider).fetchPost(id);
     } on AppException catch (e) {
       if (mounted) showError(context, e.message);
     } catch (e) {
@@ -127,6 +145,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     final controllerState = ref.watch(feedControllerProvider);
     final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
+    ref.watch(postServiceProvider).watchRemovePost(widget.id);
     ref.watch(commentServiceProvider).watchCreateComment(widget.id);
 
     final currentPostState =
@@ -538,7 +557,37 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
           ),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text(error.toString())),
+        error: (error, _) {
+          return Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Bài viết không tồn tại hoặc đã bị xóa'),
+              const SizedBox(height: 48),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomButton(
+                      'Tải lại',
+                      width: 120,
+                      onPressed: () => _fetchPost(widget.id),
+                    ),
+                    const SizedBox(width: 8),
+                    CustomButton(
+                      'Quay lại',
+                      width: 120,
+                      onPressed: () {
+                        context.canPop() ? context.pop() : context.go('/feeds');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ));
+        },
       ),
     );
   }

@@ -72,6 +72,7 @@ class ProfileScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -136,16 +137,37 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      user.bio,
-                      style: const TextStyle(
+                      'Bio: ${user.bio.isEmpty ? 'Chưa cập nhật' : user.bio}',
+                      style: TextStyle(
                         fontSize: 16,
+                        color:
+                            user.bio.isEmpty ? Colors.black54 : Colors.black87,
                       ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  if (userId != null)
+                    FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Theme.of(context).primaryColor,
+                        ),
+                        padding: WidgetStateProperty.all(
+                          const EdgeInsets.symmetric(horizontal: 16),
+                        ),
+                        shape: WidgetStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text('Theo dõi'),
+                    ),
                   const SizedBox(height: 8),
                   Row(
                     children: [

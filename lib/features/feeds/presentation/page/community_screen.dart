@@ -24,7 +24,11 @@ class CommunityScreen extends ConsumerWidget {
             builder: (context, snapshot) {
               final List<Post?> posts = snapshot.data ?? [];
               if (posts.isEmpty) {
-                return const CircularProgressIndicator();
+                return const Center(
+                  child: SingleChildScrollView(
+                    child: Text('Không có bài viết nào'),
+                  ),
+                );
               }
               return ListView.separated(
                 itemBuilder: (BuildContext context, int index) {

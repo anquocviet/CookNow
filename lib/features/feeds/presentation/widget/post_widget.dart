@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+enum ActionPostItem { edit, delete }
+
 class PostWidget extends ConsumerStatefulWidget {
   const PostWidget({super.key, required this.post});
 
@@ -21,11 +23,23 @@ class PostWidget extends ConsumerStatefulWidget {
 }
 
 class _PostState extends ConsumerState<PostWidget> {
+  ActionPostItem? selectedItem;
+
   Future<void> _reactToPost(
       String postId, String userId, EnumEmoji emoji) async {
     try {
       await ref.read(feedControllerProvider.notifier).reactToPost(
           UpdateEmojiDto(postId: postId, userId: userId, emoji: emoji));
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
+  Future<void> _removePost(String postId) async {
+    try {
+      await ref.read(feedControllerProvider.notifier).removePost(postId);
     } on AppException catch (e) {
       if (mounted) showError(context, e.message);
     } catch (e) {
@@ -45,6 +59,10 @@ class _PostState extends ConsumerState<PostWidget> {
     final Post post = widget.post;
     final user = ref.read(userRepositoryProvider).currentUser;
     final controllerState = ref.watch(feedControllerProvider);
+
+    if (controllerState.isLoading) {
+      return const CircularProgressIndicator();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -89,7 +107,26 @@ class _PostState extends ConsumerState<PostWidget> {
                 ),
               ),
               const Spacer(),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
+              PopupMenuButton<ActionPostItem>(
+                initialValue: selectedItem,
+                onSelected: (ActionPostItem item) {
+                  setState(() {
+                    selectedItem = item;
+                  });
+                },
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem<ActionPostItem>(
+                    value: ActionPostItem.edit,
+                    child: const Text('Sửa bài viết'),
+                    onTap: () {},
+                  ),
+                  PopupMenuItem<ActionPostItem>(
+                    value: ActionPostItem.delete,
+                    child: const Text('Xóa bài viết'),
+                    onTap: () => _removePost(post.id),
+                  ),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 8),

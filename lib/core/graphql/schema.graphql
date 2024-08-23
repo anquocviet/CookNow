@@ -180,5 +180,6 @@ input CreateAccountDto {
 }
 
 type Subscription {
+  delete_post(postId: String!): Post!
   add_comment(postId: String!): Comment!
 }

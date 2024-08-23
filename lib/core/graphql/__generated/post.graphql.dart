@@ -8102,3 +8102,1344 @@ class _CopyWithStubImpl$Mutation$UpdateEmojiOfPost$updateEmojiOfPost$emojis<
   }) =>
       _res;
 }
+
+class Variables$Mutation$DeletePost {
+  factory Variables$Mutation$DeletePost({required String id}) =>
+      Variables$Mutation$DeletePost._({
+        r'id': id,
+      });
+
+  Variables$Mutation$DeletePost._(this._$data);
+
+  factory Variables$Mutation$DeletePost.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
+    return Variables$Mutation$DeletePost._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get id => (_$data['id'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$id = id;
+    result$data['id'] = l$id;
+    return result$data;
+  }
+
+  CopyWith$Variables$Mutation$DeletePost<Variables$Mutation$DeletePost>
+      get copyWith => CopyWith$Variables$Mutation$DeletePost(
+            this,
+            (i) => i,
+          );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Mutation$DeletePost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    return Object.hashAll([l$id]);
+  }
+}
+
+abstract class CopyWith$Variables$Mutation$DeletePost<TRes> {
+  factory CopyWith$Variables$Mutation$DeletePost(
+    Variables$Mutation$DeletePost instance,
+    TRes Function(Variables$Mutation$DeletePost) then,
+  ) = _CopyWithImpl$Variables$Mutation$DeletePost;
+
+  factory CopyWith$Variables$Mutation$DeletePost.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Mutation$DeletePost;
+
+  TRes call({String? id});
+}
+
+class _CopyWithImpl$Variables$Mutation$DeletePost<TRes>
+    implements CopyWith$Variables$Mutation$DeletePost<TRes> {
+  _CopyWithImpl$Variables$Mutation$DeletePost(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Mutation$DeletePost _instance;
+
+  final TRes Function(Variables$Mutation$DeletePost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? id = _undefined}) =>
+      _then(Variables$Mutation$DeletePost._({
+        ..._instance._$data,
+        if (id != _undefined && id != null) 'id': (id as String),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Mutation$DeletePost<TRes>
+    implements CopyWith$Variables$Mutation$DeletePost<TRes> {
+  _CopyWithStubImpl$Variables$Mutation$DeletePost(this._res);
+
+  TRes _res;
+
+  call({String? id}) => _res;
+}
+
+class Mutation$DeletePost {
+  Mutation$DeletePost({
+    required this.deletePost,
+    this.$__typename = 'Mutation',
+  });
+
+  factory Mutation$DeletePost.fromJson(Map<String, dynamic> json) {
+    final l$deletePost = json['deletePost'];
+    final l$$__typename = json['__typename'];
+    return Mutation$DeletePost(
+      deletePost: Mutation$DeletePost$deletePost.fromJson(
+          (l$deletePost as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final Mutation$DeletePost$deletePost deletePost;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$deletePost = deletePost;
+    _resultData['deletePost'] = l$deletePost.toJson();
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$deletePost = deletePost;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$deletePost,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$DeletePost) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$deletePost = deletePost;
+    final lOther$deletePost = other.deletePost;
+    if (l$deletePost != lOther$deletePost) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$DeletePost on Mutation$DeletePost {
+  CopyWith$Mutation$DeletePost<Mutation$DeletePost> get copyWith =>
+      CopyWith$Mutation$DeletePost(
+        this,
+        (i) => i,
+      );
+}
+
+abstract class CopyWith$Mutation$DeletePost<TRes> {
+  factory CopyWith$Mutation$DeletePost(
+    Mutation$DeletePost instance,
+    TRes Function(Mutation$DeletePost) then,
+  ) = _CopyWithImpl$Mutation$DeletePost;
+
+  factory CopyWith$Mutation$DeletePost.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$DeletePost;
+
+  TRes call({
+    Mutation$DeletePost$deletePost? deletePost,
+    String? $__typename,
+  });
+  CopyWith$Mutation$DeletePost$deletePost<TRes> get deletePost;
+}
+
+class _CopyWithImpl$Mutation$DeletePost<TRes>
+    implements CopyWith$Mutation$DeletePost<TRes> {
+  _CopyWithImpl$Mutation$DeletePost(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$DeletePost _instance;
+
+  final TRes Function(Mutation$DeletePost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? deletePost = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$DeletePost(
+        deletePost: deletePost == _undefined || deletePost == null
+            ? _instance.deletePost
+            : (deletePost as Mutation$DeletePost$deletePost),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+
+  CopyWith$Mutation$DeletePost$deletePost<TRes> get deletePost {
+    final local$deletePost = _instance.deletePost;
+    return CopyWith$Mutation$DeletePost$deletePost(
+        local$deletePost, (e) => call(deletePost: e));
+  }
+}
+
+class _CopyWithStubImpl$Mutation$DeletePost<TRes>
+    implements CopyWith$Mutation$DeletePost<TRes> {
+  _CopyWithStubImpl$Mutation$DeletePost(this._res);
+
+  TRes _res;
+
+  call({
+    Mutation$DeletePost$deletePost? deletePost,
+    String? $__typename,
+  }) =>
+      _res;
+
+  CopyWith$Mutation$DeletePost$deletePost<TRes> get deletePost =>
+      CopyWith$Mutation$DeletePost$deletePost.stub(_res);
+}
+
+const documentNodeMutationDeletePost = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'DeletePost'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'id')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'deletePost'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'id'),
+            value: VariableNode(name: NameNode(value: 'id')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'name'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'image'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'nop_eat'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'prepare_time'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'date_time_post'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'delete_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'category'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'ingredients'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'qty_comments'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: '__typename'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
+]);
+Mutation$DeletePost _parserFn$Mutation$DeletePost(Map<String, dynamic> data) =>
+    Mutation$DeletePost.fromJson(data);
+typedef OnMutationCompleted$Mutation$DeletePost = FutureOr<void> Function(
+  Map<String, dynamic>?,
+  Mutation$DeletePost?,
+);
+
+class Options$Mutation$DeletePost
+    extends graphql.MutationOptions<Mutation$DeletePost> {
+  Options$Mutation$DeletePost({
+    String? operationName,
+    required Variables$Mutation$DeletePost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$DeletePost? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$DeletePost? onCompleted,
+    graphql.OnMutationUpdate<Mutation$DeletePost>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$DeletePost(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationDeletePost,
+          parserFn: _parserFn$Mutation$DeletePost,
+        );
+
+  final OnMutationCompleted$Mutation$DeletePost? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+class WatchOptions$Mutation$DeletePost
+    extends graphql.WatchQueryOptions<Mutation$DeletePost> {
+  WatchOptions$Mutation$DeletePost({
+    String? operationName,
+    required Variables$Mutation$DeletePost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$DeletePost? typedOptimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeMutationDeletePost,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Mutation$DeletePost,
+        );
+}
+
+extension ClientExtension$Mutation$DeletePost on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Mutation$DeletePost>> mutate$DeletePost(
+          Options$Mutation$DeletePost options) async =>
+      await this.mutate(options);
+  graphql.ObservableQuery<Mutation$DeletePost> watchMutation$DeletePost(
+          WatchOptions$Mutation$DeletePost options) =>
+      this.watchMutation(options);
+}
+
+class Mutation$DeletePost$HookResult {
+  Mutation$DeletePost$HookResult(
+    this.runMutation,
+    this.result,
+  );
+
+  final RunMutation$Mutation$DeletePost runMutation;
+
+  final graphql.QueryResult<Mutation$DeletePost> result;
+}
+
+Mutation$DeletePost$HookResult useMutation$DeletePost(
+    [WidgetOptions$Mutation$DeletePost? options]) {
+  final result = graphql_flutter
+      .useMutation(options ?? WidgetOptions$Mutation$DeletePost());
+  return Mutation$DeletePost$HookResult(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
+      variables.toJson(),
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+    ),
+    result.result,
+  );
+}
+
+graphql.ObservableQuery<Mutation$DeletePost> useWatchMutation$DeletePost(
+        WatchOptions$Mutation$DeletePost options) =>
+    graphql_flutter.useWatchMutation(options);
+
+class WidgetOptions$Mutation$DeletePost
+    extends graphql.MutationOptions<Mutation$DeletePost> {
+  WidgetOptions$Mutation$DeletePost({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$DeletePost? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$DeletePost? onCompleted,
+    graphql.OnMutationUpdate<Mutation$DeletePost>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$DeletePost(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationDeletePost,
+          parserFn: _parserFn$Mutation$DeletePost,
+        );
+
+  final OnMutationCompleted$Mutation$DeletePost? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+typedef RunMutation$Mutation$DeletePost
+    = graphql.MultiSourceResult<Mutation$DeletePost> Function(
+  Variables$Mutation$DeletePost, {
+  Object? optimisticResult,
+  Mutation$DeletePost? typedOptimisticResult,
+});
+typedef Builder$Mutation$DeletePost = widgets.Widget Function(
+  RunMutation$Mutation$DeletePost,
+  graphql.QueryResult<Mutation$DeletePost>?,
+);
+
+class Mutation$DeletePost$Widget
+    extends graphql_flutter.Mutation<Mutation$DeletePost> {
+  Mutation$DeletePost$Widget({
+    widgets.Key? key,
+    WidgetOptions$Mutation$DeletePost? options,
+    required Builder$Mutation$DeletePost builder,
+  }) : super(
+          key: key,
+          options: options ?? WidgetOptions$Mutation$DeletePost(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+              typedOptimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
+            ),
+            result,
+          ),
+        );
+}
+
+class Mutation$DeletePost$deletePost {
+  Mutation$DeletePost$deletePost({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.nop_eat,
+    required this.prepare_time,
+    required this.date_time_post,
+    required this.delete_at,
+    required this.category,
+    required this.ingredients,
+    required this.qty_comments,
+    this.$__typename = 'Post',
+  });
+
+  factory Mutation$DeletePost$deletePost.fromJson(Map<String, dynamic> json) {
+    final l$id = json['id'];
+    final l$name = json['name'];
+    final l$image = json['image'];
+    final l$nop_eat = json['nop_eat'];
+    final l$prepare_time = json['prepare_time'];
+    final l$date_time_post = json['date_time_post'];
+    final l$delete_at = json['delete_at'];
+    final l$category = json['category'];
+    final l$ingredients = json['ingredients'];
+    final l$qty_comments = json['qty_comments'];
+    final l$$__typename = json['__typename'];
+    return Mutation$DeletePost$deletePost(
+      id: (l$id as String),
+      name: (l$name as String),
+      image: (l$image as String),
+      nop_eat: (l$nop_eat as num).toDouble(),
+      prepare_time: (l$prepare_time as String),
+      date_time_post: (l$date_time_post as String),
+      delete_at: (l$delete_at as String),
+      category: (l$category as String),
+      ingredients:
+          (l$ingredients as List<dynamic>).map((e) => (e as String)).toList(),
+      qty_comments: (l$qty_comments as num).toDouble(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String id;
+
+  final String name;
+
+  final String image;
+
+  final double nop_eat;
+
+  final String prepare_time;
+
+  final String date_time_post;
+
+  final String delete_at;
+
+  final String category;
+
+  final List<String> ingredients;
+
+  final double qty_comments;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
+    final l$name = name;
+    _resultData['name'] = l$name;
+    final l$image = image;
+    _resultData['image'] = l$image;
+    final l$nop_eat = nop_eat;
+    _resultData['nop_eat'] = l$nop_eat;
+    final l$prepare_time = prepare_time;
+    _resultData['prepare_time'] = l$prepare_time;
+    final l$date_time_post = date_time_post;
+    _resultData['date_time_post'] = l$date_time_post;
+    final l$delete_at = delete_at;
+    _resultData['delete_at'] = l$delete_at;
+    final l$category = category;
+    _resultData['category'] = l$category;
+    final l$ingredients = ingredients;
+    _resultData['ingredients'] = l$ingredients.map((e) => e).toList();
+    final l$qty_comments = qty_comments;
+    _resultData['qty_comments'] = l$qty_comments;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$name = name;
+    final l$image = image;
+    final l$nop_eat = nop_eat;
+    final l$prepare_time = prepare_time;
+    final l$date_time_post = date_time_post;
+    final l$delete_at = delete_at;
+    final l$category = category;
+    final l$ingredients = ingredients;
+    final l$qty_comments = qty_comments;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$id,
+      l$name,
+      l$image,
+      l$nop_eat,
+      l$prepare_time,
+      l$date_time_post,
+      l$delete_at,
+      l$category,
+      Object.hashAll(l$ingredients.map((v) => v)),
+      l$qty_comments,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$DeletePost$deletePost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$image = image;
+    final lOther$image = other.image;
+    if (l$image != lOther$image) {
+      return false;
+    }
+    final l$nop_eat = nop_eat;
+    final lOther$nop_eat = other.nop_eat;
+    if (l$nop_eat != lOther$nop_eat) {
+      return false;
+    }
+    final l$prepare_time = prepare_time;
+    final lOther$prepare_time = other.prepare_time;
+    if (l$prepare_time != lOther$prepare_time) {
+      return false;
+    }
+    final l$date_time_post = date_time_post;
+    final lOther$date_time_post = other.date_time_post;
+    if (l$date_time_post != lOther$date_time_post) {
+      return false;
+    }
+    final l$delete_at = delete_at;
+    final lOther$delete_at = other.delete_at;
+    if (l$delete_at != lOther$delete_at) {
+      return false;
+    }
+    final l$category = category;
+    final lOther$category = other.category;
+    if (l$category != lOther$category) {
+      return false;
+    }
+    final l$ingredients = ingredients;
+    final lOther$ingredients = other.ingredients;
+    if (l$ingredients.length != lOther$ingredients.length) {
+      return false;
+    }
+    for (int i = 0; i < l$ingredients.length; i++) {
+      final l$ingredients$entry = l$ingredients[i];
+      final lOther$ingredients$entry = lOther$ingredients[i];
+      if (l$ingredients$entry != lOther$ingredients$entry) {
+        return false;
+      }
+    }
+    final l$qty_comments = qty_comments;
+    final lOther$qty_comments = other.qty_comments;
+    if (l$qty_comments != lOther$qty_comments) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$DeletePost$deletePost
+    on Mutation$DeletePost$deletePost {
+  CopyWith$Mutation$DeletePost$deletePost<Mutation$DeletePost$deletePost>
+      get copyWith => CopyWith$Mutation$DeletePost$deletePost(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Mutation$DeletePost$deletePost<TRes> {
+  factory CopyWith$Mutation$DeletePost$deletePost(
+    Mutation$DeletePost$deletePost instance,
+    TRes Function(Mutation$DeletePost$deletePost) then,
+  ) = _CopyWithImpl$Mutation$DeletePost$deletePost;
+
+  factory CopyWith$Mutation$DeletePost$deletePost.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$DeletePost$deletePost;
+
+  TRes call({
+    String? id,
+    String? name,
+    String? image,
+    double? nop_eat,
+    String? prepare_time,
+    String? date_time_post,
+    String? delete_at,
+    String? category,
+    List<String>? ingredients,
+    double? qty_comments,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Mutation$DeletePost$deletePost<TRes>
+    implements CopyWith$Mutation$DeletePost$deletePost<TRes> {
+  _CopyWithImpl$Mutation$DeletePost$deletePost(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$DeletePost$deletePost _instance;
+
+  final TRes Function(Mutation$DeletePost$deletePost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? name = _undefined,
+    Object? image = _undefined,
+    Object? nop_eat = _undefined,
+    Object? prepare_time = _undefined,
+    Object? date_time_post = _undefined,
+    Object? delete_at = _undefined,
+    Object? category = _undefined,
+    Object? ingredients = _undefined,
+    Object? qty_comments = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$DeletePost$deletePost(
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        name: name == _undefined || name == null
+            ? _instance.name
+            : (name as String),
+        image: image == _undefined || image == null
+            ? _instance.image
+            : (image as String),
+        nop_eat: nop_eat == _undefined || nop_eat == null
+            ? _instance.nop_eat
+            : (nop_eat as double),
+        prepare_time: prepare_time == _undefined || prepare_time == null
+            ? _instance.prepare_time
+            : (prepare_time as String),
+        date_time_post: date_time_post == _undefined || date_time_post == null
+            ? _instance.date_time_post
+            : (date_time_post as String),
+        delete_at: delete_at == _undefined || delete_at == null
+            ? _instance.delete_at
+            : (delete_at as String),
+        category: category == _undefined || category == null
+            ? _instance.category
+            : (category as String),
+        ingredients: ingredients == _undefined || ingredients == null
+            ? _instance.ingredients
+            : (ingredients as List<String>),
+        qty_comments: qty_comments == _undefined || qty_comments == null
+            ? _instance.qty_comments
+            : (qty_comments as double),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Mutation$DeletePost$deletePost<TRes>
+    implements CopyWith$Mutation$DeletePost$deletePost<TRes> {
+  _CopyWithStubImpl$Mutation$DeletePost$deletePost(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? name,
+    String? image,
+    double? nop_eat,
+    String? prepare_time,
+    String? date_time_post,
+    String? delete_at,
+    String? category,
+    List<String>? ingredients,
+    double? qty_comments,
+    String? $__typename,
+  }) =>
+      _res;
+}
+
+class Variables$Subscription$DeletePost {
+  factory Variables$Subscription$DeletePost({required String postId}) =>
+      Variables$Subscription$DeletePost._({
+        r'postId': postId,
+      });
+
+  Variables$Subscription$DeletePost._(this._$data);
+
+  factory Variables$Subscription$DeletePost.fromJson(
+      Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$postId = data['postId'];
+    result$data['postId'] = (l$postId as String);
+    return Variables$Subscription$DeletePost._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get postId => (_$data['postId'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$postId = postId;
+    result$data['postId'] = l$postId;
+    return result$data;
+  }
+
+  CopyWith$Variables$Subscription$DeletePost<Variables$Subscription$DeletePost>
+      get copyWith => CopyWith$Variables$Subscription$DeletePost(
+            this,
+            (i) => i,
+          );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Subscription$DeletePost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$postId = postId;
+    final lOther$postId = other.postId;
+    if (l$postId != lOther$postId) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$postId = postId;
+    return Object.hashAll([l$postId]);
+  }
+}
+
+abstract class CopyWith$Variables$Subscription$DeletePost<TRes> {
+  factory CopyWith$Variables$Subscription$DeletePost(
+    Variables$Subscription$DeletePost instance,
+    TRes Function(Variables$Subscription$DeletePost) then,
+  ) = _CopyWithImpl$Variables$Subscription$DeletePost;
+
+  factory CopyWith$Variables$Subscription$DeletePost.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Subscription$DeletePost;
+
+  TRes call({String? postId});
+}
+
+class _CopyWithImpl$Variables$Subscription$DeletePost<TRes>
+    implements CopyWith$Variables$Subscription$DeletePost<TRes> {
+  _CopyWithImpl$Variables$Subscription$DeletePost(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Subscription$DeletePost _instance;
+
+  final TRes Function(Variables$Subscription$DeletePost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? postId = _undefined}) =>
+      _then(Variables$Subscription$DeletePost._({
+        ..._instance._$data,
+        if (postId != _undefined && postId != null)
+          'postId': (postId as String),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Subscription$DeletePost<TRes>
+    implements CopyWith$Variables$Subscription$DeletePost<TRes> {
+  _CopyWithStubImpl$Variables$Subscription$DeletePost(this._res);
+
+  TRes _res;
+
+  call({String? postId}) => _res;
+}
+
+class Subscription$DeletePost {
+  Subscription$DeletePost({required this.delete_post});
+
+  factory Subscription$DeletePost.fromJson(Map<String, dynamic> json) {
+    final l$delete_post = json['delete_post'];
+    return Subscription$DeletePost(
+        delete_post: Subscription$DeletePost$delete_post.fromJson(
+            (l$delete_post as Map<String, dynamic>)));
+  }
+
+  final Subscription$DeletePost$delete_post delete_post;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$delete_post = delete_post;
+    _resultData['delete_post'] = l$delete_post.toJson();
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$delete_post = delete_post;
+    return Object.hashAll([l$delete_post]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Subscription$DeletePost) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$delete_post = delete_post;
+    final lOther$delete_post = other.delete_post;
+    if (l$delete_post != lOther$delete_post) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Subscription$DeletePost on Subscription$DeletePost {
+  CopyWith$Subscription$DeletePost<Subscription$DeletePost> get copyWith =>
+      CopyWith$Subscription$DeletePost(
+        this,
+        (i) => i,
+      );
+}
+
+abstract class CopyWith$Subscription$DeletePost<TRes> {
+  factory CopyWith$Subscription$DeletePost(
+    Subscription$DeletePost instance,
+    TRes Function(Subscription$DeletePost) then,
+  ) = _CopyWithImpl$Subscription$DeletePost;
+
+  factory CopyWith$Subscription$DeletePost.stub(TRes res) =
+      _CopyWithStubImpl$Subscription$DeletePost;
+
+  TRes call({Subscription$DeletePost$delete_post? delete_post});
+  CopyWith$Subscription$DeletePost$delete_post<TRes> get delete_post;
+}
+
+class _CopyWithImpl$Subscription$DeletePost<TRes>
+    implements CopyWith$Subscription$DeletePost<TRes> {
+  _CopyWithImpl$Subscription$DeletePost(
+    this._instance,
+    this._then,
+  );
+
+  final Subscription$DeletePost _instance;
+
+  final TRes Function(Subscription$DeletePost) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? delete_post = _undefined}) =>
+      _then(Subscription$DeletePost(
+          delete_post: delete_post == _undefined || delete_post == null
+              ? _instance.delete_post
+              : (delete_post as Subscription$DeletePost$delete_post)));
+
+  CopyWith$Subscription$DeletePost$delete_post<TRes> get delete_post {
+    final local$delete_post = _instance.delete_post;
+    return CopyWith$Subscription$DeletePost$delete_post(
+        local$delete_post, (e) => call(delete_post: e));
+  }
+}
+
+class _CopyWithStubImpl$Subscription$DeletePost<TRes>
+    implements CopyWith$Subscription$DeletePost<TRes> {
+  _CopyWithStubImpl$Subscription$DeletePost(this._res);
+
+  TRes _res;
+
+  call({Subscription$DeletePost$delete_post? delete_post}) => _res;
+
+  CopyWith$Subscription$DeletePost$delete_post<TRes> get delete_post =>
+      CopyWith$Subscription$DeletePost$delete_post.stub(_res);
+}
+
+const documentNodeSubscriptionDeletePost = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.subscription,
+    name: NameNode(value: 'DeletePost'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'postId')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'delete_post'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'postId'),
+            value: VariableNode(name: NameNode(value: 'postId')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'delete_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+        ]),
+      )
+    ]),
+  ),
+]);
+Subscription$DeletePost _parserFn$Subscription$DeletePost(
+        Map<String, dynamic> data) =>
+    Subscription$DeletePost.fromJson(data);
+
+class Options$Subscription$DeletePost
+    extends graphql.SubscriptionOptions<Subscription$DeletePost> {
+  Options$Subscription$DeletePost({
+    String? operationName,
+    required Variables$Subscription$DeletePost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Subscription$DeletePost? typedOptimisticResult,
+    graphql.Context? context,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeSubscriptionDeletePost,
+          parserFn: _parserFn$Subscription$DeletePost,
+        );
+}
+
+class WatchOptions$Subscription$DeletePost
+    extends graphql.WatchQueryOptions<Subscription$DeletePost> {
+  WatchOptions$Subscription$DeletePost({
+    String? operationName,
+    required Variables$Subscription$DeletePost variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Subscription$DeletePost? typedOptimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeSubscriptionDeletePost,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Subscription$DeletePost,
+        );
+}
+
+class FetchMoreOptions$Subscription$DeletePost
+    extends graphql.FetchMoreOptions {
+  FetchMoreOptions$Subscription$DeletePost({
+    required graphql.UpdateQuery updateQuery,
+    required Variables$Subscription$DeletePost variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables.toJson(),
+          document: documentNodeSubscriptionDeletePost,
+        );
+}
+
+extension ClientExtension$Subscription$DeletePost on graphql.GraphQLClient {
+  Stream<graphql.QueryResult<Subscription$DeletePost>> subscribe$DeletePost(
+          Options$Subscription$DeletePost options) =>
+      this.subscribe(options);
+  graphql.ObservableQuery<Subscription$DeletePost> watchSubscription$DeletePost(
+          WatchOptions$Subscription$DeletePost options) =>
+      this.watchQuery(options);
+}
+
+graphql.QueryResult<Subscription$DeletePost> useSubscription$DeletePost(
+        Options$Subscription$DeletePost options) =>
+    graphql_flutter.useSubscription(options);
+
+class Subscription$DeletePost$Widget
+    extends graphql_flutter.Subscription<Subscription$DeletePost> {
+  Subscription$DeletePost$Widget({
+    widgets.Key? key,
+    required Options$Subscription$DeletePost options,
+    required graphql_flutter.SubscriptionBuilder<Subscription$DeletePost>
+        builder,
+    graphql_flutter.OnSubscriptionResult<Subscription$DeletePost>?
+        onSubscriptionResult,
+  }) : super(
+          key: key,
+          options: options,
+          builder: builder,
+          onSubscriptionResult: onSubscriptionResult,
+        );
+}
+
+class Subscription$DeletePost$delete_post {
+  Subscription$DeletePost$delete_post({
+    required this.id,
+    required this.delete_at,
+  });
+
+  factory Subscription$DeletePost$delete_post.fromJson(
+      Map<String, dynamic> json) {
+    final l$id = json['id'];
+    final l$delete_at = json['delete_at'];
+    return Subscription$DeletePost$delete_post(
+      id: (l$id as String),
+      delete_at: (l$delete_at as String),
+    );
+  }
+
+  final String id;
+
+  final String delete_at;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
+    final l$delete_at = delete_at;
+    _resultData['delete_at'] = l$delete_at;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$delete_at = delete_at;
+    return Object.hashAll([
+      l$id,
+      l$delete_at,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Subscription$DeletePost$delete_post) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$delete_at = delete_at;
+    final lOther$delete_at = other.delete_at;
+    if (l$delete_at != lOther$delete_at) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Subscription$DeletePost$delete_post
+    on Subscription$DeletePost$delete_post {
+  CopyWith$Subscription$DeletePost$delete_post<
+          Subscription$DeletePost$delete_post>
+      get copyWith => CopyWith$Subscription$DeletePost$delete_post(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Subscription$DeletePost$delete_post<TRes> {
+  factory CopyWith$Subscription$DeletePost$delete_post(
+    Subscription$DeletePost$delete_post instance,
+    TRes Function(Subscription$DeletePost$delete_post) then,
+  ) = _CopyWithImpl$Subscription$DeletePost$delete_post;
+
+  factory CopyWith$Subscription$DeletePost$delete_post.stub(TRes res) =
+      _CopyWithStubImpl$Subscription$DeletePost$delete_post;
+
+  TRes call({
+    String? id,
+    String? delete_at,
+  });
+}
+
+class _CopyWithImpl$Subscription$DeletePost$delete_post<TRes>
+    implements CopyWith$Subscription$DeletePost$delete_post<TRes> {
+  _CopyWithImpl$Subscription$DeletePost$delete_post(
+    this._instance,
+    this._then,
+  );
+
+  final Subscription$DeletePost$delete_post _instance;
+
+  final TRes Function(Subscription$DeletePost$delete_post) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? delete_at = _undefined,
+  }) =>
+      _then(Subscription$DeletePost$delete_post(
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        delete_at: delete_at == _undefined || delete_at == null
+            ? _instance.delete_at
+            : (delete_at as String),
+      ));
+}
+
+class _CopyWithStubImpl$Subscription$DeletePost$delete_post<TRes>
+    implements CopyWith$Subscription$DeletePost$delete_post<TRes> {
+  _CopyWithStubImpl$Subscription$DeletePost$delete_post(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? delete_at,
+  }) =>
+      _res;
+}

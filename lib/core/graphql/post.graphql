@@ -139,3 +139,25 @@ mutation UpdateEmojiOfPost($data: UpdateEmojiDto!) {
     }
   }
 }
+
+mutation DeletePost($id: String!) {
+  deletePost(id: $id) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    date_time_post
+    delete_at
+    category
+    ingredients
+    qty_comments
+  }
+}
+
+subscription DeletePost($postId: String!) {
+  delete_post(postId: $postId) {
+    id
+    delete_at
+  }
+}
