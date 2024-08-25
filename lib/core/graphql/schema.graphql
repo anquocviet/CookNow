@@ -92,6 +92,8 @@ input LoginDto {
 type Mutation {
   updateUser(data: UpdateUserDto!): User!
   deleteUser(id: String!): User!
+  followUser(userId: String!, followerId: String!): User!
+  unFollowUser(userId: String!, followerId: String!): User!
   createPost(data: CreatePostDto!): Post!
   updatePost(data: UpdatePostDto!): Post!
   deletePost(id: String!): Post!
@@ -180,6 +182,7 @@ input CreateAccountDto {
 }
 
 type Subscription {
+  user_follow(userId: String!): User!
   delete_post(postId: String!): Post!
   add_comment(postId: String!): Comment!
 }

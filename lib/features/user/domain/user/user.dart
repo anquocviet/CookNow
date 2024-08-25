@@ -18,7 +18,7 @@ class User with _$User {
     required String avatar,
     // required List<HistorySearch> top5HistorySearch,
     @Default([]) List<String> following,
-    @Default([]) List<String> followers,
+    @Default([]) List<String> follower,
     @Default([]) List<String> blocks,
   }) = _User;
 

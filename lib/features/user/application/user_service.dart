@@ -34,6 +34,16 @@ class UserService {
     await userRepository.updateUser(dto);
   }
 
+  Future<void> followUser(String id) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.followUser(id);
+  }
+
+  Future<void> unFollowUser(String id) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.unFollowUser(id);
+  }
+
   Stream<User?> watchUser() {
     final userRepository = ref.read(userRepositoryProvider);
     return userRepository.watchUser;

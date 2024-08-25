@@ -5,11 +5,13 @@ import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 enum ActionPostItem { edit, delete }
 
@@ -35,6 +37,15 @@ class _PostState extends ConsumerState<PostWidget> {
     } catch (e) {
       if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
     }
+  }
+
+  Future<void> _editPost(String postId) async {
+    showCupertinoModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return CreatePostScreen(post: widget.post);
+      },
+    );
   }
 
   Future<void> _removePost(String postId) async {
@@ -107,26 +118,27 @@ class _PostState extends ConsumerState<PostWidget> {
                 ),
               ),
               const Spacer(),
-              PopupMenuButton<ActionPostItem>(
-                initialValue: selectedItem,
-                onSelected: (ActionPostItem item) {
-                  setState(() {
-                    selectedItem = item;
-                  });
-                },
-                itemBuilder: (BuildContext context) => [
-                  PopupMenuItem<ActionPostItem>(
-                    value: ActionPostItem.edit,
-                    child: const Text('Sửa bài viết'),
-                    onTap: () {},
-                  ),
-                  PopupMenuItem<ActionPostItem>(
-                    value: ActionPostItem.delete,
-                    child: const Text('Xóa bài viết'),
-                    onTap: () => _removePost(post.id),
-                  ),
-                ],
-              ),
+              if (post.owner.userId == user?.id)
+                PopupMenuButton<ActionPostItem>(
+                  initialValue: selectedItem,
+                  onSelected: (ActionPostItem item) {
+                    setState(() {
+                      selectedItem = item;
+                    });
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem<ActionPostItem>(
+                      value: ActionPostItem.edit,
+                      child: const Text('Sửa bài viết'),
+                      onTap: () => _editPost(post.id),
+                    ),
+                    PopupMenuItem<ActionPostItem>(
+                      value: ActionPostItem.delete,
+                      child: const Text('Xóa bài viết'),
+                      onTap: () => _removePost(post.id),
+                    ),
+                  ],
+                ),
             ],
           ),
           const SizedBox(height: 8),

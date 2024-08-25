@@ -76,6 +76,57 @@ class UserRepositoryImp implements UserRepository {
       });
 
   @override
+  Future<void> followUser(String followId) => _getData(
+        query: client.mutate$FollowUser(
+          Options$Mutation$FollowUser(
+            variables: Variables$Mutation$FollowUser(
+              userId: currentUser!.id,
+              followerId: followId,
+            ),
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Mutation$FollowUser).followUser;
+          _userState.value = _userState.value?.copyWith(
+            following: result.following,
+          );
+        },
+      );
+
+  @override
+  Future<void> unFollowUser(String followId) => _getData(
+        query: client.mutate$UnFollowUser(
+          Options$Mutation$UnFollowUser(
+            variables: Variables$Mutation$UnFollowUser(
+              userId: currentUser!.id,
+              followerId: followId,
+            ),
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Mutation$UnFollowUser).unFollowUser;
+          _userState.value = _userState.value?.copyWith(
+            following: result.following,
+          );
+        },
+      );
+
+  Stream<void> watchUserFromServer(String id) async* {
+    final Stream<QueryResult<Subscription$UserFollow>> streamResult =
+        client.subscribe$UserFollow(
+      Options$Subscription$UserFollow(
+        variables: Variables$Subscription$UserFollow(userId: id),
+      ),
+    );
+    yield* streamResult.map((event) {
+      final result = event.parsedData?.user_follow;
+      _userState.value = _userState.value?.copyWith(
+        follower: result!.follower,
+      );
+    });
+  }
+
+  @override
   Stream<User?> get watchUser => _userState.stream;
 
   @override
@@ -117,4 +168,10 @@ UserRepositoryImp userRepository(UserRepositoryRef ref) {
 Stream<User?> userStateChanges(UserStateChangesRef ref) {
   final userRepository = ref.watch(userRepositoryProvider);
   return userRepository.userStateChanges();
+}
+
+@riverpod
+Stream<void> watchUserFromServer(WatchUserFromServerRef ref) async* {
+  final userRepository = ref.watch(userRepositoryProvider);
+  yield* userRepository.watchUserFromServer(userRepository.currentUser!.id);
 }

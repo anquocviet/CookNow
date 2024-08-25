@@ -36,5 +36,21 @@ final userStateChangesProvider = StreamProvider<User?>.internal(
 );
 
 typedef UserStateChangesRef = StreamProviderRef<User?>;
+String _$watchUserFromServerHash() =>
+    r'c904489c33857b27894c164a3f16e9112c5bf85f';
+
+/// See also [watchUserFromServer].
+@ProviderFor(watchUserFromServer)
+final watchUserFromServerProvider = AutoDisposeStreamProvider<void>.internal(
+  watchUserFromServer,
+  name: r'watchUserFromServerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$watchUserFromServerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef WatchUserFromServerRef = AutoDisposeStreamProviderRef<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

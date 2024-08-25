@@ -1,8 +1,12 @@
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/custom_circular_progress_indicator.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
+import 'package:cooknow/features/user/presentation/controller/profile_screen_controller.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_personal_post.dart';
 import 'package:cooknow/features/user/presentation/widget/tab_saved_post.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +67,32 @@ class ProfileScreen extends ConsumerWidget {
   _buildProfile(BuildContext context, User user, WidgetRef ref) {
     const lengthAPost = 660.0; // 660 is the height of a post
     final lengthPost = ref.read(lengthUserPostProvider);
+    final state = ref.watch(profileScreenControllerProvider);
+    final currentUserFollowing =
+        ref.read(userRepositoryProvider).currentUser!.following;
+
+    void followUser() {
+      try {
+        ref.read(profileScreenControllerProvider.notifier).followUser(user.id);
+      } on AppException catch (e) {
+        showError(context, e.message);
+      } catch (e) {
+        showError(context, 'Đã xảy ra lỗi $e');
+      }
+    }
+
+    void unFollowUser() {
+      try {
+        ref
+            .read(profileScreenControllerProvider.notifier)
+            .unFollowUser(user.id);
+      } on AppException catch (e) {
+        showError(context, e.message);
+      } catch (e) {
+        showError(context, 'Đã xảy ra lỗi $e');
+      }
+    }
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: SizedBox(
@@ -151,7 +181,15 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   if (userId != null)
-                    FilledButton(
+                    FilledButton.icon(
+                      label: Text(
+                        currentUserFollowing.contains(user.id)
+                            ? 'Hủy theo dõi'
+                            : 'Theo dõi',
+                      ),
+                      icon: state.isLoading
+                          ? const CustomCircularProgressIndicator()
+                          : null,
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(
                           Theme.of(context).primaryColor,
@@ -165,14 +203,17 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      onPressed: () {},
-                      child: const Text('Theo dõi'),
+                      onPressed: state.isLoading
+                          ? null
+                          : currentUserFollowing.contains(user.id)
+                              ? unFollowUser
+                              : followUser,
                     ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
                       Text(
-                        '${user.followers.length} người theo dõi',
+                        '${user.follower.length} người theo dõi',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

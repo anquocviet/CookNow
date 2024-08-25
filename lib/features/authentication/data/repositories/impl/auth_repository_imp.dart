@@ -84,7 +84,8 @@ class AuthRepositoryImp implements AuthRepository {
       log('${result.exception}', name: 'AuthRepositoryImp');
       if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
         final error = result.exception!.graphqlErrors.first.message;
-        if (error == AuthExceptionFromServer.jwtExpired) {
+        if (error == AuthExceptionFromServer.jwtExpired ||
+            error == AuthExceptionFromServer.jwtInvalid) {
           throw TokenExpiredException();
         } else if (error == AuthExceptionFromServer.userNotFound) {
           throw InvalidUsernameOrPasswordException();

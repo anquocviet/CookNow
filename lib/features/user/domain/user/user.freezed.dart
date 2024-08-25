@@ -32,7 +32,7 @@ mixin _$User {
   String get avatar =>
       throw _privateConstructorUsedError; // required List<HistorySearch> top5HistorySearch,
   List<String> get following => throw _privateConstructorUsedError;
-  List<String> get followers => throw _privateConstructorUsedError;
+  List<String> get follower => throw _privateConstructorUsedError;
   List<String> get blocks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ abstract class $UserCopyWith<$Res> {
       String phone,
       String avatar,
       List<String> following,
-      List<String> followers,
+      List<String> follower,
       List<String> blocks});
 
   $AccountCopyWith<$Res> get account;
@@ -87,7 +87,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? phone = null,
     Object? avatar = null,
     Object? following = null,
-    Object? followers = null,
+    Object? follower = null,
     Object? blocks = null,
   }) {
     return _then(_value.copyWith(
@@ -135,9 +135,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.following
           : following // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      followers: null == followers
-          ? _value.followers
-          : followers // ignore: cast_nullable_to_non_nullable
+      follower: null == follower
+          ? _value.follower
+          : follower // ignore: cast_nullable_to_non_nullable
               as List<String>,
       blocks: null == blocks
           ? _value.blocks
@@ -174,7 +174,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String phone,
       String avatar,
       List<String> following,
-      List<String> followers,
+      List<String> follower,
       List<String> blocks});
 
   @override
@@ -202,7 +202,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? phone = null,
     Object? avatar = null,
     Object? following = null,
-    Object? followers = null,
+    Object? follower = null,
     Object? blocks = null,
   }) {
     return _then(_$UserImpl(
@@ -250,9 +250,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value._following
           : following // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      followers: null == followers
-          ? _value._followers
-          : followers // ignore: cast_nullable_to_non_nullable
+      follower: null == follower
+          ? _value._follower
+          : follower // ignore: cast_nullable_to_non_nullable
               as List<String>,
       blocks: null == blocks
           ? _value._blocks
@@ -277,10 +277,10 @@ class _$UserImpl implements _User {
       required this.phone,
       required this.avatar,
       final List<String> following = const [],
-      final List<String> followers = const [],
+      final List<String> follower = const [],
       final List<String> blocks = const []})
       : _following = following,
-        _followers = followers,
+        _follower = follower,
         _blocks = blocks;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -317,13 +317,13 @@ class _$UserImpl implements _User {
     return EqualUnmodifiableListView(_following);
   }
 
-  final List<String> _followers;
+  final List<String> _follower;
   @override
   @JsonKey()
-  List<String> get followers {
-    if (_followers is EqualUnmodifiableListView) return _followers;
+  List<String> get follower {
+    if (_follower is EqualUnmodifiableListView) return _follower;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_followers);
+    return EqualUnmodifiableListView(_follower);
   }
 
   final List<String> _blocks;
@@ -337,7 +337,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, gender: $gender, age: $age, living: $living, account: $account, bio: $bio, email: $email, phone: $phone, avatar: $avatar, following: $following, followers: $followers, blocks: $blocks)';
+    return 'User(id: $id, name: $name, gender: $gender, age: $age, living: $living, account: $account, bio: $bio, email: $email, phone: $phone, avatar: $avatar, following: $following, follower: $follower, blocks: $blocks)';
   }
 
   @override
@@ -357,8 +357,7 @@ class _$UserImpl implements _User {
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             const DeepCollectionEquality()
                 .equals(other._following, _following) &&
-            const DeepCollectionEquality()
-                .equals(other._followers, _followers) &&
+            const DeepCollectionEquality().equals(other._follower, _follower) &&
             const DeepCollectionEquality().equals(other._blocks, _blocks));
   }
 
@@ -377,7 +376,7 @@ class _$UserImpl implements _User {
       phone,
       avatar,
       const DeepCollectionEquality().hash(_following),
-      const DeepCollectionEquality().hash(_followers),
+      const DeepCollectionEquality().hash(_follower),
       const DeepCollectionEquality().hash(_blocks));
 
   @JsonKey(ignore: true)
@@ -407,7 +406,7 @@ abstract class _User implements User {
       required final String phone,
       required final String avatar,
       final List<String> following,
-      final List<String> followers,
+      final List<String> follower,
       final List<String> blocks}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -435,7 +434,7 @@ abstract class _User implements User {
   @override // required List<HistorySearch> top5HistorySearch,
   List<String> get following;
   @override
-  List<String> get followers;
+  List<String> get follower;
   @override
   List<String> get blocks;
   @override
