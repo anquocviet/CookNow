@@ -6,5 +6,7 @@ abstract class UserRepository {
   Future<void> fetchUserWhenLogin(String id);
   Stream<User?> get watchUser;
   Future<void> updateUser(UpdateUserDto dto);
+  Future<void> followUser(String followId);
+  Future<void> unFollowUser(String followId);
   Future<void> dispose();
 }

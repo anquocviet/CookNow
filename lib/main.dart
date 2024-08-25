@@ -1,6 +1,5 @@
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
-import 'package:cooknow/core/socket/socket_cli.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,7 +15,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  SocketService().initConnection();
 
   runApp(const ProviderScope(
     child: MainApp(),

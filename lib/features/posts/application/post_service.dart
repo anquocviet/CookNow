@@ -15,7 +15,7 @@ part 'post_service.g.dart';
 class PostService {
   PostService({required this.ref});
 
-  final Ref ref;
+  final PostServiceRef ref;
 
   /// Creates a new post using the provided [dto].
   ///
@@ -67,6 +67,15 @@ class PostService {
       dto.steps[dto.steps.indexOf(step)] = step.copyWith(medias: listMedia);
     }
     await postRepository.updatePost(dto);
+  }
+
+  Future<void> removePost(String postId) async {
+    final postRepository = ref.read(postRepositoryProvider);
+    await postRepository.removePost(postId);
+  }
+
+  Future<void> watchRemovePost(String postId) async {
+    ref.watch(watchRemovePostProvider(postId));
   }
 
   Future<List<String>> chooseMedia(bool isMultiImage, bool isVideo) async {

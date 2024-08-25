@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/comment.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/comment_repository.dart';
+import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
 import 'package:cooknow/features/posts/domain/comment/comment.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,17 +33,33 @@ class CommentRepositoryImp implements CommentRepository {
         ),
       ),
       builder: (data) {
-        final result = (data as Mutation$CreateComment).createComment;
-        _listCommentState.value = [
-          ..._listCommentState.value,
-          Comment.fromJson(result.toJson())
-        ];
+        // final result = (data as Mutation$CreateComment).createComment;
+        // _listCommentState.value = [
+        //   Comment.fromJson(result.toJson())
+        //   ..._listCommentState.value,
+        // ];
       });
 
   @override
   Future<void> deleteComment(String id) {
     // TODO: implement deleteComment
     throw UnimplementedError();
+  }
+
+  Stream<void> watchComment(String id) async* {
+    final Stream<QueryResult<Subscription$CreateComment>> streamResult =
+        client.subscribe$CreateComment(
+      Options$Subscription$CreateComment(
+        variables: Variables$Subscription$CreateComment(postId: id),
+      ),
+    );
+    yield* streamResult.map((event) {
+      final result = event.parsedData?.add_comment;
+      _listCommentState.value = [
+        Comment.fromJson(result!.toJson()),
+        ..._listCommentState.value,
+      ];
+    });
   }
 
   @override
@@ -85,12 +102,12 @@ class CommentRepositoryImp implements CommentRepository {
         final data = result.parsedData;
         return builder(data);
       } else {
-        throw ex.UnknownException();
+        throw AppUnknownException();
       }
     } on SocketException {
-      throw ex.NoInternetException();
+      throw NoInternetException();
     } on Exception {
-      throw ex.UnknownException();
+      throw AppUnknownException();
     }
   }
 }
@@ -104,4 +121,12 @@ CommentRepositoryImp commentRepository(CommentRepositoryRef ref) {
 Stream<List<Comment?>> commentStateChanges(CommentStateChangesRef ref) {
   final commentRepository = ref.watch(commentRepositoryProvider);
   return commentRepository.commentStateChanges();
+}
+
+@riverpod
+Stream<void> watchCreateComment(WatchCreateCommentRef ref, String id) async* {
+  final commentRepository = ref.watch(commentRepositoryProvider);
+  final postRepository = ref.read(postRepositoryProvider);
+  postRepository.updateQtyOfPost(id);
+  yield* commentRepository.watchComment(id);
 }

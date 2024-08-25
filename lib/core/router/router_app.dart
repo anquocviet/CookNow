@@ -155,9 +155,21 @@ GoRouter goRouter(GoRouterRef ref) {
                         ),
                         GoRoute(
                           path: RouteName.detailEmojiPost,
-                          builder: (context, state) => DetailEmojiPostScreen(
-                            emojis: state.extra as List<Emoji>,
-                          ),
+                          builder: (context, state) {
+                            // Handle the case when the extra is a list of Emoji
+                            List<Emoji> emojis = [];
+                            try {
+                              // Try to cast the extra to a list of Emoji
+                              emojis = state.extra as List<Emoji>;
+                            } catch (e) {
+                              // If it fails, try to cast it to a list of dynamic
+                              emojis = (state.extra as List<dynamic>)
+                                  .map((e) =>
+                                      Emoji.fromJson(e as Map<String, dynamic>))
+                                  .toList();
+                            }
+                            return DetailEmojiPostScreen(emojis: emojis);
+                          },
                         ),
                         GoRoute(
                           path: RouteName.profileUser,

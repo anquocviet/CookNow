@@ -11,3 +11,6 @@ targets:
           outputDirectory: /lib/core/graphql/__generated
           assetsPath: lib/core/graphql/*.graphql
           generatedFileHeader: "// GENERATED FILE\n// DO NOT MODIFY\n"
+          addTypenameExcludedPaths:
+            - subscription
+            - subscription.*

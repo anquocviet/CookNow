@@ -1,7 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:cooknow/core/exceptions/app_exception.dart' as ex;
+import 'package:cooknow/core/constant/exception_from_server.dart';
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/post.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
@@ -47,20 +47,40 @@ class PostRepositoryImp implements PostRepository {
       });
 
   @override
-  Future<void> fetchPostOfUser(String id) => _getData(
-      query: client.query$PostsByOwner(
-        Options$Query$PostsByOwner(
-          variables: Variables$Query$PostsByOwner(
-            owner_id: id,
+  Future<void> fetchPost(String id) => _getData(
+        query: client.query$Post(Options$Query$Post(
+          variables: Variables$Query$Post(
+            id: id,
           ),
           fetchPolicy: FetchPolicy.noCache,
+        )),
+        builder: (data) {
+          final result = (data as Query$Post).post;
+          _listPostState.value = _listPostState.value.map((e) {
+            if (e?.id == result.id) {
+              return Post.fromJson(result.toJson());
+            }
+            return e;
+          }).toList();
+        },
+      );
+
+  @override
+  Future<void> fetchPostForUser(String id) => _getData(
+        query: client.query$PostForUser(
+          Options$Query$PostForUser(
+            variables: Variables$Query$PostForUser(
+              userId: id,
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
         ),
-      ),
-      builder: (data) {
-        final result = (data as Query$PostsByOwner).postsByOwner;
-        _listPostState.value =
-            result.map((e) => Post.fromJson(e.toJson())).toList();
-      });
+        builder: (data) {
+          final result = (data as Query$PostForUser).postForUser;
+          _listPostState.value =
+              result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
 
   @override
   Future<List<Post>> getPostOfUser(String id) => _getData(
@@ -134,6 +154,37 @@ class PostRepositoryImp implements PostRepository {
         },
       );
 
+  @override
+  Future<void> removePost(String postId) => _getData(
+      query: client.mutate$DeletePost(
+        Options$Mutation$DeletePost(
+          variables: Variables$Mutation$DeletePost(
+            id: postId,
+          ),
+          fetchPolicy: FetchPolicy.noCache,
+        ),
+      ),
+      builder: (data) {
+        final result = (data as Mutation$DeletePost).deletePost;
+        _listPostState.value =
+            _listPostState.value.where((e) => e?.id != result.id).toList();
+      });
+
+  Stream<void> watchRemovePost(String postId) async* {
+    final streamResult = client.subscribe$DeletePost(
+      Options$Subscription$DeletePost(
+        variables: Variables$Subscription$DeletePost(
+          postId: postId,
+        ),
+      ),
+    );
+    yield* streamResult.map((event) {
+      final result = event.parsedData?.delete_post;
+      _listPostState.value =
+          _listPostState.value.where((e) => e?.id != result?.id).toList();
+    });
+  }
+
   void updateQtyOfPost(String id) {
     _listPostState.value = _listPostState.value.map((post) {
       if (post?.id == id) {
@@ -147,21 +198,26 @@ class PostRepositoryImp implements PostRepository {
     required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
   }) async {
-    try {
-      final result = await query;
-      final String error =
-          result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-      log(error, name: 'PostRepositoryImp');
-      if (error.isEmpty) {
-        final data = result.parsedData;
-        return builder(data);
+    final result = await query;
+    final String error =
+        result.exception?.graphqlErrors.firstOrNull?.message ?? '';
+    if (error.isEmpty) {
+      final data = result.parsedData;
+      return builder(data);
+    } else {
+      log(result.exception.toString(), name: 'PostRepositoryImp');
+      if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
+        final error = result.exception!.graphqlErrors.first.message;
+        if (error == AuthExceptionFromServer.jwtExpired) {
+          throw TokenExpiredException();
+        } else if (error == AuthExceptionFromServer.postNotFound) {
+          throw PostNotFoundException();
+        } else {
+          throw ServerErrorException();
+        }
       } else {
-        throw ex.UnknownException();
+        throw NoInternetException();
       }
-    } on SocketException {
-      throw ex.NoInternetException();
-    } on Exception {
-      throw ex.UnknownException();
     }
   }
 }
@@ -184,4 +240,10 @@ Stream<Post?> currentPostStateChanges(
   return postRepository
       .postStateChanges()
       .map((event) => event.where((post) => post?.id == id).toList().first);
+}
+
+@riverpod
+Stream<void> watchRemovePost(WatchRemovePostRef ref, String postId) async* {
+  final postRepository = ref.watch(postRepositoryProvider);
+  yield* postRepository.watchRemovePost(postId);
 }

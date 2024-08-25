@@ -17,7 +17,7 @@ class HomeFeedScreen extends ConsumerWidget {
     final userRepository = ref.read(userRepositoryProvider);
     final feedService = ref.read(feedServiceProvider);
     final user = userRepository.currentUser;
-    feedService.fetchPostOfUser(user?.id ?? '');
+    feedService.fetchPostForUser(user?.id ?? '');
 
     return Scaffold(
       body: NestedScrollView(

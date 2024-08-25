@@ -21,6 +21,18 @@ type User {
   blocks: [String!]!
 }
 
+type Comment {
+  id: String!
+  user_id: String!
+  username: String!
+  name: String!
+  avatar: String!
+  post_id: String!
+  content: String!
+  image: String!
+  date_time_comment: String!
+}
+
 type Step {
   content: String!
   medias: [String!]!
@@ -54,18 +66,6 @@ type Post {
   qty_comments: Float!
 }
 
-type Comment {
-  id: String!
-  user_id: String!
-  username: String!
-  name: String!
-  avatar: String!
-  post_id: String!
-  content: String!
-  image: String!
-  date_time_comment: String!
-}
-
 type AuthResponseDto {
   access_token: String!
 }
@@ -76,6 +76,7 @@ type Query {
   posts: [Post!]!
   post(id: String!): Post!
   postsByOwner(owner_id: String!): [Post!]!
+  postForUser(userId: String!): [Post!]!
   getCommentsByPostId(postId: String!): [Comment!]!
   login(data: LoginDto!): AuthResponseDto!
   validateToken(token: String!): String!
@@ -91,6 +92,8 @@ input LoginDto {
 type Mutation {
   updateUser(data: UpdateUserDto!): User!
   deleteUser(id: String!): User!
+  followUser(userId: String!, followerId: String!): User!
+  unFollowUser(userId: String!, followerId: String!): User!
   createPost(data: CreatePostDto!): Post!
   updatePost(data: UpdatePostDto!): Post!
   deletePost(id: String!): Post!
@@ -176,4 +179,10 @@ input CreateUserDto {
 input CreateAccountDto {
   username: String!
   password: String!
+}
+
+type Subscription {
+  user_follow(userId: String!): User!
+  delete_post(postId: String!): Post!
+  add_comment(postId: String!): Comment!
 }
