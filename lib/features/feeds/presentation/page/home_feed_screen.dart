@@ -3,6 +3,7 @@ import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/page/community_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/follower_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/ingredient_screen.dart';
+import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,7 @@ class HomeFeedScreen extends ConsumerWidget {
     final feedService = ref.read(feedServiceProvider);
     final user = userRepository.currentUser;
     feedService.fetchPostForUser(user?.id ?? '');
+    ref.watch(userServiceProvider).watchUserFollow();
 
     return Scaffold(
       body: NestedScrollView(

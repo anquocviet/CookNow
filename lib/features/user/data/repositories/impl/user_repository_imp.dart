@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/user.graphql.dart';
+import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
@@ -111,7 +112,7 @@ class UserRepositoryImp implements UserRepository {
         },
       );
 
-  Stream<void> watchUserFromServer(String id) async* {
+  Stream<bool> watchUserFollow(String id) async* {
     final Stream<QueryResult<Subscription$UserFollow>> streamResult =
         client.subscribe$UserFollow(
       Options$Subscription$UserFollow(
@@ -123,6 +124,7 @@ class UserRepositoryImp implements UserRepository {
       _userState.value = _userState.value?.copyWith(
         follower: result!.follower,
       );
+      return result != null;
     });
   }
 
@@ -171,7 +173,14 @@ Stream<User?> userStateChanges(UserStateChangesRef ref) {
 }
 
 @riverpod
-Stream<void> watchUserFromServer(WatchUserFromServerRef ref) async* {
+Stream<void> watchUserFollow(WatchUserFollowRef ref) async* {
   final userRepository = ref.watch(userRepositoryProvider);
-  yield* userRepository.watchUserFromServer(userRepository.currentUser!.id);
+  final Stream<bool> watchUserFollow =
+      userRepository.watchUserFollow(userRepository.currentUser!.id);
+  watchUserFollow.first.then((value) {
+    if (value) {
+      ref.read(notificationProvider.notifier).haveNotification();
+    }
+  });
+  yield* watchUserFollow;
 }

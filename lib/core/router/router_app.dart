@@ -3,6 +3,7 @@ import 'package:cooknow/core/router/go_router_refresh_stream.dart';
 import 'package:cooknow/core/router/not_found_screen.dart';
 import 'package:cooknow/core/router/scaffold_with_nested_navigation.dart';
 import 'package:cooknow/core/utils/decode_token.dart';
+import 'package:cooknow/core/widget/list_user_screen.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/authentication/presentation/page/auth_screen.dart';
@@ -12,11 +13,9 @@ import 'package:cooknow/features/authentication/presentation/page/register/regis
 import 'package:cooknow/features/authentication/presentation/page/register/register_verify_code_screen.dart';
 import 'package:cooknow/features/authentication/presentation/page/register/register_welcome.dart';
 import 'package:cooknow/features/authentication/presentation/page/welcome_screen.dart';
-import 'package:cooknow/features/feeds/presentation/page/detail_emoji_post_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/detail_post_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
-import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
@@ -33,7 +32,7 @@ part 'router_app.g.dart';
 class RouteName {
   static const home = '/';
   static const detailPost = 'detail-post';
-  static const detailEmojiPost = 'detail-emoji-post';
+  static const listUserScreen = 'list-user-screen';
   static const search = '/search';
   static const createPost = '/create-post';
   static const notification = '/notification';
@@ -81,7 +80,6 @@ GoRouter goRouter(GoRouterRef ref) {
       authService.validateToken().then((_) async {
         final decodedToken = decodeToken(token);
         await userService.fetchUserWhenLogin(decodedToken['id']);
-        // await userService.setAccount(Account.fromJson(decodedToken));
       }).catchError((error) {
         if (error is TokenExpiredException) {
           showError(_key.currentContext!, error.message);
@@ -154,21 +152,25 @@ GoRouter goRouter(GoRouterRef ref) {
                           ),
                         ),
                         GoRoute(
-                          path: RouteName.detailEmojiPost,
+                          path: RouteName.listUserScreen,
                           builder: (context, state) {
-                            // Handle the case when the extra is a list of Emoji
-                            List<Emoji> emojis = [];
+                            late List<String> listUserId;
                             try {
-                              // Try to cast the extra to a list of Emoji
-                              emojis = state.extra as List<Emoji>;
+                              listUserId = (state.extra
+                                      as Map<String, dynamic>)['listUserId']
+                                  as List<String>;
                             } catch (e) {
-                              // If it fails, try to cast it to a list of dynamic
-                              emojis = (state.extra as List<dynamic>)
-                                  .map((e) =>
-                                      Emoji.fromJson(e as Map<String, dynamic>))
+                              listUserId = ((state.extra
+                                          as Map<String, dynamic>)['listUserId']
+                                      as List<dynamic>)
+                                  .map((e) => e as String)
                                   .toList();
                             }
-                            return DetailEmojiPostScreen(emojis: emojis);
+                            return ListUserScreen(
+                              title: (state.extra
+                                  as Map<String, dynamic>)['title'] as String,
+                              listUserId: listUserId,
+                            );
                           },
                         ),
                         GoRoute(
@@ -217,4 +219,18 @@ GoRouter goRouter(GoRouterRef ref) {
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
   );
+}
+
+@riverpod
+class Notification extends _$Notification {
+  @override
+  bool build() => false;
+
+  void haveNotification() {
+    state = true;
+  }
+
+  void noNotification() {
+    state = false;
+  }
 }

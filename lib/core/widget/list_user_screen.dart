@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
-import 'package:cooknow/features/posts/domain/emoji/emoji.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:cooknow/features/user/presentation/controller/profile_screen_controller.dart';
@@ -9,15 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class DetailEmojiPostScreen extends ConsumerWidget {
-  const DetailEmojiPostScreen({super.key, required this.emojis});
+class ListUserScreen extends ConsumerWidget {
+  const ListUserScreen({
+    super.key,
+    required this.title,
+    required this.listUserId,
+  });
 
-  final List<Emoji> emojis;
+  final String title;
+  final List<String> listUserId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.read(userRepositoryProvider).currentUser;
     final state = ref.watch(profileScreenControllerProvider);
+    log(listUserId.toString());
 
     void followUser(String followerId) {
       try {
@@ -45,14 +52,14 @@ class DetailEmojiPostScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Yêu thích'),
+        title: Text(title),
       ),
       body: ListView.builder(
-        itemCount: emojis.first.v.length,
+        itemCount: listUserId.length,
         itemBuilder: (context, index) {
-          final emoji = emojis[0];
-          final user =
-              ref.read(userServiceProvider).fetchUser(emoji.v.elementAt(index));
+          final user = ref
+              .read(userServiceProvider)
+              .fetchUser(listUserId.elementAt(index));
           return FutureBuilder(
             future: user,
             builder: (context, snapshot) => snapshot.hasData

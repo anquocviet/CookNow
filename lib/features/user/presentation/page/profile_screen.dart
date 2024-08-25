@@ -93,6 +93,13 @@ class ProfileScreen extends ConsumerWidget {
       }
     }
 
+    void openFollowUser(String title, List<String> listUserId) {
+      context.push(
+        '${RouteName.home}${RouteName.listUserScreen}',
+        extra: {'title': title, 'listUserId': listUserId},
+      );
+    }
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: SizedBox(
@@ -212,19 +219,29 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Text(
-                        '${user.follower.length} người theo dõi',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      TextButton(
+                        onPressed: () =>
+                            openFollowUser('Người theo dõi', user.follower),
+                        child: Text(
+                          '${user.follower.length} người theo dõi',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Text(
-                        '${user.following.length} đang theo dõi',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      TextButton(
+                        onPressed: () =>
+                            openFollowUser('Đang theo dõi', user.following),
+                        child: Text(
+                          '${user.following.length} đang theo dõi',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ],

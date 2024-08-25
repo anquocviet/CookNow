@@ -79,10 +79,10 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
   }
 
   void _openDetailEmojiPostScreen(Post post) {
-    context.push(
-      '${RouteName.home}${RouteName.detailEmojiPost}',
-      extra: post.emojis,
-    );
+    context.push('${RouteName.home}${RouteName.listUserScreen}', extra: {
+      'title': 'Yêu thích',
+      'listUserId': post.emojis.first.v,
+    });
   }
 
   Future<void> _reactToPost(
