@@ -16,6 +16,7 @@ type User {
   avatar: String!
   date_created: String!
   date_closed: String!
+  posts_saved: [String!]!
   following: [String!]!
   follower: [String!]!
   blocks: [String!]!
@@ -76,7 +77,9 @@ type Query {
   posts: [Post!]!
   post(id: String!): Post!
   postsByOwner(owner_id: String!): [Post!]!
+  postsOfUserFollowing(user_id: String!): [Post!]!
   postForUser(userId: String!): [Post!]!
+  postOfUserSaved(userId: String!): [Post!]!
   getCommentsByPostId(postId: String!): [Comment!]!
   login(data: LoginDto!): AuthResponseDto!
   validateToken(token: String!): String!
@@ -94,6 +97,7 @@ type Mutation {
   deleteUser(id: String!): User!
   followUser(userId: String!, followerId: String!): User!
   unFollowUser(userId: String!, followerId: String!): User!
+  updateSavePost(userId: String!, postId: String!): User!
   createPost(data: CreatePostDto!): Post!
   updatePost(data: UpdatePostDto!): Post!
   deletePost(id: String!): Post!

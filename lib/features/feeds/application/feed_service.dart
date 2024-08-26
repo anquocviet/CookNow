@@ -1,5 +1,6 @@
 import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
+import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'feed_service.g.dart';
@@ -23,6 +24,16 @@ class FeedService {
     return await postRepository.getPostOfUser(id);
   }
 
+  Future<List<Post>> getPostOfUserSaved(String id) async {
+    final postRepository = ref.read(postRepositoryProvider);
+    return await postRepository.getPostOfUserSaved(id);
+  }
+
+  Future<void> fetchPostOfUserFollowing(String id) async {
+    final postRepository = ref.read(postRepositoryProvider);
+    await postRepository.fetchPostOfUserFollowing(id);
+  }
+
   List<Post?> getListPost() {
     final postRepository = ref.read(postRepositoryProvider);
     return postRepository.posts;
@@ -31,6 +42,11 @@ class FeedService {
   Stream<List<Post?>> watchListPost() {
     final postRepository = ref.read(postRepositoryProvider);
     return postRepository.postStateChanges();
+  }
+
+  Future<void> updateSavePost(String postId) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.updateSavePost(postId);
   }
 }
 

@@ -132,6 +132,24 @@ class UserRepositoryImp implements UserRepository {
   Stream<User?> get watchUser => _userState.stream;
 
   @override
+  Future<void> updateSavePost(String postId) => _getData(
+        query: client.mutate$UpdateSavePost(
+          Options$Mutation$UpdateSavePost(
+            variables: Variables$Mutation$UpdateSavePost(
+              userId: currentUser!.id,
+              postId: postId,
+            ),
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Mutation$UpdateSavePost).updateSavePost;
+          _userState.value = _userState.value?.copyWith(
+            postsSaved: result.posts_saved,
+          );
+        },
+      );
+
+  @override
   Future<void> dispose() async {
     _userState.value = null;
     _userState.close();

@@ -24,8 +24,12 @@ mixin _$Emoji {
   List<String> get v => throw _privateConstructorUsedError;
   int get qty => throw _privateConstructorUsedError;
 
+  /// Serializes this Emoji to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Emoji
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EmojiCopyWith<Emoji> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -47,6 +51,8 @@ class _$EmojiCopyWithImpl<$Res, $Val extends Emoji>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Emoji
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -89,6 +95,8 @@ class __$$EmojiImplCopyWithImpl<$Res>
       _$EmojiImpl _value, $Res Function(_$EmojiImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Emoji
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,12 +159,14 @@ class _$EmojiImpl implements _Emoji {
             (identical(other.qty, qty) || other.qty == qty));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, k, const DeepCollectionEquality().hash(_v), qty);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Emoji
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EmojiImplCopyWith<_$EmojiImpl> get copyWith =>
@@ -184,8 +194,11 @@ abstract class _Emoji implements Emoji {
   List<String> get v;
   @override
   int get qty;
+
+  /// Create a copy of Emoji
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EmojiImplCopyWith<_$EmojiImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

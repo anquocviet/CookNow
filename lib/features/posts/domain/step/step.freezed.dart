@@ -23,8 +23,12 @@ mixin _$Step {
   String get content => throw _privateConstructorUsedError;
   List<String> get medias => throw _privateConstructorUsedError;
 
+  /// Serializes this Step to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Step
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StepCopyWith<Step> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -46,6 +50,8 @@ class _$StepCopyWithImpl<$Res, $Val extends Step>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Step
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -82,6 +88,8 @@ class __$$StepImplCopyWithImpl<$Res>
   __$$StepImplCopyWithImpl(_$StepImpl _value, $Res Function(_$StepImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Step
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,12 +142,14 @@ class _$StepImpl implements _Step {
             const DeepCollectionEquality().equals(other._medias, _medias));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, content, const DeepCollectionEquality().hash(_medias));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Step
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StepImplCopyWith<_$StepImpl> get copyWith =>
@@ -164,8 +174,11 @@ abstract class _Step implements Step {
   String get content;
   @override
   List<String> get medias;
+
+  /// Create a copy of Step
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StepImplCopyWith<_$StepImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

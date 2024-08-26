@@ -14,6 +14,7 @@ query User($id: String!) {
     avatar
     date_created
     date_closed
+    posts_saved
     following
     follower
     blocks
@@ -47,6 +48,7 @@ mutation FollowUser($userId: String!, $followerId: String!) {
     avatar
     date_created
     date_closed
+    posts_saved
     following
     follower
     blocks
@@ -66,6 +68,27 @@ mutation UnFollowUser($userId: String!, $followerId: String!) {
     avatar
     date_created
     date_closed
+    posts_saved
+    following
+    follower
+    blocks
+  }
+}
+
+mutation UpdateSavePost($userId: String!, $postId: String!) {
+  updateSavePost(userId: $userId, postId: $postId) {
+    id
+    name
+    gender
+    age
+    living
+    bio
+    email
+    phone
+    avatar
+    date_created
+    date_closed
+    posts_saved
     following
     follower
     blocks
@@ -85,6 +108,7 @@ subscription UserFollow($userId: String!) {
     avatar
     date_created
     date_closed
+    posts_saved
     following
     follower
     blocks

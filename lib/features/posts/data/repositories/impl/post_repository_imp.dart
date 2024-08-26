@@ -83,6 +83,24 @@ class PostRepositoryImp implements PostRepository {
       );
 
   @override
+  Future<void> fetchPostOfUserFollowing(String id) => _getData(
+        query: client.query$PostsOfUserFollowing(
+          Options$Query$PostsOfUserFollowing(
+            variables: Variables$Query$PostsOfUserFollowing(
+              user_id: id,
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result =
+              (data as Query$PostsOfUserFollowing).postsOfUserFollowing;
+          _listPostState.value =
+              result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
+
+  @override
   Future<List<Post>> getPostOfUser(String id) => _getData(
       query: client.query$PostsByOwner(
         Options$Query$PostsByOwner(
@@ -96,6 +114,22 @@ class PostRepositoryImp implements PostRepository {
         final result = (data as Query$PostsByOwner).postsByOwner;
         return result.map((e) => Post.fromJson(e.toJson())).toList();
       });
+
+  @override
+  Future<List<Post>> getPostOfUserSaved(String id) => _getData(
+        query: client.query$PostOfUserSaved(
+          Options$Query$PostOfUserSaved(
+            variables: Variables$Query$PostOfUserSaved(
+              userId: id,
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Query$PostOfUserSaved).postOfUserSaved;
+          return result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
 
   @override
   Future<void> updateEmojiOfPost(UpdateEmojiDto dto) => _getData(

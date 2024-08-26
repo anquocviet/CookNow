@@ -25,8 +25,12 @@ mixin _$Owner {
   String get name => throw _privateConstructorUsedError;
   String get avatar => throw _privateConstructorUsedError;
 
+  /// Serializes this Owner to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Owner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OwnerCopyWith<Owner> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -49,6 +53,8 @@ class _$OwnerCopyWithImpl<$Res, $Val extends Owner>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Owner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$OwnerImplCopyWithImpl<$Res>
       _$OwnerImpl _value, $Res Function(_$OwnerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Owner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -150,11 +158,13 @@ class _$OwnerImpl implements _Owner {
             (identical(other.avatar, avatar) || other.avatar == avatar));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, userId, name, avatar);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Owner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OwnerImplCopyWith<_$OwnerImpl> get copyWith =>
@@ -183,8 +193,11 @@ abstract class _Owner implements Owner {
   String get name;
   @override
   String get avatar;
+
+  /// Create a copy of Owner
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OwnerImplCopyWith<_$OwnerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

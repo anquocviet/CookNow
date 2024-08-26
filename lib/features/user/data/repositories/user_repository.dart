@@ -8,5 +8,6 @@ abstract class UserRepository {
   Future<void> updateUser(UpdateUserDto dto);
   Future<void> followUser(String followId);
   Future<void> unFollowUser(String followId);
+  Future<void> updateSavePost(String postId);
   Future<void> dispose();
 }

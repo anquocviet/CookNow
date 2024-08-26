@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
@@ -24,7 +22,6 @@ class ListUserScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.read(userRepositoryProvider).currentUser;
     final state = ref.watch(profileScreenControllerProvider);
-    log(listUserId.toString());
 
     void followUser(String followerId) {
       try {
@@ -54,61 +51,75 @@ class ListUserScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: ListView.builder(
-        itemCount: listUserId.length,
-        itemBuilder: (context, index) {
-          final user = ref
-              .read(userServiceProvider)
-              .fetchUser(listUserId.elementAt(index));
-          return FutureBuilder(
-            future: user,
-            builder: (context, snapshot) => snapshot.hasData
-                ? ListTile(
-                    onTap: () => snapshot.data!.id == currentUser.id
-                        ? context.go(RouteName.profile)
-                        : context.push(
-                            '${RouteName.home}${RouteName.profileUser}',
-                            extra: snapshot.data!.id),
-                    leading: CircleAvatar(
-                      radius: 20,
-                      child: Image.network(
-                        snapshot.data!.avatar,
-                      ),
-                    ),
-                    trailing: SizedBox(
-                      width: 120,
-                      child: FilledButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            Theme.of(context).primaryColor,
-                          ),
-                          padding: WidgetStateProperty.all(
-                            const EdgeInsets.symmetric(horizontal: 16),
-                          ),
-                          shape: WidgetStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+      body: listUserId.isEmpty
+          ? const Center(child: Text('Không có người dùng nào'))
+          : ListView.builder(
+              itemCount: listUserId.length,
+              itemBuilder: (context, index) {
+                final user = ref
+                    .read(userServiceProvider)
+                    .fetchUser(listUserId.elementAt(index));
+                return FutureBuilder(
+                  future: user,
+                  builder: (context, snapshot) => snapshot.hasData
+                      ? ListTile(
+                          onTap: () => snapshot.data!.id == currentUser.id
+                              ? context.go(RouteName.profile)
+                              : context.push(
+                                  '${RouteName.home}${RouteName.profileUser}',
+                                  extra: snapshot.data!.id),
+                          leading: CircleAvatar(
+                            radius: 20,
+                            child: Image.network(
+                              snapshot.data!.avatar,
                             ),
                           ),
-                        ),
-                        onPressed: state.isLoading
-                            ? null
-                            : currentUser!.following.contains(snapshot.data!.id)
-                                ? () => unFollowUser(snapshot.data!.id)
-                                : () => followUser(snapshot.data!.id),
-                        child: Text(
-                          currentUser!.following.contains(snapshot.data!.id)
-                              ? 'Hủy theo dõi'
-                              : 'Theo dõi',
-                        ),
-                      ),
-                    ),
-                    title: Text(snapshot.data!.name),
-                  )
-                : const CircularProgressIndicator(),
-          );
-        },
-      ),
+                          trailing: SizedBox(
+                            width: 120,
+                            child: FilledButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                  Theme.of(context).primaryColor,
+                                ),
+                                padding: WidgetStateProperty.all(
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                                ),
+                                shape: WidgetStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              onPressed: state.isLoading
+                                  ? null
+                                  : currentUser!.following
+                                          .contains(snapshot.data!.id)
+                                      ? () => unFollowUser(snapshot.data!.id)
+                                      : () => followUser(snapshot.data!.id),
+                              child: Text(
+                                currentUser!.following
+                                        .contains(snapshot.data!.id)
+                                    ? 'Hủy theo dõi'
+                                    : 'Theo dõi',
+                              ),
+                            ),
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snapshot.data!.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text('@${snapshot.data!.account.username}'),
+                            ],
+                          ),
+                        )
+                      : const CircularProgressIndicator(),
+                );
+              },
+            ),
     );
   }
 }
