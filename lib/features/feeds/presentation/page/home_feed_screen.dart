@@ -26,14 +26,16 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
     final userRepository = ref.read(userRepositoryProvider);
     final feedService = ref.read(feedServiceProvider);
     final user = userRepository.currentUser;
-    feedService.fetchPostForUser(user?.id ?? '');
+    feedService.fetchPostForUser(user?.id ?? '', 5, 0);
     Future(() => ref.watch(userServiceProvider).watchUserFollow());
 
     _controller.addListener(() {
       if (_controller.index == 0) {
-        feedService.fetchPostForUser(user?.id ?? '');
+        feedService.clearPost();
+        feedService.fetchPostForUser(user?.id ?? '', 5, 0);
       } else if (_controller.index == 1) {
-        feedService.fetchPostOfUserFollowing(user?.id ?? '');
+        feedService.clearPost();
+        feedService.fetchPostOfUserFollowing(5, 0);
       }
     });
     super.initState();
@@ -57,9 +59,11 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
       final feedService = ref.read(feedServiceProvider);
       final user = ref.read(userRepositoryProvider).currentUser;
       if (_controller.index == 0) {
-        await feedService.fetchPostForUser(user?.id ?? '');
+        feedService.clearPost();
+        await feedService.fetchPostForUser(user?.id ?? '', 5, 0);
       } else if (_controller.index == 1) {
-        await feedService.fetchPostOfUserFollowing(user?.id ?? '');
+        feedService.clearPost();
+        await feedService.fetchPostOfUserFollowing(5, 0);
       }
       setState(() {
         isLoading = false;
@@ -67,66 +71,46 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
     }
 
     return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                floating: true,
-                forceElevated: innerBoxIsScrolled,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'CookNow',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => context.go(RouteName.search),
-                          icon: const Icon(Icons.search, size: 30),
-                        ),
-                        const SizedBox(width: 10),
-                        const Icon(Icons.chat_rounded, size: 30),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ];
-          },
-          body: TabContainer(
-            controller: _controller,
-            tabEdge: TabEdge.top,
-            selectedTextStyle: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-            ),
-            unselectedTextStyle: const TextStyle(
-              fontSize: 13.0,
-            ),
-            tabs: const [
-              Text('Cộng đồng'),
-              Text('Theo dõi'),
-              // Text('Nguyên liệu'),
-            ],
-            children: [
-              RefreshIndicator(
-                onRefresh: refresh,
-                child: const CommunityScreen(),
-              ),
-              RefreshIndicator(
-                onRefresh: refresh,
-                child: const FollowerScreen(),
-              ),
-              // IngredientScreen(),
-            ],
+      appBar: AppBar(
+        title: const Text(
+          'CookNow',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
           ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => context.go(RouteName.search),
+            icon: const Icon(Icons.search, size: 30),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.chat_rounded, size: 30),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: TabContainer(
+          controller: _controller,
+          tabEdge: TabEdge.top,
+          selectedTextStyle: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedTextStyle: const TextStyle(
+            fontSize: 13.0,
+          ),
+          tabs: const [
+            Text('Cộng đồng'),
+            Text('Theo dõi'),
+            // Text('Nguyên liệu'),
+          ],
+          children: [
+            CommunityScreen(onRefresh: refresh),
+            FollowerScreen(onRefresh: refresh),
+            // IngredientScreen(),
+          ],
         ),
       ),
     );

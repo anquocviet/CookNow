@@ -11,6 +11,14 @@ class FeedController extends _$FeedController {
   @override
   FutureOr<void> build() {}
 
+  Future<void> fetchPostForUser(String id, double take, double skip) async {
+    final feedService = ref.read(feedServiceProvider);
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+        () => feedService.fetchPostForUser(id, take, skip));
+    if (state.hasError) throw state.error!;
+  }
+
   Future<void> reactToPost(UpdateEmojiDto dto) async {
     final emojiService = ref.read(emojiServiceProvider);
     state = const AsyncLoading();

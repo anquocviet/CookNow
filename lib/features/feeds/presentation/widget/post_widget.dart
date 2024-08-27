@@ -96,7 +96,7 @@ class _PostState extends ConsumerState<PostWidget> {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      child: Image.network(
+                      backgroundImage: NetworkImage(
                         post.owner.avatar,
                       ),
                     ),

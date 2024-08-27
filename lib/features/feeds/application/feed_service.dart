@@ -9,9 +9,9 @@ class FeedService {
   FeedService({required this.ref});
   final FeedServiceRef ref;
 
-  Future<void> fetchPostForUser(String id) async {
+  Future<void> fetchPostForUser(String id, double take, double skip) async {
     final postRepository = ref.read(postRepositoryProvider);
-    await postRepository.fetchPostForUser(id);
+    await postRepository.fetchPostForUser(id, take, skip);
   }
 
   Future<void> fetchPost(String id) async {
@@ -19,19 +19,21 @@ class FeedService {
     await postRepository.fetchPost(id);
   }
 
-  Future<List<Post>> getPostOfUser(String id) async {
+  Future<List<Post>> getPostOfUser(String id, double take, double skip) async {
     final postRepository = ref.read(postRepositoryProvider);
-    return await postRepository.getPostOfUser(id);
+    return await postRepository.getPostOfUser(id, take, skip);
   }
 
-  Future<List<Post>> getPostOfUserSaved(String id) async {
+  Future<List<Post>> getPostOfUserSaved(
+      String id, double take, double skip) async {
     final postRepository = ref.read(postRepositoryProvider);
-    return await postRepository.getPostOfUserSaved(id);
+    return await postRepository.getPostOfUserSaved(id, take, skip);
   }
 
-  Future<void> fetchPostOfUserFollowing(String id) async {
+  Future<void> fetchPostOfUserFollowing(double take, double skip) async {
     final postRepository = ref.read(postRepositoryProvider);
-    await postRepository.fetchPostOfUserFollowing(id);
+    final user = ref.read(userRepositoryProvider).currentUser;
+    await postRepository.fetchPostOfUserFollowing(user!.id, take, skip);
   }
 
   List<Post?> getListPost() {
@@ -48,14 +50,14 @@ class FeedService {
     final userRepository = ref.read(userRepositoryProvider);
     await userRepository.updateSavePost(postId);
   }
+
+  void clearPost() {
+    final postRepository = ref.read(postRepositoryProvider);
+    postRepository.clearPost();
+  }
 }
 
 @riverpod
 FeedService feedService(FeedServiceRef ref) {
   return FeedService(ref: ref);
-}
-
-@riverpod
-int lengthUserPost(LengthUserPostRef ref) {
-  return ref.read(feedServiceProvider).getListPost().length;
 }

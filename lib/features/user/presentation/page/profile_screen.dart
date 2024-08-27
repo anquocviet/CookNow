@@ -27,7 +27,6 @@ class ProfileScreen extends ConsumerWidget {
     final Stream<User?> user = userId == null
         ? userService.watchUser()
         : userService.fetchUser(userId!).asStream();
-
     return Scaffold(
       appBar: AppBar(
         actions: userId != null
@@ -48,25 +47,47 @@ class ProfileScreen extends ConsumerWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           await userService.fetchUserWhenLogin(userValue?.id ?? '');
-          await feedService.fetchPostForUser(userValue?.id ?? '');
+          await feedService.fetchPostForUser(userValue?.id ?? '', 5, 0);
         },
-        child: StreamBuilder<User?>(
-          stream: user,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildProfile(context, snapshot.data!, ref);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
+        child: ListView(
+          children: [
+            StreamBuilder<User?>(
+              stream: user,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return _buildProfile(context, snapshot.data!, ref);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+            userId != null
+                ? TabPersonalPost(userId: userId)
+                : TabContainer(
+                    tabEdge: TabEdge.top,
+                    selectedTextStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    unselectedTextStyle: const TextStyle(
+                      fontSize: 13.0,
+                    ),
+                    tabs: const [
+                      Text('Bài viết cá nhân'),
+                      Text('Bài viết đã lưu'),
+                    ],
+                    children: const [
+                      TabPersonalPost(),
+                      TabSavedPost(),
+                    ],
+                  ),
+          ],
         ),
       ),
     );
   }
 
   _buildProfile(BuildContext context, User user, WidgetRef ref) {
-    const lengthAPost = 660.0; // 660 is the height of a post
-    final lengthPost = ref.read(lengthUserPostProvider);
     final state = ref.watch(profileScreenControllerProvider);
     final currentUserFollowing =
         ref.read(userRepositoryProvider).currentUser!.following;
@@ -100,183 +121,149 @@ class ProfileScreen extends ConsumerWidget {
       );
     }
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: SizedBox(
-        height: lengthPost * lengthAPost,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(user.avatar),
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(user.avatar),
+                      Text(
+                        user.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Text(
+                        '@${user.account.username}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Row(
                         children: [
+                          const Icon(Icons.cake_rounded, size: 20),
+                          const SizedBox(width: 4),
                           Text(
-                            user.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '@${user.account.username}',
+                            user.age.toString(),
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black87,
                             ),
                           ),
-                          Row(
-                            children: [
-                              const Icon(Icons.cake_rounded, size: 20),
-                              const SizedBox(width: 4),
-                              Text(
-                                user.age.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_sharp,
-                                size: 20,
-                                color: user.living.isEmpty
-                                    ? Colors.black38
-                                    : Colors.black87,
-                              ),
-                              Text(
-                                user.living.isEmpty
-                                    ? 'Chưa cập nhật'
-                                    : user.living,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: user.living.isEmpty
-                                      ? Colors.black38
-                                      : Colors.black87,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Bio: ${user.bio.isEmpty ? 'Chưa cập nhật' : user.bio}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color:
-                            user.bio.isEmpty ? Colors.black54 : Colors.black87,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  if (userId != null)
-                    FilledButton.icon(
-                      label: Text(
-                        currentUserFollowing.contains(user.id)
-                            ? 'Hủy theo dõi'
-                            : 'Theo dõi',
-                      ),
-                      icon: state.isLoading
-                          ? const CustomCircularProgressIndicator()
-                          : null,
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(
-                          Theme.of(context).primaryColor,
-                        ),
-                        padding: WidgetStateProperty.all(
-                          const EdgeInsets.symmetric(horizontal: 16),
-                        ),
-                        shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_sharp,
+                            size: 20,
+                            color: user.living.isEmpty
+                                ? Colors.black38
+                                : Colors.black87,
                           ),
-                        ),
-                      ),
-                      onPressed: state.isLoading
-                          ? null
-                          : currentUserFollowing.contains(user.id)
-                              ? unFollowUser
-                              : followUser,
-                    ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () =>
-                            openFollowUser('Người theo dõi', user.follower),
-                        child: Text(
-                          '${user.follower.length} người theo dõi',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
+                          Text(
+                            user.living.isEmpty ? 'Chưa cập nhật' : user.living,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: user.living.isEmpty
+                                  ? Colors.black38
+                                  : Colors.black87,
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      TextButton(
-                        onPressed: () =>
-                            openFollowUser('Đang theo dõi', user.following),
-                        child: Text(
-                          '${user.following.length} đang theo dõi',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: userId != null
-                  ? TabPersonalPost(user: user)
-                  : AspectRatio(
-                      aspectRatio: 1,
-                      child: TabContainer(
-                        tabEdge: TabEdge.top,
-                        selectedTextStyle: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        unselectedTextStyle: const TextStyle(
-                          fontSize: 13.0,
-                        ),
-                        tabs: const [
-                          Text('Bài viết cá nhân'),
-                          Text('Bài viết đã lưu'),
-                        ],
-                        children: const [
-                          TabPersonalPost(),
-                          TabSavedPost(),
-                        ],
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Bio: ${user.bio.isEmpty ? 'Chưa cập nhật' : user.bio}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: user.bio.isEmpty ? Colors.black54 : Colors.black87,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              if (userId != null)
+                FilledButton.icon(
+                  label: Text(
+                    currentUserFollowing.contains(user.id)
+                        ? 'Hủy theo dõi'
+                        : 'Theo dõi',
+                  ),
+                  icon: state.isLoading
+                      ? const CustomCircularProgressIndicator()
+                      : null,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      Theme.of(context).primaryColor,
+                    ),
+                    padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-            )
-          ],
+                  ),
+                  onPressed: state.isLoading
+                      ? null
+                      : currentUserFollowing.contains(user.id)
+                          ? unFollowUser
+                          : followUser,
+                ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () =>
+                        openFollowUser('Người theo dõi', user.follower),
+                    child: Text(
+                      '${user.follower.length} người theo dõi',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  TextButton(
+                    onPressed: () =>
+                        openFollowUser('Đang theo dõi', user.following),
+                    child: Text(
+                      '${user.following.length} đang theo dõi',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

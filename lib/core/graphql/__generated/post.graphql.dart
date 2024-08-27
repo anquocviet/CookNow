@@ -3071,28 +3071,29 @@ class _CopyWithStubImpl$Query$Post$post$emojis<TRes>
 }
 
 class Variables$Query$PostForUser {
-  factory Variables$Query$PostForUser({required String userId}) =>
+  factory Variables$Query$PostForUser({required Input$GetPostDto data}) =>
       Variables$Query$PostForUser._({
-        r'userId': userId,
+        r'data': data,
       });
 
   Variables$Query$PostForUser._(this._$data);
 
   factory Variables$Query$PostForUser.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$userId = data['userId'];
-    result$data['userId'] = (l$userId as String);
+    final l$data = data['data'];
+    result$data['data'] =
+        Input$GetPostDto.fromJson((l$data as Map<String, dynamic>));
     return Variables$Query$PostForUser._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get userId => (_$data['userId'] as String);
+  Input$GetPostDto get data => (_$data['data'] as Input$GetPostDto);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$userId = userId;
-    result$data['userId'] = l$userId;
+    final l$data = data;
+    result$data['data'] = l$data.toJson();
     return result$data;
   }
 
@@ -3111,9 +3112,9 @@ class Variables$Query$PostForUser {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$userId = userId;
-    final lOther$userId = other.userId;
-    if (l$userId != lOther$userId) {
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
       return false;
     }
     return true;
@@ -3121,8 +3122,8 @@ class Variables$Query$PostForUser {
 
   @override
   int get hashCode {
-    final l$userId = userId;
-    return Object.hashAll([l$userId]);
+    final l$data = data;
+    return Object.hashAll([l$data]);
   }
 }
 
@@ -3135,7 +3136,7 @@ abstract class CopyWith$Variables$Query$PostForUser<TRes> {
   factory CopyWith$Variables$Query$PostForUser.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$PostForUser;
 
-  TRes call({String? userId});
+  TRes call({Input$GetPostDto? data});
 }
 
 class _CopyWithImpl$Variables$Query$PostForUser<TRes>
@@ -3151,11 +3152,11 @@ class _CopyWithImpl$Variables$Query$PostForUser<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? userId = _undefined}) =>
+  TRes call({Object? data = _undefined}) =>
       _then(Variables$Query$PostForUser._({
         ..._instance._$data,
-        if (userId != _undefined && userId != null)
-          'userId': (userId as String),
+        if (data != _undefined && data != null)
+          'data': (data as Input$GetPostDto),
       }));
 }
 
@@ -3165,7 +3166,7 @@ class _CopyWithStubImpl$Variables$Query$PostForUser<TRes>
 
   TRes _res;
 
-  call({String? userId}) => _res;
+  call({Input$GetPostDto? data}) => _res;
 }
 
 class Query$PostForUser {
@@ -3328,9 +3329,9 @@ const documentNodeQueryPostForUser = DocumentNode(definitions: [
     name: NameNode(value: 'PostForUser'),
     variableDefinitions: [
       VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'userId')),
+        variable: VariableNode(name: NameNode(value: 'data')),
         type: NamedTypeNode(
-          name: NameNode(value: 'String'),
+          name: NameNode(value: 'GetPostDto'),
           isNonNull: true,
         ),
         defaultValue: DefaultValueNode(value: null),
@@ -3344,8 +3345,8 @@ const documentNodeQueryPostForUser = DocumentNode(definitions: [
         alias: null,
         arguments: [
           ArgumentNode(
-            name: NameNode(value: 'userId'),
-            value: VariableNode(name: NameNode(value: 'userId')),
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
           )
         ],
         directives: [],
@@ -4598,9 +4599,10 @@ class _CopyWithStubImpl$Query$PostForUser$postForUser$emojis<TRes>
 }
 
 class Variables$Query$PostsOfUserFollowing {
-  factory Variables$Query$PostsOfUserFollowing({required String user_id}) =>
+  factory Variables$Query$PostsOfUserFollowing(
+          {required Input$GetPostDto data}) =>
       Variables$Query$PostsOfUserFollowing._({
-        r'user_id': user_id,
+        r'data': data,
       });
 
   Variables$Query$PostsOfUserFollowing._(this._$data);
@@ -4608,19 +4610,20 @@ class Variables$Query$PostsOfUserFollowing {
   factory Variables$Query$PostsOfUserFollowing.fromJson(
       Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$user_id = data['user_id'];
-    result$data['user_id'] = (l$user_id as String);
+    final l$data = data['data'];
+    result$data['data'] =
+        Input$GetPostDto.fromJson((l$data as Map<String, dynamic>));
     return Variables$Query$PostsOfUserFollowing._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get user_id => (_$data['user_id'] as String);
+  Input$GetPostDto get data => (_$data['data'] as Input$GetPostDto);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$user_id = user_id;
-    result$data['user_id'] = l$user_id;
+    final l$data = data;
+    result$data['data'] = l$data.toJson();
     return result$data;
   }
 
@@ -4640,9 +4643,9 @@ class Variables$Query$PostsOfUserFollowing {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$user_id = user_id;
-    final lOther$user_id = other.user_id;
-    if (l$user_id != lOther$user_id) {
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
       return false;
     }
     return true;
@@ -4650,8 +4653,8 @@ class Variables$Query$PostsOfUserFollowing {
 
   @override
   int get hashCode {
-    final l$user_id = user_id;
-    return Object.hashAll([l$user_id]);
+    final l$data = data;
+    return Object.hashAll([l$data]);
   }
 }
 
@@ -4664,7 +4667,7 @@ abstract class CopyWith$Variables$Query$PostsOfUserFollowing<TRes> {
   factory CopyWith$Variables$Query$PostsOfUserFollowing.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$PostsOfUserFollowing;
 
-  TRes call({String? user_id});
+  TRes call({Input$GetPostDto? data});
 }
 
 class _CopyWithImpl$Variables$Query$PostsOfUserFollowing<TRes>
@@ -4680,11 +4683,11 @@ class _CopyWithImpl$Variables$Query$PostsOfUserFollowing<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? user_id = _undefined}) =>
+  TRes call({Object? data = _undefined}) =>
       _then(Variables$Query$PostsOfUserFollowing._({
         ..._instance._$data,
-        if (user_id != _undefined && user_id != null)
-          'user_id': (user_id as String),
+        if (data != _undefined && data != null)
+          'data': (data as Input$GetPostDto),
       }));
 }
 
@@ -4694,7 +4697,7 @@ class _CopyWithStubImpl$Variables$Query$PostsOfUserFollowing<TRes>
 
   TRes _res;
 
-  call({String? user_id}) => _res;
+  call({Input$GetPostDto? data}) => _res;
 }
 
 class Query$PostsOfUserFollowing {
@@ -4863,9 +4866,9 @@ const documentNodeQueryPostsOfUserFollowing = DocumentNode(definitions: [
     name: NameNode(value: 'PostsOfUserFollowing'),
     variableDefinitions: [
       VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'user_id')),
+        variable: VariableNode(name: NameNode(value: 'data')),
         type: NamedTypeNode(
-          name: NameNode(value: 'String'),
+          name: NameNode(value: 'GetPostDto'),
           isNonNull: true,
         ),
         defaultValue: DefaultValueNode(value: null),
@@ -4879,8 +4882,8 @@ const documentNodeQueryPostsOfUserFollowing = DocumentNode(definitions: [
         alias: null,
         arguments: [
           ArgumentNode(
-            name: NameNode(value: 'user_id'),
-            value: VariableNode(name: NameNode(value: 'user_id')),
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
           )
         ],
         directives: [],
@@ -6204,28 +6207,29 @@ class _CopyWithStubImpl$Query$PostsOfUserFollowing$postsOfUserFollowing$emojis<
 }
 
 class Variables$Query$PostsByOwner {
-  factory Variables$Query$PostsByOwner({required String owner_id}) =>
+  factory Variables$Query$PostsByOwner({required Input$GetPostDto data}) =>
       Variables$Query$PostsByOwner._({
-        r'owner_id': owner_id,
+        r'data': data,
       });
 
   Variables$Query$PostsByOwner._(this._$data);
 
   factory Variables$Query$PostsByOwner.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$owner_id = data['owner_id'];
-    result$data['owner_id'] = (l$owner_id as String);
+    final l$data = data['data'];
+    result$data['data'] =
+        Input$GetPostDto.fromJson((l$data as Map<String, dynamic>));
     return Variables$Query$PostsByOwner._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get owner_id => (_$data['owner_id'] as String);
+  Input$GetPostDto get data => (_$data['data'] as Input$GetPostDto);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$owner_id = owner_id;
-    result$data['owner_id'] = l$owner_id;
+    final l$data = data;
+    result$data['data'] = l$data.toJson();
     return result$data;
   }
 
@@ -6244,9 +6248,9 @@ class Variables$Query$PostsByOwner {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$owner_id = owner_id;
-    final lOther$owner_id = other.owner_id;
-    if (l$owner_id != lOther$owner_id) {
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
       return false;
     }
     return true;
@@ -6254,8 +6258,8 @@ class Variables$Query$PostsByOwner {
 
   @override
   int get hashCode {
-    final l$owner_id = owner_id;
-    return Object.hashAll([l$owner_id]);
+    final l$data = data;
+    return Object.hashAll([l$data]);
   }
 }
 
@@ -6268,7 +6272,7 @@ abstract class CopyWith$Variables$Query$PostsByOwner<TRes> {
   factory CopyWith$Variables$Query$PostsByOwner.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$PostsByOwner;
 
-  TRes call({String? owner_id});
+  TRes call({Input$GetPostDto? data});
 }
 
 class _CopyWithImpl$Variables$Query$PostsByOwner<TRes>
@@ -6284,11 +6288,11 @@ class _CopyWithImpl$Variables$Query$PostsByOwner<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? owner_id = _undefined}) =>
+  TRes call({Object? data = _undefined}) =>
       _then(Variables$Query$PostsByOwner._({
         ..._instance._$data,
-        if (owner_id != _undefined && owner_id != null)
-          'owner_id': (owner_id as String),
+        if (data != _undefined && data != null)
+          'data': (data as Input$GetPostDto),
       }));
 }
 
@@ -6298,7 +6302,7 @@ class _CopyWithStubImpl$Variables$Query$PostsByOwner<TRes>
 
   TRes _res;
 
-  call({String? owner_id}) => _res;
+  call({Input$GetPostDto? data}) => _res;
 }
 
 class Query$PostsByOwner {
@@ -6462,9 +6466,9 @@ const documentNodeQueryPostsByOwner = DocumentNode(definitions: [
     name: NameNode(value: 'PostsByOwner'),
     variableDefinitions: [
       VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'owner_id')),
+        variable: VariableNode(name: NameNode(value: 'data')),
         type: NamedTypeNode(
-          name: NameNode(value: 'String'),
+          name: NameNode(value: 'GetPostDto'),
           isNonNull: true,
         ),
         defaultValue: DefaultValueNode(value: null),
@@ -6478,8 +6482,8 @@ const documentNodeQueryPostsByOwner = DocumentNode(definitions: [
         alias: null,
         arguments: [
           ArgumentNode(
-            name: NameNode(value: 'owner_id'),
-            value: VariableNode(name: NameNode(value: 'owner_id')),
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
           )
         ],
         directives: [],
@@ -7759,28 +7763,29 @@ class _CopyWithStubImpl$Query$PostsByOwner$postsByOwner$emojis<TRes>
 }
 
 class Variables$Query$PostOfUserSaved {
-  factory Variables$Query$PostOfUserSaved({required String userId}) =>
+  factory Variables$Query$PostOfUserSaved({required Input$GetPostDto data}) =>
       Variables$Query$PostOfUserSaved._({
-        r'userId': userId,
+        r'data': data,
       });
 
   Variables$Query$PostOfUserSaved._(this._$data);
 
   factory Variables$Query$PostOfUserSaved.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$userId = data['userId'];
-    result$data['userId'] = (l$userId as String);
+    final l$data = data['data'];
+    result$data['data'] =
+        Input$GetPostDto.fromJson((l$data as Map<String, dynamic>));
     return Variables$Query$PostOfUserSaved._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get userId => (_$data['userId'] as String);
+  Input$GetPostDto get data => (_$data['data'] as Input$GetPostDto);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$userId = userId;
-    result$data['userId'] = l$userId;
+    final l$data = data;
+    result$data['data'] = l$data.toJson();
     return result$data;
   }
 
@@ -7799,9 +7804,9 @@ class Variables$Query$PostOfUserSaved {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$userId = userId;
-    final lOther$userId = other.userId;
-    if (l$userId != lOther$userId) {
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
       return false;
     }
     return true;
@@ -7809,8 +7814,8 @@ class Variables$Query$PostOfUserSaved {
 
   @override
   int get hashCode {
-    final l$userId = userId;
-    return Object.hashAll([l$userId]);
+    final l$data = data;
+    return Object.hashAll([l$data]);
   }
 }
 
@@ -7823,7 +7828,7 @@ abstract class CopyWith$Variables$Query$PostOfUserSaved<TRes> {
   factory CopyWith$Variables$Query$PostOfUserSaved.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$PostOfUserSaved;
 
-  TRes call({String? userId});
+  TRes call({Input$GetPostDto? data});
 }
 
 class _CopyWithImpl$Variables$Query$PostOfUserSaved<TRes>
@@ -7839,11 +7844,11 @@ class _CopyWithImpl$Variables$Query$PostOfUserSaved<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? userId = _undefined}) =>
+  TRes call({Object? data = _undefined}) =>
       _then(Variables$Query$PostOfUserSaved._({
         ..._instance._$data,
-        if (userId != _undefined && userId != null)
-          'userId': (userId as String),
+        if (data != _undefined && data != null)
+          'data': (data as Input$GetPostDto),
       }));
 }
 
@@ -7853,7 +7858,7 @@ class _CopyWithStubImpl$Variables$Query$PostOfUserSaved<TRes>
 
   TRes _res;
 
-  call({String? userId}) => _res;
+  call({Input$GetPostDto? data}) => _res;
 }
 
 class Query$PostOfUserSaved {
@@ -8018,9 +8023,9 @@ const documentNodeQueryPostOfUserSaved = DocumentNode(definitions: [
     name: NameNode(value: 'PostOfUserSaved'),
     variableDefinitions: [
       VariableDefinitionNode(
-        variable: VariableNode(name: NameNode(value: 'userId')),
+        variable: VariableNode(name: NameNode(value: 'data')),
         type: NamedTypeNode(
-          name: NameNode(value: 'String'),
+          name: NameNode(value: 'GetPostDto'),
           isNonNull: true,
         ),
         defaultValue: DefaultValueNode(value: null),
@@ -8034,8 +8039,8 @@ const documentNodeQueryPostOfUserSaved = DocumentNode(definitions: [
         alias: null,
         arguments: [
           ArgumentNode(
-            name: NameNode(value: 'userId'),
-            value: VariableNode(name: NameNode(value: 'userId')),
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
           )
         ],
         directives: [],

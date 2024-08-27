@@ -85,6 +85,16 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     });
   }
 
+  Future<void> _updateSavePost(String postId) async {
+    try {
+      await ref.read(feedControllerProvider.notifier).updateSavePost(postId);
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
   Future<void> _reactToPost(
       String postId, String userId, EnumEmoji emoji) async {
     try {
@@ -157,7 +167,9 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
       body: currentPostState.when(
         data: (post) => RefreshIndicator(
           onRefresh: () async {
-            await ref.read(feedServiceProvider).fetchPostForUser(user!.id);
+            await ref
+                .read(feedServiceProvider)
+                .fetchPostForUser(user!.id, 5, 0);
           },
           child: NestedScrollView(
             floatHeaderSlivers: true,
@@ -175,10 +187,15 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                   title: Text(post.name),
                   actions: [
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.bookmark_border),
+                      onPressed: () => _updateSavePost(post.id),
+                      icon: Icon(
+                        Icons.bookmark,
+                        color: user!.postsSaved.contains(post.id)
+                            ? Colors.deepOrange
+                            : null,
+                      ),
                     ),
-                    if (user!.id == post.owner.userId)
+                    if (user.id == post.owner.userId)
                       IconButton(
                         onPressed: () {
                           showCupertinoModalBottomSheet(

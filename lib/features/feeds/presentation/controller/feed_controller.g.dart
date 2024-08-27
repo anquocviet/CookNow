@@ -6,7 +6,7 @@ part of 'feed_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$feedControllerHash() => r'85be9375ec15a1ca5c3ffb915d82cef5493894a0';
+String _$feedControllerHash() => r'927821b24312615d4c6eadc8ecce841b6ba3ab92';
 
 /// See also [FeedController].
 @ProviderFor(FeedController)
