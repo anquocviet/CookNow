@@ -39,6 +39,16 @@ class _PostState extends ConsumerState<PostWidget> {
     }
   }
 
+  Future<void> _updateSavePost(String postId) async {
+    try {
+      await ref.read(feedControllerProvider.notifier).updateSavePost(postId);
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra $e.toString()');
+    }
+  }
+
   Future<void> _editPost(String postId) async {
     showCupertinoModalBottomSheet(
       context: context,
@@ -69,11 +79,7 @@ class _PostState extends ConsumerState<PostWidget> {
   Widget build(BuildContext context) {
     final Post post = widget.post;
     final user = ref.read(userRepositoryProvider).currentUser;
-    final controllerState = ref.watch(feedControllerProvider);
-
-    if (controllerState.isLoading) {
-      return const CircularProgressIndicator();
-    }
+    ref.watch(feedControllerProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -90,7 +96,7 @@ class _PostState extends ConsumerState<PostWidget> {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      child: Image.network(
+                      backgroundImage: NetworkImage(
                         post.owner.avatar,
                       ),
                     ),
@@ -227,10 +233,8 @@ class _PostState extends ConsumerState<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                  onPressed: controllerState.isLoading
-                      ? null
-                      : () =>
-                          _reactToPost(post.id, user?.id ?? "", EnumEmoji.love),
+                  onPressed: () =>
+                      _reactToPost(post.id, user?.id ?? "", EnumEmoji.love),
                   icon: Icon(
                     Icons.favorite,
                     color:
@@ -250,9 +254,12 @@ class _PostState extends ConsumerState<PostWidget> {
                     Icons.ios_share,
                   )),
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.bookmark_outline,
+                  onPressed: () async => _updateSavePost(post.id),
+                  icon: Icon(
+                    Icons.bookmark,
+                    color: user!.postsSaved.contains(post.id)
+                        ? Colors.deepOrange
+                        : null,
                   ))
             ],
           ),

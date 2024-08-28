@@ -66,36 +66,78 @@ class PostRepositoryImp implements PostRepository {
       );
 
   @override
-  Future<void> fetchPostForUser(String id) => _getData(
+  Future<void> fetchPostForUser(String id, double take, double skip) =>
+      _getData(
         query: client.query$PostForUser(
           Options$Query$PostForUser(
             variables: Variables$Query$PostForUser(
-              userId: id,
+              data: Input$GetPostDto(take: take, skip: skip),
             ),
             fetchPolicy: FetchPolicy.noCache,
           ),
         ),
         builder: (data) {
           final result = (data as Query$PostForUser).postForUser;
-          _listPostState.value =
-              result.map((e) => Post.fromJson(e.toJson())).toList();
+          _listPostState.value = [
+            ..._listPostState.value,
+            ...result.map((e) => Post.fromJson(e.toJson())),
+          ];
         },
       );
 
   @override
-  Future<List<Post>> getPostOfUser(String id) => _getData(
-      query: client.query$PostsByOwner(
-        Options$Query$PostsByOwner(
-          variables: Variables$Query$PostsByOwner(
-            owner_id: id,
+  Future<void> fetchPostOfUserFollowing(String id, double take, double skip) =>
+      _getData(
+        query: client.query$PostsOfUserFollowing(
+          Options$Query$PostsOfUserFollowing(
+            variables: Variables$Query$PostsOfUserFollowing(
+              data: Input$GetPostDto(id: id, take: take, skip: skip),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
           ),
-          fetchPolicy: FetchPolicy.noCache,
         ),
-      ),
-      builder: (data) {
-        final result = (data as Query$PostsByOwner).postsByOwner;
-        return result.map((e) => Post.fromJson(e.toJson())).toList();
-      });
+        builder: (data) {
+          final result =
+              (data as Query$PostsOfUserFollowing).postsOfUserFollowing;
+          _listPostState.value = [
+            ..._listPostState.value,
+            ...result.map((e) => Post.fromJson(e.toJson())),
+          ];
+        },
+      );
+
+  @override
+  Future<List<Post>> getPostOfUser(String id, double take, double skip) =>
+      _getData(
+          query: client.query$PostsByOwner(
+            Options$Query$PostsByOwner(
+              variables: Variables$Query$PostsByOwner(
+                data: Input$GetPostDto(id: id, take: take, skip: skip),
+              ),
+              fetchPolicy: FetchPolicy.noCache,
+            ),
+          ),
+          builder: (data) {
+            final result = (data as Query$PostsByOwner).postsByOwner;
+            return result.map((e) => Post.fromJson(e.toJson())).toList();
+          });
+
+  @override
+  Future<List<Post>> getPostOfUserSaved(String id, double take, double skip) =>
+      _getData(
+        query: client.query$PostOfUserSaved(
+          Options$Query$PostOfUserSaved(
+            variables: Variables$Query$PostOfUserSaved(
+              data: Input$GetPostDto(id: id, take: take, skip: skip),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Query$PostOfUserSaved).postOfUserSaved;
+          return result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
 
   @override
   Future<void> updateEmojiOfPost(UpdateEmojiDto dto) => _getData(
@@ -192,6 +234,11 @@ class PostRepositoryImp implements PostRepository {
       }
       return post;
     }).toList();
+  }
+
+  @override
+  void clearPost() {
+    _listPostState.value = [];
   }
 
   Future<T> _getData<T>({

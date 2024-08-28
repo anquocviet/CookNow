@@ -17,6 +17,10 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       email: json['email'] as String,
       phone: json['phone'] as String,
       avatar: json['avatar'] as String,
+      postsSaved: (json['posts_saved'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       following: (json['following'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -43,6 +47,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'email': instance.email,
       'phone': instance.phone,
       'avatar': instance.avatar,
+      'posts_saved': instance.postsSaved,
       'following': instance.following,
       'follower': instance.follower,
       'blocks': instance.blocks,

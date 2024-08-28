@@ -1,23 +1,69 @@
+import 'package:cooknow/core/exceptions/app_exception.dart';
+import 'package:cooknow/core/widget/custom_circular_progress_indicator.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/application/feed_service.dart';
+import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
 import 'package:cooknow/features/feeds/presentation/widget/post_widget.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
-import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CommunityScreen extends ConsumerWidget {
-  const CommunityScreen({super.key});
+class CommunityScreen extends ConsumerStatefulWidget {
+  const CommunityScreen({super.key, required this.onRefresh});
+
+  final Future<void> Function() onRefresh;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CommunityScreen> createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends ConsumerState<CommunityScreen> {
+  late ScrollController _scrollController;
+  static int page = 1;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData(page);
+      }
+    });
+    super.initState();
+  }
+
+  void _getMoreData(int index) async {
+    try {
+      page++;
+      await ref
+          .read(feedControllerProvider.notifier)
+          .fetchPostForUser('', page * 5, page * 5 - 5);
+    } on AppException catch (e) {
+      if (mounted) showError(context, e.message);
+    } catch (e) {
+      if (mounted) showError(context, 'Có lỗi xảy ra: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final feedService = ref.watch(feedServiceProvider);
     final listPost = feedService.watchListPost();
-    final user = ref.read(userRepositoryProvider).currentUser;
+    final state = ref.watch(feedControllerProvider);
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await feedService.fetchPostForUser(user?.id ?? '');
+          page = 1;
+          await widget.onRefresh();
         },
         child: StreamBuilder<List<Post?>>(
             stream: listPost,
@@ -31,7 +77,20 @@ class CommunityScreen extends ConsumerWidget {
                 );
               }
               return ListView.separated(
+                controller: _scrollController,
                 itemBuilder: (BuildContext context, int index) {
+                  if (index == posts.length - 1) {
+                    return Column(
+                      children: [
+                        PostWidget(post: posts[index]!),
+                        if (state.isLoading)
+                          const CustomCircularProgressIndicator(
+                            color: Colors.deepOrange,
+                          ),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  }
                   return PostWidget(
                     post: posts[index]!,
                   );

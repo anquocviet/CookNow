@@ -29,14 +29,19 @@ mixin _$User {
   String get bio => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
-  String get avatar =>
-      throw _privateConstructorUsedError; // required List<HistorySearch> top5HistorySearch,
+  String get avatar => throw _privateConstructorUsedError;
+  @JsonKey(name: 'posts_saved')
+  List<String> get postsSaved => throw _privateConstructorUsedError;
   List<String> get following => throw _privateConstructorUsedError;
   List<String> get follower => throw _privateConstructorUsedError;
   List<String> get blocks => throw _privateConstructorUsedError;
 
+  /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -56,6 +61,7 @@ abstract class $UserCopyWith<$Res> {
       String email,
       String phone,
       String avatar,
+      @JsonKey(name: 'posts_saved') List<String> postsSaved,
       List<String> following,
       List<String> follower,
       List<String> blocks});
@@ -73,6 +79,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +94,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? phone = null,
     Object? avatar = null,
+    Object? postsSaved = null,
     Object? following = null,
     Object? follower = null,
     Object? blocks = null,
@@ -131,6 +140,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String,
+      postsSaved: null == postsSaved
+          ? _value.postsSaved
+          : postsSaved // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       following: null == following
           ? _value.following
           : following // ignore: cast_nullable_to_non_nullable
@@ -146,6 +159,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     ) as $Val);
   }
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AccountCopyWith<$Res> get account {
@@ -173,6 +188,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String email,
       String phone,
       String avatar,
+      @JsonKey(name: 'posts_saved') List<String> postsSaved,
       List<String> following,
       List<String> follower,
       List<String> blocks});
@@ -188,6 +204,8 @@ class __$$UserImplCopyWithImpl<$Res>
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -201,6 +219,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? phone = null,
     Object? avatar = null,
+    Object? postsSaved = null,
     Object? following = null,
     Object? follower = null,
     Object? blocks = null,
@@ -246,6 +265,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String,
+      postsSaved: null == postsSaved
+          ? _value._postsSaved
+          : postsSaved // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       following: null == following
           ? _value._following
           : following // ignore: cast_nullable_to_non_nullable
@@ -276,10 +299,12 @@ class _$UserImpl implements _User {
       required this.email,
       required this.phone,
       required this.avatar,
+      @JsonKey(name: 'posts_saved') final List<String> postsSaved = const [],
       final List<String> following = const [],
       final List<String> follower = const [],
       final List<String> blocks = const []})
-      : _following = following,
+      : _postsSaved = postsSaved,
+        _following = following,
         _follower = follower,
         _blocks = blocks;
 
@@ -306,9 +331,16 @@ class _$UserImpl implements _User {
   final String phone;
   @override
   final String avatar;
-// required List<HistorySearch> top5HistorySearch,
+  final List<String> _postsSaved;
+  @override
+  @JsonKey(name: 'posts_saved')
+  List<String> get postsSaved {
+    if (_postsSaved is EqualUnmodifiableListView) return _postsSaved;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_postsSaved);
+  }
+
   final List<String> _following;
-// required List<HistorySearch> top5HistorySearch,
   @override
   @JsonKey()
   List<String> get following {
@@ -337,7 +369,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, gender: $gender, age: $age, living: $living, account: $account, bio: $bio, email: $email, phone: $phone, avatar: $avatar, following: $following, follower: $follower, blocks: $blocks)';
+    return 'User(id: $id, name: $name, gender: $gender, age: $age, living: $living, account: $account, bio: $bio, email: $email, phone: $phone, avatar: $avatar, postsSaved: $postsSaved, following: $following, follower: $follower, blocks: $blocks)';
   }
 
   @override
@@ -356,12 +388,14 @@ class _$UserImpl implements _User {
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             const DeepCollectionEquality()
+                .equals(other._postsSaved, _postsSaved) &&
+            const DeepCollectionEquality()
                 .equals(other._following, _following) &&
             const DeepCollectionEquality().equals(other._follower, _follower) &&
             const DeepCollectionEquality().equals(other._blocks, _blocks));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -375,11 +409,14 @@ class _$UserImpl implements _User {
       email,
       phone,
       avatar,
+      const DeepCollectionEquality().hash(_postsSaved),
       const DeepCollectionEquality().hash(_following),
       const DeepCollectionEquality().hash(_follower),
       const DeepCollectionEquality().hash(_blocks));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
@@ -405,6 +442,7 @@ abstract class _User implements User {
       required final String email,
       required final String phone,
       required final String avatar,
+      @JsonKey(name: 'posts_saved') final List<String> postsSaved,
       final List<String> following,
       final List<String> follower,
       final List<String> blocks}) = _$UserImpl;
@@ -431,14 +469,20 @@ abstract class _User implements User {
   String get phone;
   @override
   String get avatar;
-  @override // required List<HistorySearch> top5HistorySearch,
+  @override
+  @JsonKey(name: 'posts_saved')
+  List<String> get postsSaved;
+  @override
   List<String> get following;
   @override
   List<String> get follower;
   @override
   List<String> get blocks;
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -451,8 +495,12 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
 mixin _$Account {
   String get username => throw _privateConstructorUsedError;
 
+  /// Serializes this Account to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Account
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountCopyWith<Account> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -474,6 +522,8 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Account
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -506,6 +556,8 @@ class __$$AccountImplCopyWithImpl<$Res>
       _$AccountImpl _value, $Res Function(_$AccountImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Account
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -545,11 +597,13 @@ class _$AccountImpl implements _Account {
                 other.username == username));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, username);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Account
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountImplCopyWith<_$AccountImpl> get copyWith =>
@@ -570,8 +624,11 @@ abstract class _Account implements Account {
 
   @override
   String get username;
+
+  /// Create a copy of Account
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountImplCopyWith<_$AccountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

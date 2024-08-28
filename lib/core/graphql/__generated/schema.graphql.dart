@@ -1,5 +1,157 @@
 // GENERATED FILE
 // DO NOT MODIFY
+class Input$GetPostDto {
+  factory Input$GetPostDto({
+    String? id,
+    required double take,
+    required double skip,
+  }) =>
+      Input$GetPostDto._({
+        if (id != null) r'id': id,
+        r'take': take,
+        r'skip': skip,
+      });
+
+  Input$GetPostDto._(this._$data);
+
+  factory Input$GetPostDto.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('id')) {
+      final l$id = data['id'];
+      result$data['id'] = (l$id as String?);
+    }
+    final l$take = data['take'];
+    result$data['take'] = (l$take as num).toDouble();
+    final l$skip = data['skip'];
+    result$data['skip'] = (l$skip as num).toDouble();
+    return Input$GetPostDto._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get id => (_$data['id'] as String?);
+
+  double get take => (_$data['take'] as double);
+
+  double get skip => (_$data['skip'] as double);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('id')) {
+      final l$id = id;
+      result$data['id'] = l$id;
+    }
+    final l$take = take;
+    result$data['take'] = l$take;
+    final l$skip = skip;
+    result$data['skip'] = l$skip;
+    return result$data;
+  }
+
+  CopyWith$Input$GetPostDto<Input$GetPostDto> get copyWith =>
+      CopyWith$Input$GetPostDto(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$GetPostDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (_$data.containsKey('id') != other._$data.containsKey('id')) {
+      return false;
+    }
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$take = take;
+    final lOther$take = other.take;
+    if (l$take != lOther$take) {
+      return false;
+    }
+    final l$skip = skip;
+    final lOther$skip = other.skip;
+    if (l$skip != lOther$skip) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$take = take;
+    final l$skip = skip;
+    return Object.hashAll([
+      _$data.containsKey('id') ? l$id : const {},
+      l$take,
+      l$skip,
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$GetPostDto<TRes> {
+  factory CopyWith$Input$GetPostDto(
+    Input$GetPostDto instance,
+    TRes Function(Input$GetPostDto) then,
+  ) = _CopyWithImpl$Input$GetPostDto;
+
+  factory CopyWith$Input$GetPostDto.stub(TRes res) =
+      _CopyWithStubImpl$Input$GetPostDto;
+
+  TRes call({
+    String? id,
+    double? take,
+    double? skip,
+  });
+}
+
+class _CopyWithImpl$Input$GetPostDto<TRes>
+    implements CopyWith$Input$GetPostDto<TRes> {
+  _CopyWithImpl$Input$GetPostDto(
+    this._instance,
+    this._then,
+  );
+
+  final Input$GetPostDto _instance;
+
+  final TRes Function(Input$GetPostDto) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? take = _undefined,
+    Object? skip = _undefined,
+  }) =>
+      _then(Input$GetPostDto._({
+        ..._instance._$data,
+        if (id != _undefined) 'id': (id as String?),
+        if (take != _undefined && take != null) 'take': (take as double),
+        if (skip != _undefined && skip != null) 'skip': (skip as double),
+      }));
+}
+
+class _CopyWithStubImpl$Input$GetPostDto<TRes>
+    implements CopyWith$Input$GetPostDto<TRes> {
+  _CopyWithStubImpl$Input$GetPostDto(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    double? take,
+    double? skip,
+  }) =>
+      _res;
+}
+
 class Input$LoginDto {
   factory Input$LoginDto({
     required String username,

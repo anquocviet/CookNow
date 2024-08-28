@@ -12,7 +12,7 @@ part 'user_service.g.dart';
 class UserService {
   UserService(this.ref);
 
-  final Ref ref;
+  final UserServiceRef ref;
 
   Future<User?> fetchUser(String id) async {
     final userRepository = ref.read(userRepositoryProvider);
@@ -42,6 +42,10 @@ class UserService {
   Future<void> unFollowUser(String id) async {
     final userRepository = ref.read(userRepositoryProvider);
     await userRepository.unFollowUser(id);
+  }
+
+  Future<void> watchUserFollow() async {
+    ref.watch(watchUserFollowProvider);
   }
 
   Stream<User?> watchUser() {

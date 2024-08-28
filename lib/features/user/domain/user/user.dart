@@ -16,7 +16,7 @@ class User with _$User {
     required String email,
     required String phone,
     required String avatar,
-    // required List<HistorySearch> top5HistorySearch,
+    @JsonKey(name: 'posts_saved') @Default([]) List<String> postsSaved,
     @Default([]) List<String> following,
     @Default([]) List<String> follower,
     @Default([]) List<String> blocks,
