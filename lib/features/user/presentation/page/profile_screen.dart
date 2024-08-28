@@ -12,26 +12,59 @@ import 'package:cooknow/features/user/presentation/widget/tab_saved_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tab_container/tab_container.dart';
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key, this.userId});
 
   final String? userId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  bool isPersonalPost = true;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        isPersonalPost = _tabController.index == 0;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userService = ref.watch(userServiceProvider);
     final feedService = ref.watch(feedServiceProvider);
     final userValue = ref.read(userRepositoryProvider).currentUser;
-    final Stream<User?> user = userId == null
+    final Stream<User?> user = widget.userId == null
         ? userService.watchUser()
-        : userService.fetchUser(userId!).asStream();
+        : userService.fetchUser(widget.userId!).asStream();
+
     return Scaffold(
       appBar: AppBar(
-        actions: userId != null
+        actions: widget.userId != null
             ? null
             : [
+                IconButton(
+                  icon: const Icon(Icons.bookmark),
+                  onPressed: () {
+                    setState(() => isPersonalPost = !isPersonalPost);
+                    _tabController.animateTo(isPersonalPost ? 0 : 1);
+                  },
+                ),
                 IconButton(
                   onPressed: () => context.go(
                       '${RouteName.profile}/${RouteName.changeInfoProfile}'),
@@ -49,39 +82,45 @@ class ProfileScreen extends ConsumerWidget {
           await userService.fetchUserWhenLogin(userValue?.id ?? '');
           await feedService.fetchPostForUser(userValue?.id ?? '', 5, 0);
         },
-        child: ListView(
-          children: [
-            StreamBuilder<User?>(
-              stream: user,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _buildProfile(context, snapshot.data!, ref);
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
-            ),
-            userId != null
-                ? TabPersonalPost(userId: userId)
-                : TabContainer(
-                    tabEdge: TabEdge.top,
-                    selectedTextStyle: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              StreamBuilder<User?>(
+                stream: user,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _buildProfile(context, snapshot.data!, ref);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+              widget.userId != null
+                  ? const SizedBox(height: 8)
+                  : DefaultTabController(
+                      length: 2,
+                      child: TabBar(
+                        labelColor: Theme.of(context).primaryColor,
+                        indicatorColor: Theme.of(context).primaryColor,
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(
+                            icon: Icon(Icons.grid_on),
+                          ),
+                          Tab(
+                            icon: Icon(Icons.bookmark),
+                          ),
+                        ],
+                      ),
                     ),
-                    unselectedTextStyle: const TextStyle(
-                      fontSize: 13.0,
-                    ),
-                    tabs: const [
-                      Text('Bài viết cá nhân'),
-                      Text('Bài viết đã lưu'),
-                    ],
-                    children: const [
-                      TabPersonalPost(),
-                      TabSavedPost(),
-                    ],
-                  ),
-          ],
+              isPersonalPost
+                  ? widget.userId != null
+                      ? TabPersonalPost(userId: widget.userId)
+                      : const TabPersonalPost()
+                  : const TabSavedPost(),
+            ],
+          ),
         ),
       ),
     );
@@ -138,11 +177,14 @@ class ProfileScreen extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        user.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: Text(
+                          user.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       Text(
@@ -200,8 +242,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              if (userId != null)
+              if (widget.userId != null)
                 FilledButton.icon(
                   label: Text(
                     currentUserFollowing.contains(user.id)
@@ -230,7 +271,6 @@ class ProfileScreen extends ConsumerWidget {
                           ? unFollowUser
                           : followUser,
                 ),
-              const SizedBox(height: 8),
               Row(
                 children: [
                   TextButton(

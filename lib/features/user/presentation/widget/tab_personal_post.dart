@@ -42,11 +42,8 @@ class _TabPersonalPostState extends ConsumerState<TabPersonalPost> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                color: Colors.green,
-                child: PostWidget(
-                  post: posts[index]!,
-                ),
+              return PostWidget(
+                post: posts[index]!,
               );
             },
             separatorBuilder: (BuildContext context, int index) {

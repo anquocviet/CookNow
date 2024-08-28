@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/widget/post_widget.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
@@ -23,6 +25,7 @@ class _TabSavedPostState extends ConsumerState<TabSavedPost> {
         stream: listPost,
         builder: (context, snapshot) {
           final List<Post?> posts = snapshot.data ?? [];
+          log('posts: ${posts.length}');
           if (posts.isEmpty) {
             // Show empty state page
             return const Padding(
@@ -39,11 +42,8 @@ class _TabSavedPostState extends ConsumerState<TabSavedPost> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                color: Colors.orange,
-                child: PostWidget(
-                  post: posts[index]!,
-                ),
+              return PostWidget(
+                post: posts[index]!,
               );
             },
             separatorBuilder: (BuildContext context, int index) {
