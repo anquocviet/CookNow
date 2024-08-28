@@ -56,12 +56,19 @@ class PostRepositoryImp implements PostRepository {
         )),
         builder: (data) {
           final result = (data as Query$Post).post;
-          _listPostState.value = _listPostState.value.map((e) {
-            if (e?.id == result.id) {
-              return Post.fromJson(result.toJson());
-            }
-            return e;
-          }).toList();
+          if (_listPostState.value.any((e) => e?.id == result.id)) {
+            _listPostState.value = _listPostState.value.map((e) {
+              if (e?.id == result.id) {
+                return Post.fromJson(result.toJson());
+              }
+              return e;
+            }).toList();
+          } else {
+            _listPostState.value = [
+              ..._listPostState.value,
+              Post.fromJson(result.toJson())
+            ];
+          }
         },
       );
 

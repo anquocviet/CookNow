@@ -1,0 +1,99 @@
+query Search($data: GetPostDto!) {
+  searchPost(data: $data) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    ingredients
+    date_time_post
+    category
+    owner {
+      user_id
+      name
+      avatar
+    }
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+    qty_comments
+  }
+  searchUser(data: $data) {
+    id
+    name
+    gender
+    living
+    bio
+    avatar
+    age
+    account {
+      username
+    }
+    email
+    phone
+  }
+}
+
+query SearchPost($data: GetPostDto!) {
+  searchPost(data: $data) {
+    id
+    name
+    image
+    nop_eat
+    prepare_time
+    ingredients
+  }
+}
+
+query SearchUser($data: GetPostDto!) {
+  searchUser(data: $data) {
+    id
+    name
+    gender
+    living
+    bio
+    account {
+      username
+    }
+    avatar
+  }
+}
+
+query GetHistorySearchOfUser($id: String!) {
+  getHistorySearchOfUser(id: $id) {
+    user_id
+    histories {
+      id
+      data
+      date_time
+    }
+  }
+}
+
+mutation AddHistorySearchOfUser($id: String!, $data: String!) {
+  addHistorySearchOfUser(id: $id, data: $data) {
+    user_id
+    histories {
+      id
+      data
+      date_time
+    }
+  }
+}
+
+mutation DeleteHistorySearchOfUser($userId: String!, $idSearch: String!) {
+  deleteHistorySearchOfUser(userId: $userId, idSearch: $idSearch) {
+    user_id
+    histories {
+      id
+      data
+      date_time
+    }
+  }
+}

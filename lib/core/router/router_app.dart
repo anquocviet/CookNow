@@ -17,6 +17,7 @@ import 'package:cooknow/features/feeds/presentation/page/detail_post_screen.dart
 import 'package:cooknow/features/feeds/presentation/page/home_feed_screen.dart';
 import 'package:cooknow/features/notifications/presentation/page/notification_screen.dart';
 import 'package:cooknow/features/posts/presentation/page/create_post_screen.dart';
+import 'package:cooknow/features/search/presentation/page/result_search_screen.dart';
 import 'package:cooknow/features/search/presentation/page/search_screen.dart';
 import 'package:cooknow/features/user/application/user_service.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
@@ -34,6 +35,7 @@ class RouteName {
   static const detailPost = 'detail-post';
   static const listUserScreen = 'list-user-screen';
   static const search = '/search';
+  static const resultSearch = 'result-search';
   static const createPost = '/create-post';
   static const notification = '/notification';
   static const profile = '/profile';
@@ -130,17 +132,6 @@ GoRouter goRouter(GoRouterRef ref) {
                     pageBuilder: (context, state) =>
                         NoTransitionPage(child: entry.value),
                     routes: [
-                      if (entry.key == RouteName.profile) ...[
-                        GoRoute(
-                          path: RouteName.settings,
-                          builder: (context, state) => const SettingScreen(),
-                        ),
-                        GoRoute(
-                          path: RouteName.changeInfoProfile,
-                          builder: (context, state) =>
-                              const ChangeProfileScreen(),
-                        )
-                      ],
                       if (entry.key == RouteName.home) ...[
                         GoRoute(
                           path: RouteName.detailPost,
@@ -179,7 +170,25 @@ GoRouter goRouter(GoRouterRef ref) {
                             userId: state.extra as String,
                           ),
                         )
-                      ]
+                      ],
+                      if (entry.key == RouteName.search) ...[
+                        GoRoute(
+                          path: RouteName.resultSearch,
+                          builder: (context, state) =>
+                              ResultSearchScreen(search: state.extra as String),
+                        ),
+                      ],
+                      if (entry.key == RouteName.profile) ...[
+                        GoRoute(
+                          path: RouteName.settings,
+                          builder: (context, state) => const SettingScreen(),
+                        ),
+                        GoRoute(
+                          path: RouteName.changeInfoProfile,
+                          builder: (context, state) =>
+                              const ChangeProfileScreen(),
+                        )
+                      ],
                     ],
                   )
                 ],

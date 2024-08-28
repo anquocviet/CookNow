@@ -575,35 +575,40 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) {
-          return Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Bài viết không tồn tại hoặc đã bị xóa'),
-              const SizedBox(height: 48),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomButton(
-                      'Tải lại',
-                      width: 120,
-                      onPressed: () => _fetchPost(widget.id),
-                    ),
-                    const SizedBox(width: 8),
-                    CustomButton(
-                      'Quay lại',
-                      width: 120,
-                      onPressed: () {
-                        context.canPop() ? context.pop() : context.go('/feeds');
-                      },
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ));
+          Future.delayed(const Duration(seconds: 3), () {
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Bài viết không tồn tại hoặc đã bị xóa'),
+                const SizedBox(height: 48),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomButton(
+                        'Tải lại',
+                        width: 120,
+                        onPressed: () => _fetchPost(widget.id),
+                      ),
+                      const SizedBox(width: 8),
+                      CustomButton(
+                        'Quay lại',
+                        width: 120,
+                        onPressed: () {
+                          context.canPop()
+                              ? context.pop()
+                              : context.go('/feeds');
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ));
+          });
+          return null;
         },
       ),
     );
