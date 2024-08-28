@@ -71,24 +71,39 @@ type AuthResponseDto {
   access_token: String!
 }
 
+type History {
+  id: ID!
+  data: String!
+  date_time: String!
+}
+
+type HistorySearch {
+  user_id: String!
+  histories: [History!]!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
+  searchUser(data: GetPostDto!): [User!]!
   posts: [Post!]!
   post(id: String!): Post!
   postsByOwner(data: GetPostDto!): [Post!]!
   postsOfUserFollowing(data: GetPostDto!): [Post!]!
   postForUser(data: GetPostDto!): [Post!]!
   postOfUserSaved(data: GetPostDto!): [Post!]!
+  searchPost(data: GetPostDto!): [Post!]!
   getCommentsByPostId(postId: String!): [Comment!]!
   login(data: LoginDto!): AuthResponseDto!
   validateToken(token: String!): String!
   refreshToken(token: String!): String!
   userNotExists(data: String!): Boolean!
+  getHistorySearchOfUser(id: String!): HistorySearch!
 }
 
 input GetPostDto {
   id: ID
+  data: String
   take: Float!
   skip: Float!
 }
@@ -112,6 +127,8 @@ type Mutation {
   updateComment(id: String!, data: UpdateCommentDto!): Comment!
   deleteComment(id: String!): Comment!
   register(data: CreateUserDto!): AuthResponseDto!
+  addHistorySearchOfUser(id: String!, data: String!): HistorySearch!
+  deleteHistorySearchOfUser(userId: String!, idSearch: String!): HistorySearch!
 }
 
 input UpdateUserDto {
