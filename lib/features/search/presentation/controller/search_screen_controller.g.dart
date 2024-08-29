@@ -7,7 +7,7 @@ part of 'search_screen_controller.dart';
 // **************************************************************************
 
 String _$searchScreenControllerHash() =>
-    r'439ea245dd2252a38c30980bec95d4f44c91272a';
+    r'ac5b13e2c95b3cdbd2f0d28c2ea67506706fe2dd';
 
 /// See also [SearchScreenController].
 @ProviderFor(SearchScreenController)

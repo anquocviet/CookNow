@@ -10,7 +10,6 @@ class SearchScreenController extends _$SearchScreenController {
 
   Future<void> deleteSearch(String idSearch) async {
     final searchService = ref.read(searchServiceProvider);
-    state = const AsyncLoading();
     state = await AsyncValue.guard(() => searchService.deleteSearch(idSearch));
     if (state.hasError) throw state.error!;
   }

@@ -45,3 +45,10 @@ class SearchService {
 SearchService searchService(SearchServiceRef ref) {
   return SearchService(ref: ref);
 }
+
+@riverpod
+Future<Map<String, List<dynamic>>> search(
+    SearchRef ref, String data, double take, double skip) async {
+  final searchService = ref.read(searchServiceProvider);
+  return searchService.search(data, take, skip);
+}

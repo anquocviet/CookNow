@@ -253,25 +253,25 @@ class PostRepositoryImp implements PostRepository {
     required T Function(dynamic data) builder,
   }) async {
     final result = await query;
-    final String error =
-        result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-    if (error.isEmpty) {
+    if (!result.hasException) {
       final data = result.parsedData;
       return builder(data);
-    } else {
-      log(result.exception.toString(), name: 'PostRepositoryImp');
-      if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
-        final error = result.exception!.graphqlErrors.first.message;
-        if (error == AuthExceptionFromServer.jwtExpired) {
-          throw TokenExpiredException();
-        } else if (error == AuthExceptionFromServer.postNotFound) {
-          throw PostNotFoundException();
-        } else {
-          throw ServerErrorException();
-        }
+    }
+    log(result.exception.toString(), name: 'PostRepositoryImp');
+    if (result.exception?.linkException != null) {
+      throw NoInternetException();
+    }
+    if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
+      final error = result.exception!.graphqlErrors.first.message;
+      if (error == AuthExceptionFromServer.jwtExpired) {
+        throw TokenExpiredException();
+      } else if (error == AuthExceptionFromServer.postNotFound) {
+        throw PostNotFoundException();
       } else {
-        throw NoInternetException();
+        throw ServerErrorException();
       }
+    } else {
+      throw NoInternetException();
     }
   }
 }

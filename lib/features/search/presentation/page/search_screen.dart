@@ -62,7 +62,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomSearch(),
-                Icon(Icons.chat_rounded, size: 30),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Icons.chat_rounded, size: 30),
+                ),
               ],
             ),
           ),
@@ -89,7 +92,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 leading: const Icon(Icons.history),
                                 title: Text(history.data),
                                 trailing: GestureDetector(
-                                  onTap: () => _removeSearch(history.id),
+                                  onTap: () async =>
+                                      await _removeSearch(history.id),
                                   child: const Icon(Icons.clear),
                                 ),
                               );
