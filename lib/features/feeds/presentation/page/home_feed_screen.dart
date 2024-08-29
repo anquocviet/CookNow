@@ -1,4 +1,6 @@
+import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/page/community_screen.dart';
 import 'package:cooknow/features/feeds/presentation/page/follower_screen.dart';
@@ -58,12 +60,18 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
       });
       final feedService = ref.read(feedServiceProvider);
       final user = ref.read(userRepositoryProvider).currentUser;
-      if (_controller.index == 0) {
-        feedService.clearPost();
-        await feedService.fetchPostForUser(user?.id ?? '', 5, 0);
-      } else if (_controller.index == 1) {
-        feedService.clearPost();
-        await feedService.fetchPostOfUserFollowing(5, 0);
+      try {
+        if (_controller.index == 0) {
+          feedService.clearPost();
+          await feedService.fetchPostForUser(user?.id ?? '', 5, 0);
+        } else if (_controller.index == 1) {
+          feedService.clearPost();
+          await feedService.fetchPostOfUserFollowing(5, 0);
+        }
+      } on AppException catch (e) {
+        showError(context, e.message);
+      } catch (e) {
+        showError(context, 'Đã xảy ra lỗi $e');
       }
       setState(() {
         isLoading = false;
@@ -84,9 +92,10 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
             onPressed: () => context.go(RouteName.search),
             icon: const Icon(Icons.search, size: 30),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.chat_rounded, size: 30),
+          const IconButton(
+            onPressed: null,
+            icon: Icon(Icons.chat_rounded, size: 30),
+            tooltip: 'Coming soon',
           ),
         ],
       ),
