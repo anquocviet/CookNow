@@ -15,8 +15,8 @@ class AuthScreen extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(top: height * 0.1),
-              child: Image.network(
-                'https://picsum.photos/305/275',
+              child: Image.asset(
+                'assets/primary_image_auth.jpeg',
                 width: 300,
                 height: 280,
               ),
