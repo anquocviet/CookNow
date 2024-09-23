@@ -69,9 +69,9 @@ class _HomeFeedScreenState extends ConsumerState<HomeFeedScreen>
           await feedService.fetchPostOfUserFollowing(5, 0);
         }
       } on AppException catch (e) {
-        showError(context, e.message);
+        if (mounted) showError(context, e.message);
       } catch (e) {
-        showError(context, 'Đã xảy ra lỗi $e');
+        if (mounted) showError(context, 'Đã xảy ra lỗi $e');
       }
       setState(() {
         isLoading = false;

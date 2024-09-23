@@ -3,20 +3,20 @@ class CreateCommentDto {
     required this.userId,
     required this.postId,
     required this.content,
-    required this.dateTimeComment,
+    this.image = '',
   });
 
   final String userId;
   final String postId;
   final String content;
-  final String dateTimeComment;
+  final String image;
 
   Map<String, dynamic> toJson() {
     return {
       'user_id': userId,
       'post_id': postId,
       'content': content,
-      'date_time_comment': dateTimeComment,
+      'image': image,
     };
   }
 }

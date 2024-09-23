@@ -1,3 +1,6 @@
+# Indicates exactly one field must be supplied and this field must not be `null`.
+directive @oneOf on INPUT_OBJECT
+
 type Account {
   username: String!
   password: String!
@@ -83,9 +86,6 @@ type HistorySearch {
 }
 
 type Query {
-  users: [User!]!
-  user(id: String!): User!
-  searchUser(data: GetPostDto!): [User!]!
   posts: [Post!]!
   post(id: String!): Post!
   postsByOwner(data: GetPostDto!): [Post!]!
@@ -94,6 +94,9 @@ type Query {
   postOfUserSaved(data: GetPostDto!): [Post!]!
   searchPost(data: GetPostDto!): [Post!]!
   getCommentsByPostId(postId: String!): [Comment!]!
+  users: [User!]!
+  user(id: String!): User!
+  searchUser(data: GetPostDto!): [User!]!
   login(data: LoginDto!): AuthResponseDto!
   validateToken(token: String!): String!
   refreshToken(token: String!): String!
@@ -114,11 +117,6 @@ input LoginDto {
 }
 
 type Mutation {
-  updateUser(data: UpdateUserDto!): User!
-  deleteUser(id: String!): User!
-  followUser(userId: String!, followerId: String!): User!
-  unFollowUser(userId: String!, followerId: String!): User!
-  updateSavePost(userId: String!, postId: String!): User!
   createPost(data: CreatePostDto!): Post!
   updatePost(data: UpdatePostDto!): Post!
   deletePost(id: String!): Post!
@@ -126,21 +124,14 @@ type Mutation {
   createComment(data: CreateCommentDto!): Comment!
   updateComment(id: String!, data: UpdateCommentDto!): Comment!
   deleteComment(id: String!): Comment!
+  updateUser(data: UpdateUserDto!): User!
+  deleteUser(id: String!): User!
+  followUser(userId: String!, followerId: String!): User!
+  unFollowUser(userId: String!, followerId: String!): User!
+  updateSavePost(userId: String!, postId: String!): User!
   register(data: CreateUserDto!): AuthResponseDto!
   addHistorySearchOfUser(id: String!, data: String!): HistorySearch!
   deleteHistorySearchOfUser(userId: String!, idSearch: String!): HistorySearch!
-}
-
-input UpdateUserDto {
-  id: String!
-  name: String!
-  gender: Float!
-  age: Float!
-  living: String!
-  bio: String
-  email: String
-  phone: String
-  avatar: String
 }
 
 input CreatePostDto {
@@ -180,13 +171,24 @@ input CreateCommentDto {
   user_id: String!
   post_id: String!
   content: String!
-  image: String! = ""
-  date_time_comment: String!
+  image: String!
 }
 
 input UpdateCommentDto {
   content: String!
   image: [String!]! = []
+}
+
+input UpdateUserDto {
+  id: String!
+  name: String!
+  gender: Float!
+  age: Float!
+  living: String!
+  bio: String
+  email: String
+  phone: String
+  avatar: String
 }
 
 input CreateUserDto {
@@ -209,7 +211,7 @@ input CreateAccountDto {
 }
 
 type Subscription {
-  user_follow(userId: String!): User!
   delete_post(postId: String!): Post!
   add_comment(postId: String!): Comment!
+  user_follow(userId: String!): User!
 }

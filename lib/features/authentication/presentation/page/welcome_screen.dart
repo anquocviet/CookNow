@@ -19,17 +19,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       'title': 'Welcome to CookNow',
       'desc':
           'CookNow is a platform that helps you to find the best recipes for your meals',
-      'image': 'https://picsum.photos/305/275',
+      'image': 'assets/slider_item_1.jpeg',
     },
     {
       'title': 'Find the best recipes',
       'desc': 'Find the best recipes for your meals',
-      'image': 'https://picsum.photos/305/276',
+      'image': 'assets/slider_item_2.jpeg',
     },
     {
       'title': 'Save your favorite recipes',
       'desc': 'Save your favorite recipes and access them anytime',
-      'image': 'https://picsum.photos/305/274',
+      'image': 'assets/slider_item_3.jpeg',
     },
   ];
   @override
@@ -43,9 +43,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             margin: const EdgeInsets.only(top: 20.0),
             child: TextButton(
               onPressed: () => context.go(RouteName.auth),
-              child: const Text("Bỏ qua",
-                  style: TextStyle(
-                      color: Color.fromRGBO(221, 91, 25, 0.8), fontSize: 16)),
+              child: const Text(
+                "Bỏ qua",
+                style: TextStyle(
+                    color: Color.fromRGBO(221, 91, 25, 0.8), fontSize: 16),
+              ),
             ),
           ),
         ),
@@ -67,7 +69,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
-                        Image.network(i['image']!),
+                        CircleAvatar(
+                          radius: 120,
+                          backgroundImage: AssetImage(i['image']!),
+                        ),
                         Container(
                           margin: const EdgeInsets.only(top: 20.0),
                           width: 240,

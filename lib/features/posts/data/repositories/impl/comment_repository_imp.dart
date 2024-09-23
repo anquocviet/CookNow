@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -46,14 +47,14 @@ class CommentRepositoryImp implements CommentRepository {
     throw UnimplementedError();
   }
 
-  Stream<void> watchComment(String id) async* {
+  StreamSubscription<void> watchComment(String id) {
     final Stream<QueryResult<Subscription$CreateComment>> streamResult =
         client.subscribe$CreateComment(
       Options$Subscription$CreateComment(
         variables: Variables$Subscription$CreateComment(postId: id),
       ),
     );
-    yield* streamResult.map((event) {
+    return streamResult.listen((event) {
       final result = event.parsedData?.add_comment;
       _listCommentState.value = [
         Comment.fromJson(result!.toJson()),
@@ -124,9 +125,12 @@ Stream<List<Comment?>> commentStateChanges(CommentStateChangesRef ref) {
 }
 
 @riverpod
-Stream<void> watchCreateComment(WatchCreateCommentRef ref, String id) async* {
+StreamSubscription<void> watchCreateComment(
+    WatchCreateCommentRef ref, String id) {
   final commentRepository = ref.watch(commentRepositoryProvider);
   final postRepository = ref.read(postRepositoryProvider);
   postRepository.updateQtyOfPost(id);
-  yield* commentRepository.watchComment(id);
+  final watchComment = commentRepository.watchComment(id);
+  ref.onDispose(watchComment.cancel);
+  return watchComment;
 }

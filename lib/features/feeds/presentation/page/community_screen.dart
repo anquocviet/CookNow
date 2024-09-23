@@ -70,14 +70,21 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
             builder: (context, snapshot) {
               final List<Post?> posts = snapshot.data ?? [];
               if (posts.isEmpty) {
-                return const Center(
-                  child: SingleChildScrollView(
-                    child: Text('Không có bài viết nào'),
+                return Container(
+                  alignment: Alignment.center,
+                  child: ListView(
+                    children: const [
+                      Center(
+                        heightFactor: 25,
+                        child: Text('Không có bài viết nào'),
+                      ),
+                    ],
                   ),
                 );
               }
               return ListView.separated(
                 controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   if (index == posts.length - 1) {
                     return Column(
