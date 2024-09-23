@@ -2433,6 +2433,128 @@ const documentNodeQuerySearchPost = DocumentNode(definitions: [
             selectionSet: null,
           ),
           FieldNode(
+            name: NameNode(value: 'date_time_post'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'category'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'owner'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'user_id'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'name'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'avatar'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: 'steps'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'content'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'medias'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: 'emojis'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'k'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'v'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'qty'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: 'qty_comments'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
@@ -2608,6 +2730,12 @@ class Query$SearchPost$searchPost {
     required this.nop_eat,
     required this.prepare_time,
     required this.ingredients,
+    required this.date_time_post,
+    required this.category,
+    required this.owner,
+    required this.steps,
+    required this.emojis,
+    required this.qty_comments,
     this.$__typename = 'Post',
   });
 
@@ -2618,6 +2746,12 @@ class Query$SearchPost$searchPost {
     final l$nop_eat = json['nop_eat'];
     final l$prepare_time = json['prepare_time'];
     final l$ingredients = json['ingredients'];
+    final l$date_time_post = json['date_time_post'];
+    final l$category = json['category'];
+    final l$owner = json['owner'];
+    final l$steps = json['steps'];
+    final l$emojis = json['emojis'];
+    final l$qty_comments = json['qty_comments'];
     final l$$__typename = json['__typename'];
     return Query$SearchPost$searchPost(
       id: (l$id as String),
@@ -2627,6 +2761,19 @@ class Query$SearchPost$searchPost {
       prepare_time: (l$prepare_time as String),
       ingredients:
           (l$ingredients as List<dynamic>).map((e) => (e as String)).toList(),
+      date_time_post: (l$date_time_post as String),
+      category: (l$category as String),
+      owner: Query$SearchPost$searchPost$owner.fromJson(
+          (l$owner as Map<String, dynamic>)),
+      steps: (l$steps as List<dynamic>)
+          .map((e) => Query$SearchPost$searchPost$steps.fromJson(
+              (e as Map<String, dynamic>)))
+          .toList(),
+      emojis: (l$emojis as List<dynamic>)
+          .map((e) => Query$SearchPost$searchPost$emojis.fromJson(
+              (e as Map<String, dynamic>)))
+          .toList(),
+      qty_comments: (l$qty_comments as num).toDouble(),
       $__typename: (l$$__typename as String),
     );
   }
@@ -2642,6 +2789,18 @@ class Query$SearchPost$searchPost {
   final String prepare_time;
 
   final List<String> ingredients;
+
+  final String date_time_post;
+
+  final String category;
+
+  final Query$SearchPost$searchPost$owner owner;
+
+  final List<Query$SearchPost$searchPost$steps> steps;
+
+  final List<Query$SearchPost$searchPost$emojis> emojis;
+
+  final double qty_comments;
 
   final String $__typename;
 
@@ -2659,6 +2818,18 @@ class Query$SearchPost$searchPost {
     _resultData['prepare_time'] = l$prepare_time;
     final l$ingredients = ingredients;
     _resultData['ingredients'] = l$ingredients.map((e) => e).toList();
+    final l$date_time_post = date_time_post;
+    _resultData['date_time_post'] = l$date_time_post;
+    final l$category = category;
+    _resultData['category'] = l$category;
+    final l$owner = owner;
+    _resultData['owner'] = l$owner.toJson();
+    final l$steps = steps;
+    _resultData['steps'] = l$steps.map((e) => e.toJson()).toList();
+    final l$emojis = emojis;
+    _resultData['emojis'] = l$emojis.map((e) => e.toJson()).toList();
+    final l$qty_comments = qty_comments;
+    _resultData['qty_comments'] = l$qty_comments;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -2672,6 +2843,12 @@ class Query$SearchPost$searchPost {
     final l$nop_eat = nop_eat;
     final l$prepare_time = prepare_time;
     final l$ingredients = ingredients;
+    final l$date_time_post = date_time_post;
+    final l$category = category;
+    final l$owner = owner;
+    final l$steps = steps;
+    final l$emojis = emojis;
+    final l$qty_comments = qty_comments;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
@@ -2680,6 +2857,12 @@ class Query$SearchPost$searchPost {
       l$nop_eat,
       l$prepare_time,
       Object.hashAll(l$ingredients.map((v) => v)),
+      l$date_time_post,
+      l$category,
+      l$owner,
+      Object.hashAll(l$steps.map((v) => v)),
+      Object.hashAll(l$emojis.map((v) => v)),
+      l$qty_comments,
       l$$__typename,
     ]);
   }
@@ -2730,6 +2913,50 @@ class Query$SearchPost$searchPost {
         return false;
       }
     }
+    final l$date_time_post = date_time_post;
+    final lOther$date_time_post = other.date_time_post;
+    if (l$date_time_post != lOther$date_time_post) {
+      return false;
+    }
+    final l$category = category;
+    final lOther$category = other.category;
+    if (l$category != lOther$category) {
+      return false;
+    }
+    final l$owner = owner;
+    final lOther$owner = other.owner;
+    if (l$owner != lOther$owner) {
+      return false;
+    }
+    final l$steps = steps;
+    final lOther$steps = other.steps;
+    if (l$steps.length != lOther$steps.length) {
+      return false;
+    }
+    for (int i = 0; i < l$steps.length; i++) {
+      final l$steps$entry = l$steps[i];
+      final lOther$steps$entry = lOther$steps[i];
+      if (l$steps$entry != lOther$steps$entry) {
+        return false;
+      }
+    }
+    final l$emojis = emojis;
+    final lOther$emojis = other.emojis;
+    if (l$emojis.length != lOther$emojis.length) {
+      return false;
+    }
+    for (int i = 0; i < l$emojis.length; i++) {
+      final l$emojis$entry = l$emojis[i];
+      final lOther$emojis$entry = lOther$emojis[i];
+      if (l$emojis$entry != lOther$emojis$entry) {
+        return false;
+      }
+    }
+    final l$qty_comments = qty_comments;
+    final lOther$qty_comments = other.qty_comments;
+    if (l$qty_comments != lOther$qty_comments) {
+      return false;
+    }
     final l$$__typename = $__typename;
     final lOther$$__typename = other.$__typename;
     if (l$$__typename != lOther$$__typename) {
@@ -2764,8 +2991,27 @@ abstract class CopyWith$Query$SearchPost$searchPost<TRes> {
     double? nop_eat,
     String? prepare_time,
     List<String>? ingredients,
+    String? date_time_post,
+    String? category,
+    Query$SearchPost$searchPost$owner? owner,
+    List<Query$SearchPost$searchPost$steps>? steps,
+    List<Query$SearchPost$searchPost$emojis>? emojis,
+    double? qty_comments,
     String? $__typename,
   });
+  CopyWith$Query$SearchPost$searchPost$owner<TRes> get owner;
+  TRes steps(
+      Iterable<Query$SearchPost$searchPost$steps> Function(
+              Iterable<
+                  CopyWith$Query$SearchPost$searchPost$steps<
+                      Query$SearchPost$searchPost$steps>>)
+          _fn);
+  TRes emojis(
+      Iterable<Query$SearchPost$searchPost$emojis> Function(
+              Iterable<
+                  CopyWith$Query$SearchPost$searchPost$emojis<
+                      Query$SearchPost$searchPost$emojis>>)
+          _fn);
 }
 
 class _CopyWithImpl$Query$SearchPost$searchPost<TRes>
@@ -2788,6 +3034,12 @@ class _CopyWithImpl$Query$SearchPost$searchPost<TRes>
     Object? nop_eat = _undefined,
     Object? prepare_time = _undefined,
     Object? ingredients = _undefined,
+    Object? date_time_post = _undefined,
+    Object? category = _undefined,
+    Object? owner = _undefined,
+    Object? steps = _undefined,
+    Object? emojis = _undefined,
+    Object? qty_comments = _undefined,
     Object? $__typename = _undefined,
   }) =>
       _then(Query$SearchPost$searchPost(
@@ -2807,10 +3059,60 @@ class _CopyWithImpl$Query$SearchPost$searchPost<TRes>
         ingredients: ingredients == _undefined || ingredients == null
             ? _instance.ingredients
             : (ingredients as List<String>),
+        date_time_post: date_time_post == _undefined || date_time_post == null
+            ? _instance.date_time_post
+            : (date_time_post as String),
+        category: category == _undefined || category == null
+            ? _instance.category
+            : (category as String),
+        owner: owner == _undefined || owner == null
+            ? _instance.owner
+            : (owner as Query$SearchPost$searchPost$owner),
+        steps: steps == _undefined || steps == null
+            ? _instance.steps
+            : (steps as List<Query$SearchPost$searchPost$steps>),
+        emojis: emojis == _undefined || emojis == null
+            ? _instance.emojis
+            : (emojis as List<Query$SearchPost$searchPost$emojis>),
+        qty_comments: qty_comments == _undefined || qty_comments == null
+            ? _instance.qty_comments
+            : (qty_comments as double),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
       ));
+
+  CopyWith$Query$SearchPost$searchPost$owner<TRes> get owner {
+    final local$owner = _instance.owner;
+    return CopyWith$Query$SearchPost$searchPost$owner(
+        local$owner, (e) => call(owner: e));
+  }
+
+  TRes steps(
+          Iterable<Query$SearchPost$searchPost$steps> Function(
+                  Iterable<
+                      CopyWith$Query$SearchPost$searchPost$steps<
+                          Query$SearchPost$searchPost$steps>>)
+              _fn) =>
+      call(
+          steps: _fn(_instance.steps
+              .map((e) => CopyWith$Query$SearchPost$searchPost$steps(
+                    e,
+                    (i) => i,
+                  ))).toList());
+
+  TRes emojis(
+          Iterable<Query$SearchPost$searchPost$emojis> Function(
+                  Iterable<
+                      CopyWith$Query$SearchPost$searchPost$emojis<
+                          Query$SearchPost$searchPost$emojis>>)
+              _fn) =>
+      call(
+          emojis: _fn(_instance.emojis
+              .map((e) => CopyWith$Query$SearchPost$searchPost$emojis(
+                    e,
+                    (i) => i,
+                  ))).toList());
 }
 
 class _CopyWithStubImpl$Query$SearchPost$searchPost<TRes>
@@ -2826,6 +3128,506 @@ class _CopyWithStubImpl$Query$SearchPost$searchPost<TRes>
     double? nop_eat,
     String? prepare_time,
     List<String>? ingredients,
+    String? date_time_post,
+    String? category,
+    Query$SearchPost$searchPost$owner? owner,
+    List<Query$SearchPost$searchPost$steps>? steps,
+    List<Query$SearchPost$searchPost$emojis>? emojis,
+    double? qty_comments,
+    String? $__typename,
+  }) =>
+      _res;
+
+  CopyWith$Query$SearchPost$searchPost$owner<TRes> get owner =>
+      CopyWith$Query$SearchPost$searchPost$owner.stub(_res);
+
+  steps(_fn) => _res;
+
+  emojis(_fn) => _res;
+}
+
+class Query$SearchPost$searchPost$owner {
+  Query$SearchPost$searchPost$owner({
+    required this.user_id,
+    required this.name,
+    required this.avatar,
+    this.$__typename = 'Owner',
+  });
+
+  factory Query$SearchPost$searchPost$owner.fromJson(
+      Map<String, dynamic> json) {
+    final l$user_id = json['user_id'];
+    final l$name = json['name'];
+    final l$avatar = json['avatar'];
+    final l$$__typename = json['__typename'];
+    return Query$SearchPost$searchPost$owner(
+      user_id: (l$user_id as String),
+      name: (l$name as String),
+      avatar: (l$avatar as String),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String user_id;
+
+  final String name;
+
+  final String avatar;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$user_id = user_id;
+    _resultData['user_id'] = l$user_id;
+    final l$name = name;
+    _resultData['name'] = l$name;
+    final l$avatar = avatar;
+    _resultData['avatar'] = l$avatar;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$user_id = user_id;
+    final l$name = name;
+    final l$avatar = avatar;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$user_id,
+      l$name,
+      l$avatar,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Query$SearchPost$searchPost$owner) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$user_id = user_id;
+    final lOther$user_id = other.user_id;
+    if (l$user_id != lOther$user_id) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$avatar = avatar;
+    final lOther$avatar = other.avatar;
+    if (l$avatar != lOther$avatar) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$SearchPost$searchPost$owner
+    on Query$SearchPost$searchPost$owner {
+  CopyWith$Query$SearchPost$searchPost$owner<Query$SearchPost$searchPost$owner>
+      get copyWith => CopyWith$Query$SearchPost$searchPost$owner(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Query$SearchPost$searchPost$owner<TRes> {
+  factory CopyWith$Query$SearchPost$searchPost$owner(
+    Query$SearchPost$searchPost$owner instance,
+    TRes Function(Query$SearchPost$searchPost$owner) then,
+  ) = _CopyWithImpl$Query$SearchPost$searchPost$owner;
+
+  factory CopyWith$Query$SearchPost$searchPost$owner.stub(TRes res) =
+      _CopyWithStubImpl$Query$SearchPost$searchPost$owner;
+
+  TRes call({
+    String? user_id,
+    String? name,
+    String? avatar,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$SearchPost$searchPost$owner<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$owner<TRes> {
+  _CopyWithImpl$Query$SearchPost$searchPost$owner(
+    this._instance,
+    this._then,
+  );
+
+  final Query$SearchPost$searchPost$owner _instance;
+
+  final TRes Function(Query$SearchPost$searchPost$owner) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? user_id = _undefined,
+    Object? name = _undefined,
+    Object? avatar = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Query$SearchPost$searchPost$owner(
+        user_id: user_id == _undefined || user_id == null
+            ? _instance.user_id
+            : (user_id as String),
+        name: name == _undefined || name == null
+            ? _instance.name
+            : (name as String),
+        avatar: avatar == _undefined || avatar == null
+            ? _instance.avatar
+            : (avatar as String),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Query$SearchPost$searchPost$owner<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$owner<TRes> {
+  _CopyWithStubImpl$Query$SearchPost$searchPost$owner(this._res);
+
+  TRes _res;
+
+  call({
+    String? user_id,
+    String? name,
+    String? avatar,
+    String? $__typename,
+  }) =>
+      _res;
+}
+
+class Query$SearchPost$searchPost$steps {
+  Query$SearchPost$searchPost$steps({
+    required this.content,
+    required this.medias,
+    this.$__typename = 'Step',
+  });
+
+  factory Query$SearchPost$searchPost$steps.fromJson(
+      Map<String, dynamic> json) {
+    final l$content = json['content'];
+    final l$medias = json['medias'];
+    final l$$__typename = json['__typename'];
+    return Query$SearchPost$searchPost$steps(
+      content: (l$content as String),
+      medias: (l$medias as List<dynamic>).map((e) => (e as String)).toList(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String content;
+
+  final List<String> medias;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$content = content;
+    _resultData['content'] = l$content;
+    final l$medias = medias;
+    _resultData['medias'] = l$medias.map((e) => e).toList();
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$content = content;
+    final l$medias = medias;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$content,
+      Object.hashAll(l$medias.map((v) => v)),
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Query$SearchPost$searchPost$steps) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$content = content;
+    final lOther$content = other.content;
+    if (l$content != lOther$content) {
+      return false;
+    }
+    final l$medias = medias;
+    final lOther$medias = other.medias;
+    if (l$medias.length != lOther$medias.length) {
+      return false;
+    }
+    for (int i = 0; i < l$medias.length; i++) {
+      final l$medias$entry = l$medias[i];
+      final lOther$medias$entry = lOther$medias[i];
+      if (l$medias$entry != lOther$medias$entry) {
+        return false;
+      }
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$SearchPost$searchPost$steps
+    on Query$SearchPost$searchPost$steps {
+  CopyWith$Query$SearchPost$searchPost$steps<Query$SearchPost$searchPost$steps>
+      get copyWith => CopyWith$Query$SearchPost$searchPost$steps(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Query$SearchPost$searchPost$steps<TRes> {
+  factory CopyWith$Query$SearchPost$searchPost$steps(
+    Query$SearchPost$searchPost$steps instance,
+    TRes Function(Query$SearchPost$searchPost$steps) then,
+  ) = _CopyWithImpl$Query$SearchPost$searchPost$steps;
+
+  factory CopyWith$Query$SearchPost$searchPost$steps.stub(TRes res) =
+      _CopyWithStubImpl$Query$SearchPost$searchPost$steps;
+
+  TRes call({
+    String? content,
+    List<String>? medias,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$SearchPost$searchPost$steps<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$steps<TRes> {
+  _CopyWithImpl$Query$SearchPost$searchPost$steps(
+    this._instance,
+    this._then,
+  );
+
+  final Query$SearchPost$searchPost$steps _instance;
+
+  final TRes Function(Query$SearchPost$searchPost$steps) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? content = _undefined,
+    Object? medias = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Query$SearchPost$searchPost$steps(
+        content: content == _undefined || content == null
+            ? _instance.content
+            : (content as String),
+        medias: medias == _undefined || medias == null
+            ? _instance.medias
+            : (medias as List<String>),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Query$SearchPost$searchPost$steps<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$steps<TRes> {
+  _CopyWithStubImpl$Query$SearchPost$searchPost$steps(this._res);
+
+  TRes _res;
+
+  call({
+    String? content,
+    List<String>? medias,
+    String? $__typename,
+  }) =>
+      _res;
+}
+
+class Query$SearchPost$searchPost$emojis {
+  Query$SearchPost$searchPost$emojis({
+    required this.k,
+    required this.v,
+    required this.qty,
+    this.$__typename = 'Emoji',
+  });
+
+  factory Query$SearchPost$searchPost$emojis.fromJson(
+      Map<String, dynamic> json) {
+    final l$k = json['k'];
+    final l$v = json['v'];
+    final l$qty = json['qty'];
+    final l$$__typename = json['__typename'];
+    return Query$SearchPost$searchPost$emojis(
+      k: (l$k as String),
+      v: (l$v as List<dynamic>).map((e) => (e as String)).toList(),
+      qty: (l$qty as num).toDouble(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String k;
+
+  final List<String> v;
+
+  final double qty;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$k = k;
+    _resultData['k'] = l$k;
+    final l$v = v;
+    _resultData['v'] = l$v.map((e) => e).toList();
+    final l$qty = qty;
+    _resultData['qty'] = l$qty;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$k = k;
+    final l$v = v;
+    final l$qty = qty;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$k,
+      Object.hashAll(l$v.map((v) => v)),
+      l$qty,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Query$SearchPost$searchPost$emojis) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$k = k;
+    final lOther$k = other.k;
+    if (l$k != lOther$k) {
+      return false;
+    }
+    final l$v = v;
+    final lOther$v = other.v;
+    if (l$v.length != lOther$v.length) {
+      return false;
+    }
+    for (int i = 0; i < l$v.length; i++) {
+      final l$v$entry = l$v[i];
+      final lOther$v$entry = lOther$v[i];
+      if (l$v$entry != lOther$v$entry) {
+        return false;
+      }
+    }
+    final l$qty = qty;
+    final lOther$qty = other.qty;
+    if (l$qty != lOther$qty) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$SearchPost$searchPost$emojis
+    on Query$SearchPost$searchPost$emojis {
+  CopyWith$Query$SearchPost$searchPost$emojis<
+          Query$SearchPost$searchPost$emojis>
+      get copyWith => CopyWith$Query$SearchPost$searchPost$emojis(
+            this,
+            (i) => i,
+          );
+}
+
+abstract class CopyWith$Query$SearchPost$searchPost$emojis<TRes> {
+  factory CopyWith$Query$SearchPost$searchPost$emojis(
+    Query$SearchPost$searchPost$emojis instance,
+    TRes Function(Query$SearchPost$searchPost$emojis) then,
+  ) = _CopyWithImpl$Query$SearchPost$searchPost$emojis;
+
+  factory CopyWith$Query$SearchPost$searchPost$emojis.stub(TRes res) =
+      _CopyWithStubImpl$Query$SearchPost$searchPost$emojis;
+
+  TRes call({
+    String? k,
+    List<String>? v,
+    double? qty,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$SearchPost$searchPost$emojis<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$emojis<TRes> {
+  _CopyWithImpl$Query$SearchPost$searchPost$emojis(
+    this._instance,
+    this._then,
+  );
+
+  final Query$SearchPost$searchPost$emojis _instance;
+
+  final TRes Function(Query$SearchPost$searchPost$emojis) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? k = _undefined,
+    Object? v = _undefined,
+    Object? qty = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Query$SearchPost$searchPost$emojis(
+        k: k == _undefined || k == null ? _instance.k : (k as String),
+        v: v == _undefined || v == null ? _instance.v : (v as List<String>),
+        qty: qty == _undefined || qty == null ? _instance.qty : (qty as double),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Query$SearchPost$searchPost$emojis<TRes>
+    implements CopyWith$Query$SearchPost$searchPost$emojis<TRes> {
+  _CopyWithStubImpl$Query$SearchPost$searchPost$emojis(this._res);
+
+  TRes _res;
+
+  call({
+    String? k,
+    List<String>? v,
+    double? qty,
     String? $__typename,
   }) =>
       _res;
@@ -3147,6 +3949,20 @@ const documentNodeQuerySearchUser = DocumentNode(definitions: [
             selectionSet: null,
           ),
           FieldNode(
+            name: NameNode(value: 'avatar'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'age'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: 'account'),
             alias: null,
             arguments: [],
@@ -3169,7 +3985,14 @@ const documentNodeQuerySearchUser = DocumentNode(definitions: [
             ]),
           ),
           FieldNode(
-            name: NameNode(value: 'avatar'),
+            name: NameNode(value: 'email'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'phone'),
             alias: null,
             arguments: [],
             directives: [],
@@ -3350,8 +4173,11 @@ class Query$SearchUser$searchUser {
     required this.gender,
     required this.living,
     required this.bio,
-    required this.account,
     required this.avatar,
+    required this.age,
+    required this.account,
+    required this.email,
+    required this.phone,
     this.$__typename = 'User',
   });
 
@@ -3361,8 +4187,11 @@ class Query$SearchUser$searchUser {
     final l$gender = json['gender'];
     final l$living = json['living'];
     final l$bio = json['bio'];
-    final l$account = json['account'];
     final l$avatar = json['avatar'];
+    final l$age = json['age'];
+    final l$account = json['account'];
+    final l$email = json['email'];
+    final l$phone = json['phone'];
     final l$$__typename = json['__typename'];
     return Query$SearchUser$searchUser(
       id: (l$id as String),
@@ -3370,9 +4199,12 @@ class Query$SearchUser$searchUser {
       gender: (l$gender as num).toDouble(),
       living: (l$living as String),
       bio: (l$bio as String),
+      avatar: (l$avatar as String),
+      age: (l$age as num).toDouble(),
       account: Query$SearchUser$searchUser$account.fromJson(
           (l$account as Map<String, dynamic>)),
-      avatar: (l$avatar as String),
+      email: (l$email as String),
+      phone: (l$phone as String),
       $__typename: (l$$__typename as String),
     );
   }
@@ -3387,9 +4219,15 @@ class Query$SearchUser$searchUser {
 
   final String bio;
 
+  final String avatar;
+
+  final double age;
+
   final Query$SearchUser$searchUser$account account;
 
-  final String avatar;
+  final String email;
+
+  final String phone;
 
   final String $__typename;
 
@@ -3405,10 +4243,16 @@ class Query$SearchUser$searchUser {
     _resultData['living'] = l$living;
     final l$bio = bio;
     _resultData['bio'] = l$bio;
-    final l$account = account;
-    _resultData['account'] = l$account.toJson();
     final l$avatar = avatar;
     _resultData['avatar'] = l$avatar;
+    final l$age = age;
+    _resultData['age'] = l$age;
+    final l$account = account;
+    _resultData['account'] = l$account.toJson();
+    final l$email = email;
+    _resultData['email'] = l$email;
+    final l$phone = phone;
+    _resultData['phone'] = l$phone;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -3421,8 +4265,11 @@ class Query$SearchUser$searchUser {
     final l$gender = gender;
     final l$living = living;
     final l$bio = bio;
-    final l$account = account;
     final l$avatar = avatar;
+    final l$age = age;
+    final l$account = account;
+    final l$email = email;
+    final l$phone = phone;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
@@ -3430,8 +4277,11 @@ class Query$SearchUser$searchUser {
       l$gender,
       l$living,
       l$bio,
-      l$account,
       l$avatar,
+      l$age,
+      l$account,
+      l$email,
+      l$phone,
       l$$__typename,
     ]);
   }
@@ -3470,14 +4320,29 @@ class Query$SearchUser$searchUser {
     if (l$bio != lOther$bio) {
       return false;
     }
+    final l$avatar = avatar;
+    final lOther$avatar = other.avatar;
+    if (l$avatar != lOther$avatar) {
+      return false;
+    }
+    final l$age = age;
+    final lOther$age = other.age;
+    if (l$age != lOther$age) {
+      return false;
+    }
     final l$account = account;
     final lOther$account = other.account;
     if (l$account != lOther$account) {
       return false;
     }
-    final l$avatar = avatar;
-    final lOther$avatar = other.avatar;
-    if (l$avatar != lOther$avatar) {
+    final l$email = email;
+    final lOther$email = other.email;
+    if (l$email != lOther$email) {
+      return false;
+    }
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (l$phone != lOther$phone) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -3513,8 +4378,11 @@ abstract class CopyWith$Query$SearchUser$searchUser<TRes> {
     double? gender,
     String? living,
     String? bio,
-    Query$SearchUser$searchUser$account? account,
     String? avatar,
+    double? age,
+    Query$SearchUser$searchUser$account? account,
+    String? email,
+    String? phone,
     String? $__typename,
   });
   CopyWith$Query$SearchUser$searchUser$account<TRes> get account;
@@ -3539,8 +4407,11 @@ class _CopyWithImpl$Query$SearchUser$searchUser<TRes>
     Object? gender = _undefined,
     Object? living = _undefined,
     Object? bio = _undefined,
-    Object? account = _undefined,
     Object? avatar = _undefined,
+    Object? age = _undefined,
+    Object? account = _undefined,
+    Object? email = _undefined,
+    Object? phone = _undefined,
     Object? $__typename = _undefined,
   }) =>
       _then(Query$SearchUser$searchUser(
@@ -3555,12 +4426,19 @@ class _CopyWithImpl$Query$SearchUser$searchUser<TRes>
             ? _instance.living
             : (living as String),
         bio: bio == _undefined || bio == null ? _instance.bio : (bio as String),
-        account: account == _undefined || account == null
-            ? _instance.account
-            : (account as Query$SearchUser$searchUser$account),
         avatar: avatar == _undefined || avatar == null
             ? _instance.avatar
             : (avatar as String),
+        age: age == _undefined || age == null ? _instance.age : (age as double),
+        account: account == _undefined || account == null
+            ? _instance.account
+            : (account as Query$SearchUser$searchUser$account),
+        email: email == _undefined || email == null
+            ? _instance.email
+            : (email as String),
+        phone: phone == _undefined || phone == null
+            ? _instance.phone
+            : (phone as String),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
@@ -3585,8 +4463,11 @@ class _CopyWithStubImpl$Query$SearchUser$searchUser<TRes>
     double? gender,
     String? living,
     String? bio,
-    Query$SearchUser$searchUser$account? account,
     String? avatar,
+    double? age,
+    Query$SearchUser$searchUser$account? account,
+    String? email,
+    String? phone,
     String? $__typename,
   }) =>
       _res;

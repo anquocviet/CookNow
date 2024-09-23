@@ -1,25 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_service.dart';
+part of 'user_search_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchServiceHash() => r'4eef8a4bb9505d2c9309b92fffa36ede4bb6056b';
+String _$userSearchControllerHash() =>
+    r'0f6f1c8783e1eb1e090d818e5624ebbacb5866f4';
 
-/// See also [searchService].
-@ProviderFor(searchService)
-final searchServiceProvider = AutoDisposeProvider<SearchService>.internal(
-  searchService,
-  name: r'searchServiceProvider',
+/// See also [UserSearchController].
+@ProviderFor(UserSearchController)
+final userSearchControllerProvider = AutoDisposeAsyncNotifierProvider<
+    UserSearchController, List<User>?>.internal(
+  UserSearchController.new,
+  name: r'userSearchControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$searchServiceHash,
+      : _$userSearchControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef SearchServiceRef = AutoDisposeProviderRef<SearchService>;
+typedef _$UserSearchController = AutoDisposeAsyncNotifier<List<User>?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

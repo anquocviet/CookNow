@@ -48,6 +48,23 @@ query SearchPost($data: GetPostDto!) {
     nop_eat
     prepare_time
     ingredients
+    date_time_post
+    category
+    owner {
+      user_id
+      name
+      avatar
+    }
+    steps {
+      content
+      medias
+    }
+    emojis {
+      k
+      v
+      qty
+    }
+    qty_comments
   }
 }
 
@@ -58,10 +75,13 @@ query SearchUser($data: GetPostDto!) {
     gender
     living
     bio
+    avatar
+    age
     account {
       username
     }
-    avatar
+    email
+    phone
   }
 }
 

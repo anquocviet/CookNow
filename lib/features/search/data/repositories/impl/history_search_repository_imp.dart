@@ -90,6 +90,66 @@ class HistorySearchRepositoryImp implements HistorySearchRepository {
     throw UnimplementedError();
   }
 
+  @override
+  Future<Map<String, List<dynamic>>> search(
+          String data, double take, double skip) =>
+      _getData(
+        query: client.query$Search(
+          Options$Query$Search(
+            variables: Variables$Query$Search(
+              data: Input$GetPostDto(data: data, take: take, skip: skip),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final resultPost = (data as Query$Search).searchPost;
+          final resultUser = (data).searchUser;
+          final posts =
+              resultPost.map((e) => Post.fromJson(e.toJson())).toList();
+          final users =
+              resultUser.map((e) => User.fromJson(e.toJson())).toList();
+          return {
+            'posts': posts,
+            'users': users,
+          };
+        },
+      );
+
+  @override
+  Future<List<Post>> searchPost(String data, double take, double skip) =>
+      _getData(
+        query: client.query$SearchPost(
+          Options$Query$SearchPost(
+            variables: Variables$Query$SearchPost(
+              data: Input$GetPostDto(data: data, take: take, skip: skip),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Query$SearchPost).searchPost;
+          return result.map((e) => Post.fromJson(e.toJson())).toList();
+        },
+      );
+
+  @override
+  Future<List<User>> searchUser(String data, double take, double skip) =>
+      _getData(
+        query: client.query$SearchUser(
+          Options$Query$SearchUser(
+            variables: Variables$Query$SearchUser(
+              data: Input$GetPostDto(data: data, take: take, skip: skip),
+            ),
+            fetchPolicy: FetchPolicy.noCache,
+          ),
+        ),
+        builder: (data) {
+          final result = (data as Query$SearchUser).searchUser;
+          return result.map((e) => User.fromJson(e.toJson())).toList();
+        },
+      );
+
   Future<T> _getData<T>({
     required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
@@ -116,32 +176,6 @@ class HistorySearchRepositoryImp implements HistorySearchRepository {
       }
     }
   }
-
-  @override
-  Future<Map<String, List<dynamic>>> search(
-          String data, double take, double skip) =>
-      _getData(
-        query: client.query$Search(
-          Options$Query$Search(
-            variables: Variables$Query$Search(
-              data: Input$GetPostDto(data: data, take: take, skip: skip),
-            ),
-            fetchPolicy: FetchPolicy.noCache,
-          ),
-        ),
-        builder: (data) {
-          final resultPost = (data as Query$Search).searchPost;
-          final resultUser = (data).searchUser;
-          final posts =
-              resultPost.map((e) => Post.fromJson(e.toJson())).toList();
-          final users =
-              resultUser.map((e) => User.fromJson(e.toJson())).toList();
-          return {
-            'posts': posts,
-            'users': users,
-          };
-        },
-      );
 }
 
 @riverpod
