@@ -73,10 +73,6 @@ class PostService {
     await postRepository.removePost(postId);
   }
 
-  Future<void> watchRemovePost(String postId) async {
-    ref.watch(watchRemovePostProvider(postId));
-  }
-
   Future<List<String>> chooseMedia(bool isMultiImage, bool isVideo) async {
     final imagePick = ref.read(imagePickServiceProvider);
     final List<XFile> list = await imagePick.pickImage(

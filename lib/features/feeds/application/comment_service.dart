@@ -20,10 +20,6 @@ class CommentService {
     await commentRepository.createComment(dto);
   }
 
-  Future<void> watchCreateComment(String postId) async {
-    ref.watch(watchCreateCommentProvider(postId));
-  }
-
   Stream<List<Comment?>> watchListComment() {
     final commentRepository = ref.read(commentRepositoryProvider);
     return commentRepository.commentStateChanges();

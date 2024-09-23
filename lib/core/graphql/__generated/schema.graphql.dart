@@ -306,295 +306,6 @@ class _CopyWithStubImpl$Input$LoginDto<TRes>
       _res;
 }
 
-class Input$UpdateUserDto {
-  factory Input$UpdateUserDto({
-    required String id,
-    required String name,
-    required double gender,
-    required double age,
-    required String living,
-    String? bio,
-    String? email,
-    String? phone,
-    String? avatar,
-  }) =>
-      Input$UpdateUserDto._({
-        r'id': id,
-        r'name': name,
-        r'gender': gender,
-        r'age': age,
-        r'living': living,
-        if (bio != null) r'bio': bio,
-        if (email != null) r'email': email,
-        if (phone != null) r'phone': phone,
-        if (avatar != null) r'avatar': avatar,
-      });
-
-  Input$UpdateUserDto._(this._$data);
-
-  factory Input$UpdateUserDto.fromJson(Map<String, dynamic> data) {
-    final result$data = <String, dynamic>{};
-    final l$id = data['id'];
-    result$data['id'] = (l$id as String);
-    final l$name = data['name'];
-    result$data['name'] = (l$name as String);
-    final l$gender = data['gender'];
-    result$data['gender'] = (l$gender as num).toDouble();
-    final l$age = data['age'];
-    result$data['age'] = (l$age as num).toDouble();
-    final l$living = data['living'];
-    result$data['living'] = (l$living as String);
-    if (data.containsKey('bio')) {
-      final l$bio = data['bio'];
-      result$data['bio'] = (l$bio as String?);
-    }
-    if (data.containsKey('email')) {
-      final l$email = data['email'];
-      result$data['email'] = (l$email as String?);
-    }
-    if (data.containsKey('phone')) {
-      final l$phone = data['phone'];
-      result$data['phone'] = (l$phone as String?);
-    }
-    if (data.containsKey('avatar')) {
-      final l$avatar = data['avatar'];
-      result$data['avatar'] = (l$avatar as String?);
-    }
-    return Input$UpdateUserDto._(result$data);
-  }
-
-  Map<String, dynamic> _$data;
-
-  String get id => (_$data['id'] as String);
-
-  String get name => (_$data['name'] as String);
-
-  double get gender => (_$data['gender'] as double);
-
-  double get age => (_$data['age'] as double);
-
-  String get living => (_$data['living'] as String);
-
-  String? get bio => (_$data['bio'] as String?);
-
-  String? get email => (_$data['email'] as String?);
-
-  String? get phone => (_$data['phone'] as String?);
-
-  String? get avatar => (_$data['avatar'] as String?);
-
-  Map<String, dynamic> toJson() {
-    final result$data = <String, dynamic>{};
-    final l$id = id;
-    result$data['id'] = l$id;
-    final l$name = name;
-    result$data['name'] = l$name;
-    final l$gender = gender;
-    result$data['gender'] = l$gender;
-    final l$age = age;
-    result$data['age'] = l$age;
-    final l$living = living;
-    result$data['living'] = l$living;
-    if (_$data.containsKey('bio')) {
-      final l$bio = bio;
-      result$data['bio'] = l$bio;
-    }
-    if (_$data.containsKey('email')) {
-      final l$email = email;
-      result$data['email'] = l$email;
-    }
-    if (_$data.containsKey('phone')) {
-      final l$phone = phone;
-      result$data['phone'] = l$phone;
-    }
-    if (_$data.containsKey('avatar')) {
-      final l$avatar = avatar;
-      result$data['avatar'] = l$avatar;
-    }
-    return result$data;
-  }
-
-  CopyWith$Input$UpdateUserDto<Input$UpdateUserDto> get copyWith =>
-      CopyWith$Input$UpdateUserDto(
-        this,
-        (i) => i,
-      );
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (!(other is Input$UpdateUserDto) || runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$id = id;
-    final lOther$id = other.id;
-    if (l$id != lOther$id) {
-      return false;
-    }
-    final l$name = name;
-    final lOther$name = other.name;
-    if (l$name != lOther$name) {
-      return false;
-    }
-    final l$gender = gender;
-    final lOther$gender = other.gender;
-    if (l$gender != lOther$gender) {
-      return false;
-    }
-    final l$age = age;
-    final lOther$age = other.age;
-    if (l$age != lOther$age) {
-      return false;
-    }
-    final l$living = living;
-    final lOther$living = other.living;
-    if (l$living != lOther$living) {
-      return false;
-    }
-    final l$bio = bio;
-    final lOther$bio = other.bio;
-    if (_$data.containsKey('bio') != other._$data.containsKey('bio')) {
-      return false;
-    }
-    if (l$bio != lOther$bio) {
-      return false;
-    }
-    final l$email = email;
-    final lOther$email = other.email;
-    if (_$data.containsKey('email') != other._$data.containsKey('email')) {
-      return false;
-    }
-    if (l$email != lOther$email) {
-      return false;
-    }
-    final l$phone = phone;
-    final lOther$phone = other.phone;
-    if (_$data.containsKey('phone') != other._$data.containsKey('phone')) {
-      return false;
-    }
-    if (l$phone != lOther$phone) {
-      return false;
-    }
-    final l$avatar = avatar;
-    final lOther$avatar = other.avatar;
-    if (_$data.containsKey('avatar') != other._$data.containsKey('avatar')) {
-      return false;
-    }
-    if (l$avatar != lOther$avatar) {
-      return false;
-    }
-    return true;
-  }
-
-  @override
-  int get hashCode {
-    final l$id = id;
-    final l$name = name;
-    final l$gender = gender;
-    final l$age = age;
-    final l$living = living;
-    final l$bio = bio;
-    final l$email = email;
-    final l$phone = phone;
-    final l$avatar = avatar;
-    return Object.hashAll([
-      l$id,
-      l$name,
-      l$gender,
-      l$age,
-      l$living,
-      _$data.containsKey('bio') ? l$bio : const {},
-      _$data.containsKey('email') ? l$email : const {},
-      _$data.containsKey('phone') ? l$phone : const {},
-      _$data.containsKey('avatar') ? l$avatar : const {},
-    ]);
-  }
-}
-
-abstract class CopyWith$Input$UpdateUserDto<TRes> {
-  factory CopyWith$Input$UpdateUserDto(
-    Input$UpdateUserDto instance,
-    TRes Function(Input$UpdateUserDto) then,
-  ) = _CopyWithImpl$Input$UpdateUserDto;
-
-  factory CopyWith$Input$UpdateUserDto.stub(TRes res) =
-      _CopyWithStubImpl$Input$UpdateUserDto;
-
-  TRes call({
-    String? id,
-    String? name,
-    double? gender,
-    double? age,
-    String? living,
-    String? bio,
-    String? email,
-    String? phone,
-    String? avatar,
-  });
-}
-
-class _CopyWithImpl$Input$UpdateUserDto<TRes>
-    implements CopyWith$Input$UpdateUserDto<TRes> {
-  _CopyWithImpl$Input$UpdateUserDto(
-    this._instance,
-    this._then,
-  );
-
-  final Input$UpdateUserDto _instance;
-
-  final TRes Function(Input$UpdateUserDto) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? id = _undefined,
-    Object? name = _undefined,
-    Object? gender = _undefined,
-    Object? age = _undefined,
-    Object? living = _undefined,
-    Object? bio = _undefined,
-    Object? email = _undefined,
-    Object? phone = _undefined,
-    Object? avatar = _undefined,
-  }) =>
-      _then(Input$UpdateUserDto._({
-        ..._instance._$data,
-        if (id != _undefined && id != null) 'id': (id as String),
-        if (name != _undefined && name != null) 'name': (name as String),
-        if (gender != _undefined && gender != null)
-          'gender': (gender as double),
-        if (age != _undefined && age != null) 'age': (age as double),
-        if (living != _undefined && living != null)
-          'living': (living as String),
-        if (bio != _undefined) 'bio': (bio as String?),
-        if (email != _undefined) 'email': (email as String?),
-        if (phone != _undefined) 'phone': (phone as String?),
-        if (avatar != _undefined) 'avatar': (avatar as String?),
-      }));
-}
-
-class _CopyWithStubImpl$Input$UpdateUserDto<TRes>
-    implements CopyWith$Input$UpdateUserDto<TRes> {
-  _CopyWithStubImpl$Input$UpdateUserDto(this._res);
-
-  TRes _res;
-
-  call({
-    String? id,
-    String? name,
-    double? gender,
-    double? age,
-    String? living,
-    String? bio,
-    String? email,
-    String? phone,
-    String? avatar,
-  }) =>
-      _res;
-}
-
 class Input$CreatePostDto {
   factory Input$CreatePostDto({
     required String name,
@@ -1475,15 +1186,13 @@ class Input$CreateCommentDto {
     required String user_id,
     required String post_id,
     required String content,
-    String? image,
-    required String date_time_comment,
+    required String image,
   }) =>
       Input$CreateCommentDto._({
         r'user_id': user_id,
         r'post_id': post_id,
         r'content': content,
-        if (image != null) r'image': image,
-        r'date_time_comment': date_time_comment,
+        r'image': image,
       });
 
   Input$CreateCommentDto._(this._$data);
@@ -1496,12 +1205,8 @@ class Input$CreateCommentDto {
     result$data['post_id'] = (l$post_id as String);
     final l$content = data['content'];
     result$data['content'] = (l$content as String);
-    if (data.containsKey('image')) {
-      final l$image = data['image'];
-      result$data['image'] = (l$image as String);
-    }
-    final l$date_time_comment = data['date_time_comment'];
-    result$data['date_time_comment'] = (l$date_time_comment as String);
+    final l$image = data['image'];
+    result$data['image'] = (l$image as String);
     return Input$CreateCommentDto._(result$data);
   }
 
@@ -1513,9 +1218,7 @@ class Input$CreateCommentDto {
 
   String get content => (_$data['content'] as String);
 
-  String? get image => (_$data['image'] as String?);
-
-  String get date_time_comment => (_$data['date_time_comment'] as String);
+  String get image => (_$data['image'] as String);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -1525,12 +1228,8 @@ class Input$CreateCommentDto {
     result$data['post_id'] = l$post_id;
     final l$content = content;
     result$data['content'] = l$content;
-    if (_$data.containsKey('image')) {
-      final l$image = image;
-      result$data['image'] = (l$image as String);
-    }
-    final l$date_time_comment = date_time_comment;
-    result$data['date_time_comment'] = l$date_time_comment;
+    final l$image = image;
+    result$data['image'] = l$image;
     return result$data;
   }
 
@@ -1566,15 +1265,7 @@ class Input$CreateCommentDto {
     }
     final l$image = image;
     final lOther$image = other.image;
-    if (_$data.containsKey('image') != other._$data.containsKey('image')) {
-      return false;
-    }
     if (l$image != lOther$image) {
-      return false;
-    }
-    final l$date_time_comment = date_time_comment;
-    final lOther$date_time_comment = other.date_time_comment;
-    if (l$date_time_comment != lOther$date_time_comment) {
       return false;
     }
     return true;
@@ -1586,13 +1277,11 @@ class Input$CreateCommentDto {
     final l$post_id = post_id;
     final l$content = content;
     final l$image = image;
-    final l$date_time_comment = date_time_comment;
     return Object.hashAll([
       l$user_id,
       l$post_id,
       l$content,
-      _$data.containsKey('image') ? l$image : const {},
-      l$date_time_comment,
+      l$image,
     ]);
   }
 }
@@ -1611,7 +1300,6 @@ abstract class CopyWith$Input$CreateCommentDto<TRes> {
     String? post_id,
     String? content,
     String? image,
-    String? date_time_comment,
   });
 }
 
@@ -1633,7 +1321,6 @@ class _CopyWithImpl$Input$CreateCommentDto<TRes>
     Object? post_id = _undefined,
     Object? content = _undefined,
     Object? image = _undefined,
-    Object? date_time_comment = _undefined,
   }) =>
       _then(Input$CreateCommentDto._({
         ..._instance._$data,
@@ -1644,8 +1331,6 @@ class _CopyWithImpl$Input$CreateCommentDto<TRes>
         if (content != _undefined && content != null)
           'content': (content as String),
         if (image != _undefined && image != null) 'image': (image as String),
-        if (date_time_comment != _undefined && date_time_comment != null)
-          'date_time_comment': (date_time_comment as String),
       }));
 }
 
@@ -1660,7 +1345,6 @@ class _CopyWithStubImpl$Input$CreateCommentDto<TRes>
     String? post_id,
     String? content,
     String? image,
-    String? date_time_comment,
   }) =>
       _res;
 }
@@ -1813,6 +1497,295 @@ class _CopyWithStubImpl$Input$UpdateCommentDto<TRes>
   call({
     String? content,
     List<String>? image,
+  }) =>
+      _res;
+}
+
+class Input$UpdateUserDto {
+  factory Input$UpdateUserDto({
+    required String id,
+    required String name,
+    required double gender,
+    required double age,
+    required String living,
+    String? bio,
+    String? email,
+    String? phone,
+    String? avatar,
+  }) =>
+      Input$UpdateUserDto._({
+        r'id': id,
+        r'name': name,
+        r'gender': gender,
+        r'age': age,
+        r'living': living,
+        if (bio != null) r'bio': bio,
+        if (email != null) r'email': email,
+        if (phone != null) r'phone': phone,
+        if (avatar != null) r'avatar': avatar,
+      });
+
+  Input$UpdateUserDto._(this._$data);
+
+  factory Input$UpdateUserDto.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
+    final l$name = data['name'];
+    result$data['name'] = (l$name as String);
+    final l$gender = data['gender'];
+    result$data['gender'] = (l$gender as num).toDouble();
+    final l$age = data['age'];
+    result$data['age'] = (l$age as num).toDouble();
+    final l$living = data['living'];
+    result$data['living'] = (l$living as String);
+    if (data.containsKey('bio')) {
+      final l$bio = data['bio'];
+      result$data['bio'] = (l$bio as String?);
+    }
+    if (data.containsKey('email')) {
+      final l$email = data['email'];
+      result$data['email'] = (l$email as String?);
+    }
+    if (data.containsKey('phone')) {
+      final l$phone = data['phone'];
+      result$data['phone'] = (l$phone as String?);
+    }
+    if (data.containsKey('avatar')) {
+      final l$avatar = data['avatar'];
+      result$data['avatar'] = (l$avatar as String?);
+    }
+    return Input$UpdateUserDto._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get id => (_$data['id'] as String);
+
+  String get name => (_$data['name'] as String);
+
+  double get gender => (_$data['gender'] as double);
+
+  double get age => (_$data['age'] as double);
+
+  String get living => (_$data['living'] as String);
+
+  String? get bio => (_$data['bio'] as String?);
+
+  String? get email => (_$data['email'] as String?);
+
+  String? get phone => (_$data['phone'] as String?);
+
+  String? get avatar => (_$data['avatar'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$id = id;
+    result$data['id'] = l$id;
+    final l$name = name;
+    result$data['name'] = l$name;
+    final l$gender = gender;
+    result$data['gender'] = l$gender;
+    final l$age = age;
+    result$data['age'] = l$age;
+    final l$living = living;
+    result$data['living'] = l$living;
+    if (_$data.containsKey('bio')) {
+      final l$bio = bio;
+      result$data['bio'] = l$bio;
+    }
+    if (_$data.containsKey('email')) {
+      final l$email = email;
+      result$data['email'] = l$email;
+    }
+    if (_$data.containsKey('phone')) {
+      final l$phone = phone;
+      result$data['phone'] = l$phone;
+    }
+    if (_$data.containsKey('avatar')) {
+      final l$avatar = avatar;
+      result$data['avatar'] = l$avatar;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateUserDto<Input$UpdateUserDto> get copyWith =>
+      CopyWith$Input$UpdateUserDto(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$UpdateUserDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$gender = gender;
+    final lOther$gender = other.gender;
+    if (l$gender != lOther$gender) {
+      return false;
+    }
+    final l$age = age;
+    final lOther$age = other.age;
+    if (l$age != lOther$age) {
+      return false;
+    }
+    final l$living = living;
+    final lOther$living = other.living;
+    if (l$living != lOther$living) {
+      return false;
+    }
+    final l$bio = bio;
+    final lOther$bio = other.bio;
+    if (_$data.containsKey('bio') != other._$data.containsKey('bio')) {
+      return false;
+    }
+    if (l$bio != lOther$bio) {
+      return false;
+    }
+    final l$email = email;
+    final lOther$email = other.email;
+    if (_$data.containsKey('email') != other._$data.containsKey('email')) {
+      return false;
+    }
+    if (l$email != lOther$email) {
+      return false;
+    }
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (_$data.containsKey('phone') != other._$data.containsKey('phone')) {
+      return false;
+    }
+    if (l$phone != lOther$phone) {
+      return false;
+    }
+    final l$avatar = avatar;
+    final lOther$avatar = other.avatar;
+    if (_$data.containsKey('avatar') != other._$data.containsKey('avatar')) {
+      return false;
+    }
+    if (l$avatar != lOther$avatar) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$name = name;
+    final l$gender = gender;
+    final l$age = age;
+    final l$living = living;
+    final l$bio = bio;
+    final l$email = email;
+    final l$phone = phone;
+    final l$avatar = avatar;
+    return Object.hashAll([
+      l$id,
+      l$name,
+      l$gender,
+      l$age,
+      l$living,
+      _$data.containsKey('bio') ? l$bio : const {},
+      _$data.containsKey('email') ? l$email : const {},
+      _$data.containsKey('phone') ? l$phone : const {},
+      _$data.containsKey('avatar') ? l$avatar : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateUserDto<TRes> {
+  factory CopyWith$Input$UpdateUserDto(
+    Input$UpdateUserDto instance,
+    TRes Function(Input$UpdateUserDto) then,
+  ) = _CopyWithImpl$Input$UpdateUserDto;
+
+  factory CopyWith$Input$UpdateUserDto.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateUserDto;
+
+  TRes call({
+    String? id,
+    String? name,
+    double? gender,
+    double? age,
+    String? living,
+    String? bio,
+    String? email,
+    String? phone,
+    String? avatar,
+  });
+}
+
+class _CopyWithImpl$Input$UpdateUserDto<TRes>
+    implements CopyWith$Input$UpdateUserDto<TRes> {
+  _CopyWithImpl$Input$UpdateUserDto(
+    this._instance,
+    this._then,
+  );
+
+  final Input$UpdateUserDto _instance;
+
+  final TRes Function(Input$UpdateUserDto) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? name = _undefined,
+    Object? gender = _undefined,
+    Object? age = _undefined,
+    Object? living = _undefined,
+    Object? bio = _undefined,
+    Object? email = _undefined,
+    Object? phone = _undefined,
+    Object? avatar = _undefined,
+  }) =>
+      _then(Input$UpdateUserDto._({
+        ..._instance._$data,
+        if (id != _undefined && id != null) 'id': (id as String),
+        if (name != _undefined && name != null) 'name': (name as String),
+        if (gender != _undefined && gender != null)
+          'gender': (gender as double),
+        if (age != _undefined && age != null) 'age': (age as double),
+        if (living != _undefined && living != null)
+          'living': (living as String),
+        if (bio != _undefined) 'bio': (bio as String?),
+        if (email != _undefined) 'email': (email as String?),
+        if (phone != _undefined) 'phone': (phone as String?),
+        if (avatar != _undefined) 'avatar': (avatar as String?),
+      }));
+}
+
+class _CopyWithStubImpl$Input$UpdateUserDto<TRes>
+    implements CopyWith$Input$UpdateUserDto<TRes> {
+  _CopyWithStubImpl$Input$UpdateUserDto(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? name,
+    double? gender,
+    double? age,
+    String? living,
+    String? bio,
+    String? email,
+    String? phone,
+    String? avatar,
   }) =>
       _res;
 }

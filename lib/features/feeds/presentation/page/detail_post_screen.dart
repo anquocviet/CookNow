@@ -9,9 +9,9 @@ import 'package:cooknow/features/feeds/application/comment_service.dart';
 import 'package:cooknow/features/feeds/application/feed_service.dart';
 import 'package:cooknow/features/feeds/presentation/controller/detail_post_screen_controller.dart';
 import 'package:cooknow/features/feeds/presentation/controller/feed_controller.dart';
-import 'package:cooknow/features/posts/application/post_service.dart';
 import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
+import 'package:cooknow/features/posts/data/repositories/impl/comment_repository_imp.dart';
 import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
 import 'package:cooknow/features/posts/domain/comment/comment.dart';
 import 'package:cooknow/features/posts/domain/post/post.dart';
@@ -123,7 +123,6 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
         postId: widget.id,
         userId: ref.read(userRepositoryProvider).currentUser?.id ?? "",
         content: commentContent,
-        dateTimeComment: DateTime.now().toIso8601String(),
       );
       await ref
           .read(detailPostScreenControllerProvider.notifier)
@@ -147,6 +146,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
 
   @override
   void dispose() {
+    // Need close stream when dispose
+    // ref.invalidate(watchCreateCommentProvider);
     super.dispose();
   }
 
@@ -155,8 +156,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
     final controllerState = ref.watch(feedControllerProvider);
     final state = ref.watch(detailPostScreenControllerProvider);
     final commentService = ref.watch(commentServiceProvider);
-    ref.watch(postServiceProvider).watchRemovePost(widget.id);
-    ref.watch(commentServiceProvider).watchCreateComment(widget.id);
+    // ref.watch(watchRemovePostProvider(widget.id));
+    ref.watch(watchCreateCommentProvider(widget.id));
 
     final currentPostState =
         ref.watch(currentPostStateChangesProvider(widget.id));
@@ -248,9 +249,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                         children: [
                           CircleAvatar(
                             radius: 24,
-                            child: Image.network(
-                              post.owner.avatar,
-                            ),
+                            backgroundImage: NetworkImage(post.owner.avatar),
                           ),
                           const SizedBox(width: 12),
                           Text(
@@ -349,7 +348,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                         const Icon(Icons.access_time_outlined),
                         const SizedBox(width: 8),
                         Text(
-                          post.prepareTime,
+                          '${post.prepareTime} phút',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -363,7 +362,7 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                         const Icon(Icons.food_bank_outlined),
                         const SizedBox(width: 8),
                         Text(
-                          "Số người ăn: ${post.nopEat}",
+                          "Số người ăn: ${post.nopEat} người",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -530,9 +529,8 @@ class _DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                                   contentPadding: EdgeInsets.zero,
                                   leading: CircleAvatar(
                                     radius: 20,
-                                    child: Image.network(
-                                      comment!.avatar,
-                                    ),
+                                    backgroundImage:
+                                        NetworkImage(comment!.avatar),
                                   ),
                                   title: Text(
                                     comment.name,

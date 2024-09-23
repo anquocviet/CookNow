@@ -38,7 +38,7 @@ final commentStateChangesProvider = StreamProvider<List<Comment?>>.internal(
 
 typedef CommentStateChangesRef = StreamProviderRef<List<Comment?>>;
 String _$watchCreateCommentHash() =>
-    r'38ebbf01f5319fc8e3dd846fa10ac9fcb57b7de4';
+    r'5b5f3ec19358b58b456c2d2ac395c6aed78ba655';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -66,7 +66,7 @@ class _SystemHash {
 const watchCreateCommentProvider = WatchCreateCommentFamily();
 
 /// See also [watchCreateComment].
-class WatchCreateCommentFamily extends Family<AsyncValue<void>> {
+class WatchCreateCommentFamily extends Family<StreamSubscription<void>> {
   /// See also [watchCreateComment].
   const WatchCreateCommentFamily();
 
@@ -104,7 +104,8 @@ class WatchCreateCommentFamily extends Family<AsyncValue<void>> {
 }
 
 /// See also [watchCreateComment].
-class WatchCreateCommentProvider extends AutoDisposeStreamProvider<void> {
+class WatchCreateCommentProvider
+    extends AutoDisposeProvider<StreamSubscription<void>> {
   /// See also [watchCreateComment].
   WatchCreateCommentProvider(
     String id,
@@ -139,7 +140,7 @@ class WatchCreateCommentProvider extends AutoDisposeStreamProvider<void> {
 
   @override
   Override overrideWith(
-    Stream<void> Function(WatchCreateCommentRef provider) create,
+    StreamSubscription<void> Function(WatchCreateCommentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -156,7 +157,7 @@ class WatchCreateCommentProvider extends AutoDisposeStreamProvider<void> {
   }
 
   @override
-  AutoDisposeStreamProviderElement<void> createElement() {
+  AutoDisposeProviderElement<StreamSubscription<void>> createElement() {
     return _WatchCreateCommentProviderElement(this);
   }
 
@@ -174,13 +175,15 @@ class WatchCreateCommentProvider extends AutoDisposeStreamProvider<void> {
   }
 }
 
-mixin WatchCreateCommentRef on AutoDisposeStreamProviderRef<void> {
+mixin WatchCreateCommentRef
+    on AutoDisposeProviderRef<StreamSubscription<void>> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _WatchCreateCommentProviderElement
-    extends AutoDisposeStreamProviderElement<void> with WatchCreateCommentRef {
+    extends AutoDisposeProviderElement<StreamSubscription<void>>
+    with WatchCreateCommentRef {
   _WatchCreateCommentProviderElement(super.provider);
 
   @override

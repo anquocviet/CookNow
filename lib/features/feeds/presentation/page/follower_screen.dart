@@ -65,13 +65,20 @@ class _FollowerScreenState extends ConsumerState<FollowerScreen> {
             builder: (context, snapshot) {
               final List<Post?> posts = snapshot.data ?? [];
               if (posts.isEmpty) {
-                return const Center(
-                  child: SingleChildScrollView(
-                    child: Text('Không có bài viết nào'),
+                return Container(
+                  alignment: Alignment.center,
+                  child: ListView(
+                    children: const [
+                      Center(
+                        heightFactor: 25,
+                        child: Text('Không có bài viết nào'),
+                      ),
+                    ],
                   ),
                 );
               }
               return ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return PostWidget(
                     post: posts[index]!,

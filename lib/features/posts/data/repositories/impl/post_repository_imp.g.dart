@@ -187,14 +187,14 @@ class _CurrentPostStateChangesProviderElement
   String get id => (origin as CurrentPostStateChangesProvider).id;
 }
 
-String _$watchRemovePostHash() => r'e40012fcabeb7202d890d03a4c5459fd6fa6f1e6';
+String _$watchRemovePostHash() => r'97dbfc50c2e44e72acd7e859041f1bdca3cf91ae';
 
 /// See also [watchRemovePost].
 @ProviderFor(watchRemovePost)
 const watchRemovePostProvider = WatchRemovePostFamily();
 
 /// See also [watchRemovePost].
-class WatchRemovePostFamily extends Family<AsyncValue<void>> {
+class WatchRemovePostFamily extends Family<StreamSubscription<void>> {
   /// See also [watchRemovePost].
   const WatchRemovePostFamily();
 
@@ -232,7 +232,8 @@ class WatchRemovePostFamily extends Family<AsyncValue<void>> {
 }
 
 /// See also [watchRemovePost].
-class WatchRemovePostProvider extends AutoDisposeStreamProvider<void> {
+class WatchRemovePostProvider
+    extends AutoDisposeProvider<StreamSubscription<void>> {
   /// See also [watchRemovePost].
   WatchRemovePostProvider(
     String postId,
@@ -267,7 +268,7 @@ class WatchRemovePostProvider extends AutoDisposeStreamProvider<void> {
 
   @override
   Override overrideWith(
-    Stream<void> Function(WatchRemovePostRef provider) create,
+    StreamSubscription<void> Function(WatchRemovePostRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -284,7 +285,7 @@ class WatchRemovePostProvider extends AutoDisposeStreamProvider<void> {
   }
 
   @override
-  AutoDisposeStreamProviderElement<void> createElement() {
+  AutoDisposeProviderElement<StreamSubscription<void>> createElement() {
     return _WatchRemovePostProviderElement(this);
   }
 
@@ -302,13 +303,14 @@ class WatchRemovePostProvider extends AutoDisposeStreamProvider<void> {
   }
 }
 
-mixin WatchRemovePostRef on AutoDisposeStreamProviderRef<void> {
+mixin WatchRemovePostRef on AutoDisposeProviderRef<StreamSubscription<void>> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
 class _WatchRemovePostProviderElement
-    extends AutoDisposeStreamProviderElement<void> with WatchRemovePostRef {
+    extends AutoDisposeProviderElement<StreamSubscription<void>>
+    with WatchRemovePostRef {
   _WatchRemovePostProviderElement(super.provider);
 
   @override

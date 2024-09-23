@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cooknow/core/constant/exception_from_server.dart';
@@ -219,7 +220,7 @@ class PostRepositoryImp implements PostRepository {
             _listPostState.value.where((e) => e?.id != result.id).toList();
       });
 
-  Stream<void> watchRemovePost(String postId) async* {
+  StreamSubscription<void> watchRemovePost(String postId) {
     final streamResult = client.subscribe$DeletePost(
       Options$Subscription$DeletePost(
         variables: Variables$Subscription$DeletePost(
@@ -227,7 +228,7 @@ class PostRepositoryImp implements PostRepository {
         ),
       ),
     );
-    yield* streamResult.map((event) {
+    return streamResult.listen((event) {
       final result = event.parsedData?.delete_post;
       _listPostState.value =
           _listPostState.value.where((e) => e?.id != result?.id).toList();
@@ -297,7 +298,10 @@ Stream<Post?> currentPostStateChanges(
 }
 
 @riverpod
-Stream<void> watchRemovePost(WatchRemovePostRef ref, String postId) async* {
+StreamSubscription<void> watchRemovePost(
+    WatchRemovePostRef ref, String postId) {
   final postRepository = ref.watch(postRepositoryProvider);
-  yield* postRepository.watchRemovePost(postId);
+  final watchRemovePost = postRepository.watchRemovePost(postId);
+  ref.onDispose(watchRemovePost.cancel);
+  return watchRemovePost;
 }
