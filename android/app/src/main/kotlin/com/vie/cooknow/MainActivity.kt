@@ -1,4 +1,4 @@
-package com.example.cooknow
+package com.vie.cooknow
 
 import io.flutter.embedding.android.FlutterActivity
 

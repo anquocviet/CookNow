@@ -11,14 +11,16 @@ import 'package:cooknow/features/posts/data/dtos/create_comment_dto.dart';
 import 'package:cooknow/features/posts/data/repositories/comment_repository.dart';
 import 'package:cooknow/features/posts/data/repositories/impl/post_repository_imp.dart';
 import 'package:cooknow/features/posts/domain/comment/comment.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'comment_repository_imp.g.dart';
 
 class CommentRepositoryImp implements CommentRepository {
-  CommentRepositoryImp({required this.client});
+  CommentRepositoryImp({required this.client, required this.ref});
   final GraphQLClient client;
+  final CommentRepositoryRef ref;
 
   final _listCommentState = ims.InMemoryStore<List<Comment?>>([]);
   List<Comment?> get comments => _listCommentState.value;
@@ -60,6 +62,7 @@ class CommentRepositoryImp implements CommentRepository {
         Comment.fromJson(result!.toJson()),
         ..._listCommentState.value,
       ];
+      ref.read(postRepositoryProvider).updateQtyOfPost(id);
     });
   }
 
@@ -115,7 +118,7 @@ class CommentRepositoryImp implements CommentRepository {
 
 @Riverpod(keepAlive: true)
 CommentRepositoryImp commentRepository(CommentRepositoryRef ref) {
-  return CommentRepositoryImp(client: GraphqlClient.client.value);
+  return CommentRepositoryImp(client: GraphqlClient.client.value, ref: ref);
 }
 
 @Riverpod(keepAlive: true)
@@ -128,8 +131,6 @@ Stream<List<Comment?>> commentStateChanges(CommentStateChangesRef ref) {
 StreamSubscription<void> watchCreateComment(
     WatchCreateCommentRef ref, String id) {
   final commentRepository = ref.watch(commentRepositoryProvider);
-  final postRepository = ref.read(postRepositoryProvider);
-  postRepository.updateQtyOfPost(id);
   final watchComment = commentRepository.watchComment(id);
   ref.onDispose(watchComment.cancel);
   return watchComment;
