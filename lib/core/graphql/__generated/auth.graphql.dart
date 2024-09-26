@@ -7,25 +7,30 @@ import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 import 'schema.graphql.dart';
 
-class Variables$Query$Login {
-  factory Variables$Query$Login({
+class Variables$Mutation$Login {
+  factory Variables$Mutation$Login({
     required String username,
     required String password,
+    required Input$DeviceDto device,
   }) =>
-      Variables$Query$Login._({
+      Variables$Mutation$Login._({
         r'username': username,
         r'password': password,
+        r'device': device,
       });
 
-  Variables$Query$Login._(this._$data);
+  Variables$Mutation$Login._(this._$data);
 
-  factory Variables$Query$Login.fromJson(Map<String, dynamic> data) {
+  factory Variables$Mutation$Login.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
     final l$username = data['username'];
     result$data['username'] = (l$username as String);
     final l$password = data['password'];
     result$data['password'] = (l$password as String);
-    return Variables$Query$Login._(result$data);
+    final l$device = data['device'];
+    result$data['device'] =
+        Input$DeviceDto.fromJson((l$device as Map<String, dynamic>));
+    return Variables$Mutation$Login._(result$data);
   }
 
   Map<String, dynamic> _$data;
@@ -34,17 +39,21 @@ class Variables$Query$Login {
 
   String get password => (_$data['password'] as String);
 
+  Input$DeviceDto get device => (_$data['device'] as Input$DeviceDto);
+
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
     final l$username = username;
     result$data['username'] = l$username;
     final l$password = password;
     result$data['password'] = l$password;
+    final l$device = device;
+    result$data['device'] = l$device.toJson();
     return result$data;
   }
 
-  CopyWith$Variables$Query$Login<Variables$Query$Login> get copyWith =>
-      CopyWith$Variables$Query$Login(
+  CopyWith$Variables$Mutation$Login<Variables$Mutation$Login> get copyWith =>
+      CopyWith$Variables$Mutation$Login(
         this,
         (i) => i,
       );
@@ -54,7 +63,8 @@ class Variables$Query$Login {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Variables$Query$Login) || runtimeType != other.runtimeType) {
+    if (!(other is Variables$Mutation$Login) ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$username = username;
@@ -67,6 +77,11 @@ class Variables$Query$Login {
     if (l$password != lOther$password) {
       return false;
     }
+    final l$device = device;
+    final lOther$device = other.device;
+    if (l$device != lOther$device) {
+      return false;
+    }
     return true;
   }
 
@@ -74,83 +89,90 @@ class Variables$Query$Login {
   int get hashCode {
     final l$username = username;
     final l$password = password;
+    final l$device = device;
     return Object.hashAll([
       l$username,
       l$password,
+      l$device,
     ]);
   }
 }
 
-abstract class CopyWith$Variables$Query$Login<TRes> {
-  factory CopyWith$Variables$Query$Login(
-    Variables$Query$Login instance,
-    TRes Function(Variables$Query$Login) then,
-  ) = _CopyWithImpl$Variables$Query$Login;
+abstract class CopyWith$Variables$Mutation$Login<TRes> {
+  factory CopyWith$Variables$Mutation$Login(
+    Variables$Mutation$Login instance,
+    TRes Function(Variables$Mutation$Login) then,
+  ) = _CopyWithImpl$Variables$Mutation$Login;
 
-  factory CopyWith$Variables$Query$Login.stub(TRes res) =
-      _CopyWithStubImpl$Variables$Query$Login;
+  factory CopyWith$Variables$Mutation$Login.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Mutation$Login;
 
   TRes call({
     String? username,
     String? password,
+    Input$DeviceDto? device,
   });
 }
 
-class _CopyWithImpl$Variables$Query$Login<TRes>
-    implements CopyWith$Variables$Query$Login<TRes> {
-  _CopyWithImpl$Variables$Query$Login(
+class _CopyWithImpl$Variables$Mutation$Login<TRes>
+    implements CopyWith$Variables$Mutation$Login<TRes> {
+  _CopyWithImpl$Variables$Mutation$Login(
     this._instance,
     this._then,
   );
 
-  final Variables$Query$Login _instance;
+  final Variables$Mutation$Login _instance;
 
-  final TRes Function(Variables$Query$Login) _then;
+  final TRes Function(Variables$Mutation$Login) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? username = _undefined,
     Object? password = _undefined,
+    Object? device = _undefined,
   }) =>
-      _then(Variables$Query$Login._({
+      _then(Variables$Mutation$Login._({
         ..._instance._$data,
         if (username != _undefined && username != null)
           'username': (username as String),
         if (password != _undefined && password != null)
           'password': (password as String),
+        if (device != _undefined && device != null)
+          'device': (device as Input$DeviceDto),
       }));
 }
 
-class _CopyWithStubImpl$Variables$Query$Login<TRes>
-    implements CopyWith$Variables$Query$Login<TRes> {
-  _CopyWithStubImpl$Variables$Query$Login(this._res);
+class _CopyWithStubImpl$Variables$Mutation$Login<TRes>
+    implements CopyWith$Variables$Mutation$Login<TRes> {
+  _CopyWithStubImpl$Variables$Mutation$Login(this._res);
 
   TRes _res;
 
   call({
     String? username,
     String? password,
+    Input$DeviceDto? device,
   }) =>
       _res;
 }
 
-class Query$Login {
-  Query$Login({
+class Mutation$Login {
+  Mutation$Login({
     required this.login,
-    this.$__typename = 'Query',
+    this.$__typename = 'Mutation',
   });
 
-  factory Query$Login.fromJson(Map<String, dynamic> json) {
+  factory Mutation$Login.fromJson(Map<String, dynamic> json) {
     final l$login = json['login'];
     final l$$__typename = json['__typename'];
-    return Query$Login(
-      login: Query$Login$login.fromJson((l$login as Map<String, dynamic>)),
+    return Mutation$Login(
+      login: Mutation$Login$login.fromJson((l$login as Map<String, dynamic>)),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$Login$login login;
+  final Mutation$Login$login login;
 
   final String $__typename;
 
@@ -178,7 +200,7 @@ class Query$Login {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$Login) || runtimeType != other.runtimeType) {
+    if (!(other is Mutation$Login) || runtimeType != other.runtimeType) {
       return false;
     }
     final l$login = login;
@@ -195,37 +217,40 @@ class Query$Login {
   }
 }
 
-extension UtilityExtension$Query$Login on Query$Login {
-  CopyWith$Query$Login<Query$Login> get copyWith => CopyWith$Query$Login(
+extension UtilityExtension$Mutation$Login on Mutation$Login {
+  CopyWith$Mutation$Login<Mutation$Login> get copyWith =>
+      CopyWith$Mutation$Login(
         this,
         (i) => i,
       );
 }
 
-abstract class CopyWith$Query$Login<TRes> {
-  factory CopyWith$Query$Login(
-    Query$Login instance,
-    TRes Function(Query$Login) then,
-  ) = _CopyWithImpl$Query$Login;
+abstract class CopyWith$Mutation$Login<TRes> {
+  factory CopyWith$Mutation$Login(
+    Mutation$Login instance,
+    TRes Function(Mutation$Login) then,
+  ) = _CopyWithImpl$Mutation$Login;
 
-  factory CopyWith$Query$Login.stub(TRes res) = _CopyWithStubImpl$Query$Login;
+  factory CopyWith$Mutation$Login.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Login;
 
   TRes call({
-    Query$Login$login? login,
+    Mutation$Login$login? login,
     String? $__typename,
   });
-  CopyWith$Query$Login$login<TRes> get login;
+  CopyWith$Mutation$Login$login<TRes> get login;
 }
 
-class _CopyWithImpl$Query$Login<TRes> implements CopyWith$Query$Login<TRes> {
-  _CopyWithImpl$Query$Login(
+class _CopyWithImpl$Mutation$Login<TRes>
+    implements CopyWith$Mutation$Login<TRes> {
+  _CopyWithImpl$Mutation$Login(
     this._instance,
     this._then,
   );
 
-  final Query$Login _instance;
+  final Mutation$Login _instance;
 
-  final TRes Function(Query$Login) _then;
+  final TRes Function(Mutation$Login) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -233,40 +258,40 @@ class _CopyWithImpl$Query$Login<TRes> implements CopyWith$Query$Login<TRes> {
     Object? login = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$Login(
+      _then(Mutation$Login(
         login: login == _undefined || login == null
             ? _instance.login
-            : (login as Query$Login$login),
+            : (login as Mutation$Login$login),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
       ));
 
-  CopyWith$Query$Login$login<TRes> get login {
+  CopyWith$Mutation$Login$login<TRes> get login {
     final local$login = _instance.login;
-    return CopyWith$Query$Login$login(local$login, (e) => call(login: e));
+    return CopyWith$Mutation$Login$login(local$login, (e) => call(login: e));
   }
 }
 
-class _CopyWithStubImpl$Query$Login<TRes>
-    implements CopyWith$Query$Login<TRes> {
-  _CopyWithStubImpl$Query$Login(this._res);
+class _CopyWithStubImpl$Mutation$Login<TRes>
+    implements CopyWith$Mutation$Login<TRes> {
+  _CopyWithStubImpl$Mutation$Login(this._res);
 
   TRes _res;
 
   call({
-    Query$Login$login? login,
+    Mutation$Login$login? login,
     String? $__typename,
   }) =>
       _res;
 
-  CopyWith$Query$Login$login<TRes> get login =>
-      CopyWith$Query$Login$login.stub(_res);
+  CopyWith$Mutation$Login$login<TRes> get login =>
+      CopyWith$Mutation$Login$login.stub(_res);
 }
 
-const documentNodeQueryLogin = DocumentNode(definitions: [
+const documentNodeMutationLogin = DocumentNode(definitions: [
   OperationDefinitionNode(
-    type: OperationType.query,
+    type: OperationType.mutation,
     name: NameNode(value: 'Login'),
     variableDefinitions: [
       VariableDefinitionNode(
@@ -282,6 +307,15 @@ const documentNodeQueryLogin = DocumentNode(definitions: [
         variable: VariableNode(name: NameNode(value: 'password')),
         type: NamedTypeNode(
           name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'device')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'DeviceDto'),
           isNonNull: true,
         ),
         defaultValue: DefaultValueNode(value: null),
@@ -304,6 +338,10 @@ const documentNodeQueryLogin = DocumentNode(definitions: [
               ObjectFieldNode(
                 name: NameNode(value: 'password'),
                 value: VariableNode(name: NameNode(value: 'password')),
+              ),
+              ObjectFieldNode(
+                name: NameNode(value: 'device'),
+                value: VariableNode(name: NameNode(value: 'device')),
               ),
             ]),
           )
@@ -336,27 +374,27 @@ const documentNodeQueryLogin = DocumentNode(definitions: [
     ]),
   ),
 ]);
-Query$Login _parserFn$Query$Login(Map<String, dynamic> data) =>
-    Query$Login.fromJson(data);
-typedef OnQueryComplete$Query$Login = FutureOr<void> Function(
+Mutation$Login _parserFn$Mutation$Login(Map<String, dynamic> data) =>
+    Mutation$Login.fromJson(data);
+typedef OnMutationCompleted$Mutation$Login = FutureOr<void> Function(
   Map<String, dynamic>?,
-  Query$Login?,
+  Mutation$Login?,
 );
 
-class Options$Query$Login extends graphql.QueryOptions<Query$Login> {
-  Options$Query$Login({
+class Options$Mutation$Login extends graphql.MutationOptions<Mutation$Login> {
+  Options$Mutation$Login({
     String? operationName,
-    required Variables$Query$Login variables,
+    required Variables$Mutation$Login variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
-    Query$Login? typedOptimisticResult,
-    Duration? pollInterval,
+    Mutation$Login? typedOptimisticResult,
     graphql.Context? context,
-    OnQueryComplete$Query$Login? onComplete,
-    graphql.OnQueryError? onError,
-  })  : onCompleteWithParsed = onComplete,
+    OnMutationCompleted$Mutation$Login? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Login>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
         super(
           variables: variables.toJson(),
           operationName: operationName,
@@ -364,39 +402,40 @@ class Options$Query$Login extends graphql.QueryOptions<Query$Login> {
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
           optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
-          pollInterval: pollInterval,
           context: context,
-          onComplete: onComplete == null
+          onCompleted: onCompleted == null
               ? null
-              : (data) => onComplete(
+              : (data) => onCompleted(
                     data,
-                    data == null ? null : _parserFn$Query$Login(data),
+                    data == null ? null : _parserFn$Mutation$Login(data),
                   ),
+          update: update,
           onError: onError,
-          document: documentNodeQueryLogin,
-          parserFn: _parserFn$Query$Login,
+          document: documentNodeMutationLogin,
+          parserFn: _parserFn$Mutation$Login,
         );
 
-  final OnQueryComplete$Query$Login? onCompleteWithParsed;
+  final OnMutationCompleted$Mutation$Login? onCompletedWithParsed;
 
   @override
   List<Object?> get properties => [
-        ...super.onComplete == null
+        ...super.onCompleted == null
             ? super.properties
-            : super.properties.where((property) => property != onComplete),
-        onCompleteWithParsed,
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
       ];
 }
 
-class WatchOptions$Query$Login extends graphql.WatchQueryOptions<Query$Login> {
-  WatchOptions$Query$Login({
+class WatchOptions$Mutation$Login
+    extends graphql.WatchQueryOptions<Mutation$Login> {
+  WatchOptions$Mutation$Login({
     String? operationName,
-    required Variables$Query$Login variables,
+    required Variables$Mutation$Login variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
-    Query$Login? typedOptimisticResult,
+    Mutation$Login? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -410,90 +449,146 @@ class WatchOptions$Query$Login extends graphql.WatchQueryOptions<Query$Login> {
           cacheRereadPolicy: cacheRereadPolicy,
           optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
-          document: documentNodeQueryLogin,
+          document: documentNodeMutationLogin,
           pollInterval: pollInterval,
           eagerlyFetchResults: eagerlyFetchResults,
           carryForwardDataOnException: carryForwardDataOnException,
           fetchResults: fetchResults,
-          parserFn: _parserFn$Query$Login,
+          parserFn: _parserFn$Mutation$Login,
         );
 }
 
-class FetchMoreOptions$Query$Login extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$Login({
-    required graphql.UpdateQuery updateQuery,
-    required Variables$Query$Login variables,
-  }) : super(
-          updateQuery: updateQuery,
-          variables: variables.toJson(),
-          document: documentNodeQueryLogin,
+extension ClientExtension$Mutation$Login on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Mutation$Login>> mutate$Login(
+          Options$Mutation$Login options) async =>
+      await this.mutate(options);
+  graphql.ObservableQuery<Mutation$Login> watchMutation$Login(
+          WatchOptions$Mutation$Login options) =>
+      this.watchMutation(options);
+}
+
+class Mutation$Login$HookResult {
+  Mutation$Login$HookResult(
+    this.runMutation,
+    this.result,
+  );
+
+  final RunMutation$Mutation$Login runMutation;
+
+  final graphql.QueryResult<Mutation$Login> result;
+}
+
+Mutation$Login$HookResult useMutation$Login(
+    [WidgetOptions$Mutation$Login? options]) {
+  final result =
+      graphql_flutter.useMutation(options ?? WidgetOptions$Mutation$Login());
+  return Mutation$Login$HookResult(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
+      variables.toJson(),
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+    ),
+    result.result,
+  );
+}
+
+graphql.ObservableQuery<Mutation$Login> useWatchMutation$Login(
+        WatchOptions$Mutation$Login options) =>
+    graphql_flutter.useWatchMutation(options);
+
+class WidgetOptions$Mutation$Login
+    extends graphql.MutationOptions<Mutation$Login> {
+  WidgetOptions$Mutation$Login({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$Login? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$Login? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Login>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$Login(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationLogin,
+          parserFn: _parserFn$Mutation$Login,
         );
+
+  final OnMutationCompleted$Mutation$Login? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
 }
 
-extension ClientExtension$Query$Login on graphql.GraphQLClient {
-  Future<graphql.QueryResult<Query$Login>> query$Login(
-          Options$Query$Login options) async =>
-      await this.query(options);
-  graphql.ObservableQuery<Query$Login> watchQuery$Login(
-          WatchOptions$Query$Login options) =>
-      this.watchQuery(options);
-  void writeQuery$Login({
-    required Query$Login data,
-    required Variables$Query$Login variables,
-    bool broadcast = true,
-  }) =>
-      this.writeQuery(
-        graphql.Request(
-          operation: graphql.Operation(document: documentNodeQueryLogin),
-          variables: variables.toJson(),
-        ),
-        data: data.toJson(),
-        broadcast: broadcast,
-      );
-  Query$Login? readQuery$Login({
-    required Variables$Query$Login variables,
-    bool optimistic = true,
-  }) {
-    final result = this.readQuery(
-      graphql.Request(
-        operation: graphql.Operation(document: documentNodeQueryLogin),
-        variables: variables.toJson(),
-      ),
-      optimistic: optimistic,
-    );
-    return result == null ? null : Query$Login.fromJson(result);
-  }
-}
+typedef RunMutation$Mutation$Login = graphql.MultiSourceResult<Mutation$Login>
+    Function(
+  Variables$Mutation$Login, {
+  Object? optimisticResult,
+  Mutation$Login? typedOptimisticResult,
+});
+typedef Builder$Mutation$Login = widgets.Widget Function(
+  RunMutation$Mutation$Login,
+  graphql.QueryResult<Mutation$Login>?,
+);
 
-graphql_flutter.QueryHookResult<Query$Login> useQuery$Login(
-        Options$Query$Login options) =>
-    graphql_flutter.useQuery(options);
-graphql.ObservableQuery<Query$Login> useWatchQuery$Login(
-        WatchOptions$Query$Login options) =>
-    graphql_flutter.useWatchQuery(options);
-
-class Query$Login$Widget extends graphql_flutter.Query<Query$Login> {
-  Query$Login$Widget({
+class Mutation$Login$Widget extends graphql_flutter.Mutation<Mutation$Login> {
+  Mutation$Login$Widget({
     widgets.Key? key,
-    required Options$Query$Login options,
-    required graphql_flutter.QueryBuilder<Query$Login> builder,
+    WidgetOptions$Mutation$Login? options,
+    required Builder$Mutation$Login builder,
   }) : super(
           key: key,
-          options: options,
-          builder: builder,
+          options: options ?? WidgetOptions$Mutation$Login(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+              typedOptimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
+            ),
+            result,
+          ),
         );
 }
 
-class Query$Login$login {
-  Query$Login$login({
+class Mutation$Login$login {
+  Mutation$Login$login({
     required this.access_token,
     this.$__typename = 'AuthResponseDto',
   });
 
-  factory Query$Login$login.fromJson(Map<String, dynamic> json) {
+  factory Mutation$Login$login.fromJson(Map<String, dynamic> json) {
     final l$access_token = json['access_token'];
     final l$$__typename = json['__typename'];
-    return Query$Login$login(
+    return Mutation$Login$login(
       access_token: (l$access_token as String),
       $__typename: (l$$__typename as String),
     );
@@ -527,7 +622,7 @@ class Query$Login$login {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$Login$login) || runtimeType != other.runtimeType) {
+    if (!(other is Mutation$Login$login) || runtimeType != other.runtimeType) {
       return false;
     }
     final l$access_token = access_token;
@@ -544,22 +639,22 @@ class Query$Login$login {
   }
 }
 
-extension UtilityExtension$Query$Login$login on Query$Login$login {
-  CopyWith$Query$Login$login<Query$Login$login> get copyWith =>
-      CopyWith$Query$Login$login(
+extension UtilityExtension$Mutation$Login$login on Mutation$Login$login {
+  CopyWith$Mutation$Login$login<Mutation$Login$login> get copyWith =>
+      CopyWith$Mutation$Login$login(
         this,
         (i) => i,
       );
 }
 
-abstract class CopyWith$Query$Login$login<TRes> {
-  factory CopyWith$Query$Login$login(
-    Query$Login$login instance,
-    TRes Function(Query$Login$login) then,
-  ) = _CopyWithImpl$Query$Login$login;
+abstract class CopyWith$Mutation$Login$login<TRes> {
+  factory CopyWith$Mutation$Login$login(
+    Mutation$Login$login instance,
+    TRes Function(Mutation$Login$login) then,
+  ) = _CopyWithImpl$Mutation$Login$login;
 
-  factory CopyWith$Query$Login$login.stub(TRes res) =
-      _CopyWithStubImpl$Query$Login$login;
+  factory CopyWith$Mutation$Login$login.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Login$login;
 
   TRes call({
     String? access_token,
@@ -567,16 +662,16 @@ abstract class CopyWith$Query$Login$login<TRes> {
   });
 }
 
-class _CopyWithImpl$Query$Login$login<TRes>
-    implements CopyWith$Query$Login$login<TRes> {
-  _CopyWithImpl$Query$Login$login(
+class _CopyWithImpl$Mutation$Login$login<TRes>
+    implements CopyWith$Mutation$Login$login<TRes> {
+  _CopyWithImpl$Mutation$Login$login(
     this._instance,
     this._then,
   );
 
-  final Query$Login$login _instance;
+  final Mutation$Login$login _instance;
 
-  final TRes Function(Query$Login$login) _then;
+  final TRes Function(Mutation$Login$login) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -584,7 +679,7 @@ class _CopyWithImpl$Query$Login$login<TRes>
     Object? access_token = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$Login$login(
+      _then(Mutation$Login$login(
         access_token: access_token == _undefined || access_token == null
             ? _instance.access_token
             : (access_token as String),
@@ -594,9 +689,9 @@ class _CopyWithImpl$Query$Login$login<TRes>
       ));
 }
 
-class _CopyWithStubImpl$Query$Login$login<TRes>
-    implements CopyWith$Query$Login$login<TRes> {
-  _CopyWithStubImpl$Query$Login$login(this._res);
+class _CopyWithStubImpl$Mutation$Login$login<TRes>
+    implements CopyWith$Mutation$Login$login<TRes> {
+  _CopyWithStubImpl$Mutation$Login$login(this._res);
 
   TRes _res;
 
@@ -1224,6 +1319,469 @@ class _CopyWithStubImpl$Mutation$Register$register<TRes>
     String? $__typename,
   }) =>
       _res;
+}
+
+class Variables$Mutation$Logout {
+  factory Variables$Mutation$Logout({required String data}) =>
+      Variables$Mutation$Logout._({
+        r'data': data,
+      });
+
+  Variables$Mutation$Logout._(this._$data);
+
+  factory Variables$Mutation$Logout.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$data = data['data'];
+    result$data['data'] = (l$data as String);
+    return Variables$Mutation$Logout._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get data => (_$data['data'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$data = data;
+    result$data['data'] = l$data;
+    return result$data;
+  }
+
+  CopyWith$Variables$Mutation$Logout<Variables$Mutation$Logout> get copyWith =>
+      CopyWith$Variables$Mutation$Logout(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Mutation$Logout) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$data = data;
+    final lOther$data = other.data;
+    if (l$data != lOther$data) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$data = data;
+    return Object.hashAll([l$data]);
+  }
+}
+
+abstract class CopyWith$Variables$Mutation$Logout<TRes> {
+  factory CopyWith$Variables$Mutation$Logout(
+    Variables$Mutation$Logout instance,
+    TRes Function(Variables$Mutation$Logout) then,
+  ) = _CopyWithImpl$Variables$Mutation$Logout;
+
+  factory CopyWith$Variables$Mutation$Logout.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Mutation$Logout;
+
+  TRes call({String? data});
+}
+
+class _CopyWithImpl$Variables$Mutation$Logout<TRes>
+    implements CopyWith$Variables$Mutation$Logout<TRes> {
+  _CopyWithImpl$Variables$Mutation$Logout(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Mutation$Logout _instance;
+
+  final TRes Function(Variables$Mutation$Logout) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? data = _undefined}) => _then(Variables$Mutation$Logout._({
+        ..._instance._$data,
+        if (data != _undefined && data != null) 'data': (data as String),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Mutation$Logout<TRes>
+    implements CopyWith$Variables$Mutation$Logout<TRes> {
+  _CopyWithStubImpl$Variables$Mutation$Logout(this._res);
+
+  TRes _res;
+
+  call({String? data}) => _res;
+}
+
+class Mutation$Logout {
+  Mutation$Logout({
+    required this.logout,
+    this.$__typename = 'Mutation',
+  });
+
+  factory Mutation$Logout.fromJson(Map<String, dynamic> json) {
+    final l$logout = json['logout'];
+    final l$$__typename = json['__typename'];
+    return Mutation$Logout(
+      logout: (l$logout as bool),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final bool logout;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$logout = logout;
+    _resultData['logout'] = l$logout;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$logout = logout;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$logout,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Mutation$Logout) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$logout = logout;
+    final lOther$logout = other.logout;
+    if (l$logout != lOther$logout) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$Logout on Mutation$Logout {
+  CopyWith$Mutation$Logout<Mutation$Logout> get copyWith =>
+      CopyWith$Mutation$Logout(
+        this,
+        (i) => i,
+      );
+}
+
+abstract class CopyWith$Mutation$Logout<TRes> {
+  factory CopyWith$Mutation$Logout(
+    Mutation$Logout instance,
+    TRes Function(Mutation$Logout) then,
+  ) = _CopyWithImpl$Mutation$Logout;
+
+  factory CopyWith$Mutation$Logout.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Logout;
+
+  TRes call({
+    bool? logout,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Mutation$Logout<TRes>
+    implements CopyWith$Mutation$Logout<TRes> {
+  _CopyWithImpl$Mutation$Logout(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$Logout _instance;
+
+  final TRes Function(Mutation$Logout) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? logout = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
+      _then(Mutation$Logout(
+        logout: logout == _undefined || logout == null
+            ? _instance.logout
+            : (logout as bool),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
+}
+
+class _CopyWithStubImpl$Mutation$Logout<TRes>
+    implements CopyWith$Mutation$Logout<TRes> {
+  _CopyWithStubImpl$Mutation$Logout(this._res);
+
+  TRes _res;
+
+  call({
+    bool? logout,
+    String? $__typename,
+  }) =>
+      _res;
+}
+
+const documentNodeMutationLogout = DocumentNode(definitions: [
+  OperationDefinitionNode(
+    type: OperationType.mutation,
+    name: NameNode(value: 'Logout'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'data')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'logout'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'data'),
+            value: VariableNode(name: NameNode(value: 'data')),
+          )
+        ],
+        directives: [],
+        selectionSet: null,
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
+]);
+Mutation$Logout _parserFn$Mutation$Logout(Map<String, dynamic> data) =>
+    Mutation$Logout.fromJson(data);
+typedef OnMutationCompleted$Mutation$Logout = FutureOr<void> Function(
+  Map<String, dynamic>?,
+  Mutation$Logout?,
+);
+
+class Options$Mutation$Logout extends graphql.MutationOptions<Mutation$Logout> {
+  Options$Mutation$Logout({
+    String? operationName,
+    required Variables$Mutation$Logout variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$Logout? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$Logout? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Logout>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$Logout(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationLogout,
+          parserFn: _parserFn$Mutation$Logout,
+        );
+
+  final OnMutationCompleted$Mutation$Logout? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+class WatchOptions$Mutation$Logout
+    extends graphql.WatchQueryOptions<Mutation$Logout> {
+  WatchOptions$Mutation$Logout({
+    String? operationName,
+    required Variables$Mutation$Logout variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$Logout? typedOptimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          document: documentNodeMutationLogout,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Mutation$Logout,
+        );
+}
+
+extension ClientExtension$Mutation$Logout on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Mutation$Logout>> mutate$Logout(
+          Options$Mutation$Logout options) async =>
+      await this.mutate(options);
+  graphql.ObservableQuery<Mutation$Logout> watchMutation$Logout(
+          WatchOptions$Mutation$Logout options) =>
+      this.watchMutation(options);
+}
+
+class Mutation$Logout$HookResult {
+  Mutation$Logout$HookResult(
+    this.runMutation,
+    this.result,
+  );
+
+  final RunMutation$Mutation$Logout runMutation;
+
+  final graphql.QueryResult<Mutation$Logout> result;
+}
+
+Mutation$Logout$HookResult useMutation$Logout(
+    [WidgetOptions$Mutation$Logout? options]) {
+  final result =
+      graphql_flutter.useMutation(options ?? WidgetOptions$Mutation$Logout());
+  return Mutation$Logout$HookResult(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
+      variables.toJson(),
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+    ),
+    result.result,
+  );
+}
+
+graphql.ObservableQuery<Mutation$Logout> useWatchMutation$Logout(
+        WatchOptions$Mutation$Logout options) =>
+    graphql_flutter.useWatchMutation(options);
+
+class WidgetOptions$Mutation$Logout
+    extends graphql.MutationOptions<Mutation$Logout> {
+  WidgetOptions$Mutation$Logout({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Mutation$Logout? typedOptimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$Logout? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Logout>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
+        super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$Logout(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationLogout,
+          parserFn: _parserFn$Mutation$Logout,
+        );
+
+  final OnMutationCompleted$Mutation$Logout? onCompletedWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onCompleted == null
+            ? super.properties
+            : super.properties.where((property) => property != onCompleted),
+        onCompletedWithParsed,
+      ];
+}
+
+typedef RunMutation$Mutation$Logout = graphql.MultiSourceResult<Mutation$Logout>
+    Function(
+  Variables$Mutation$Logout, {
+  Object? optimisticResult,
+  Mutation$Logout? typedOptimisticResult,
+});
+typedef Builder$Mutation$Logout = widgets.Widget Function(
+  RunMutation$Mutation$Logout,
+  graphql.QueryResult<Mutation$Logout>?,
+);
+
+class Mutation$Logout$Widget extends graphql_flutter.Mutation<Mutation$Logout> {
+  Mutation$Logout$Widget({
+    widgets.Key? key,
+    WidgetOptions$Mutation$Logout? options,
+    required Builder$Mutation$Logout builder,
+  }) : super(
+          key: key,
+          options: options ?? WidgetOptions$Mutation$Logout(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+              typedOptimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
+            ),
+            result,
+          ),
+        );
 }
 
 class Variables$Query$ValidateToken {

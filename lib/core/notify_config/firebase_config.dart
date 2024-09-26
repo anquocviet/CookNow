@@ -9,8 +9,6 @@ class FirebaseConfig {
   static Future<void> setupMessaging() async {
     // Config firebase
     await _messaging.setAutoInitEnabled(true);
-    var s = await FirebaseMessaging.instance.getToken();
-    log(s ?? 'null');
     await _messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -20,23 +18,25 @@ class FirebaseConfig {
       provisional: false,
       sound: true,
     );
-    // FirebaseMessaging.onMessage.listen()
+
+    // Config local notification
+    // Create a channel for high importance notifications
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
       importance: Importance.max,
     );
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    final FlutterLocalNotificationsPlugin plugin =
+        FlutterLocalNotificationsPlugin(); // Create a local notification plugin
 
-    await flutterLocalNotificationsPlugin
+    await plugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+        ?.createNotificationChannel(channel); // Create a channel
 
-    flutterLocalNotificationsPlugin.initialize(
+    plugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('launcher_icon'),
       ),
     );
 
@@ -47,7 +47,8 @@ class FirebaseConfig {
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
+        log(notification.toMap().toString());
+        plugin.show(
           DateTime.now().millisecondsSinceEpoch.remainder(100000), // id random
           notification.title,
           notification.body,

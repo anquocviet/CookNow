@@ -178,134 +178,6 @@ class _CopyWithStubImpl$Input$GetPostDto<TRes>
       _res;
 }
 
-class Input$LoginDto {
-  factory Input$LoginDto({
-    required String username,
-    required String password,
-  }) =>
-      Input$LoginDto._({
-        r'username': username,
-        r'password': password,
-      });
-
-  Input$LoginDto._(this._$data);
-
-  factory Input$LoginDto.fromJson(Map<String, dynamic> data) {
-    final result$data = <String, dynamic>{};
-    final l$username = data['username'];
-    result$data['username'] = (l$username as String);
-    final l$password = data['password'];
-    result$data['password'] = (l$password as String);
-    return Input$LoginDto._(result$data);
-  }
-
-  Map<String, dynamic> _$data;
-
-  String get username => (_$data['username'] as String);
-
-  String get password => (_$data['password'] as String);
-
-  Map<String, dynamic> toJson() {
-    final result$data = <String, dynamic>{};
-    final l$username = username;
-    result$data['username'] = l$username;
-    final l$password = password;
-    result$data['password'] = l$password;
-    return result$data;
-  }
-
-  CopyWith$Input$LoginDto<Input$LoginDto> get copyWith =>
-      CopyWith$Input$LoginDto(
-        this,
-        (i) => i,
-      );
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (!(other is Input$LoginDto) || runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$username = username;
-    final lOther$username = other.username;
-    if (l$username != lOther$username) {
-      return false;
-    }
-    final l$password = password;
-    final lOther$password = other.password;
-    if (l$password != lOther$password) {
-      return false;
-    }
-    return true;
-  }
-
-  @override
-  int get hashCode {
-    final l$username = username;
-    final l$password = password;
-    return Object.hashAll([
-      l$username,
-      l$password,
-    ]);
-  }
-}
-
-abstract class CopyWith$Input$LoginDto<TRes> {
-  factory CopyWith$Input$LoginDto(
-    Input$LoginDto instance,
-    TRes Function(Input$LoginDto) then,
-  ) = _CopyWithImpl$Input$LoginDto;
-
-  factory CopyWith$Input$LoginDto.stub(TRes res) =
-      _CopyWithStubImpl$Input$LoginDto;
-
-  TRes call({
-    String? username,
-    String? password,
-  });
-}
-
-class _CopyWithImpl$Input$LoginDto<TRes>
-    implements CopyWith$Input$LoginDto<TRes> {
-  _CopyWithImpl$Input$LoginDto(
-    this._instance,
-    this._then,
-  );
-
-  final Input$LoginDto _instance;
-
-  final TRes Function(Input$LoginDto) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? username = _undefined,
-    Object? password = _undefined,
-  }) =>
-      _then(Input$LoginDto._({
-        ..._instance._$data,
-        if (username != _undefined && username != null)
-          'username': (username as String),
-        if (password != _undefined && password != null)
-          'password': (password as String),
-      }));
-}
-
-class _CopyWithStubImpl$Input$LoginDto<TRes>
-    implements CopyWith$Input$LoginDto<TRes> {
-  _CopyWithStubImpl$Input$LoginDto(this._res);
-
-  TRes _res;
-
-  call({
-    String? username,
-    String? password,
-  }) =>
-      _res;
-}
-
 class Input$CreatePostDto {
   factory Input$CreatePostDto({
     required String name,
@@ -1786,6 +1658,378 @@ class _CopyWithStubImpl$Input$UpdateUserDto<TRes>
     String? email,
     String? phone,
     String? avatar,
+  }) =>
+      _res;
+}
+
+class Input$LoginDto {
+  factory Input$LoginDto({
+    required String username,
+    required String password,
+    required Input$DeviceDto device,
+  }) =>
+      Input$LoginDto._({
+        r'username': username,
+        r'password': password,
+        r'device': device,
+      });
+
+  Input$LoginDto._(this._$data);
+
+  factory Input$LoginDto.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$username = data['username'];
+    result$data['username'] = (l$username as String);
+    final l$password = data['password'];
+    result$data['password'] = (l$password as String);
+    final l$device = data['device'];
+    result$data['device'] =
+        Input$DeviceDto.fromJson((l$device as Map<String, dynamic>));
+    return Input$LoginDto._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get username => (_$data['username'] as String);
+
+  String get password => (_$data['password'] as String);
+
+  Input$DeviceDto get device => (_$data['device'] as Input$DeviceDto);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$username = username;
+    result$data['username'] = l$username;
+    final l$password = password;
+    result$data['password'] = l$password;
+    final l$device = device;
+    result$data['device'] = l$device.toJson();
+    return result$data;
+  }
+
+  CopyWith$Input$LoginDto<Input$LoginDto> get copyWith =>
+      CopyWith$Input$LoginDto(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$LoginDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$username = username;
+    final lOther$username = other.username;
+    if (l$username != lOther$username) {
+      return false;
+    }
+    final l$password = password;
+    final lOther$password = other.password;
+    if (l$password != lOther$password) {
+      return false;
+    }
+    final l$device = device;
+    final lOther$device = other.device;
+    if (l$device != lOther$device) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$username = username;
+    final l$password = password;
+    final l$device = device;
+    return Object.hashAll([
+      l$username,
+      l$password,
+      l$device,
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$LoginDto<TRes> {
+  factory CopyWith$Input$LoginDto(
+    Input$LoginDto instance,
+    TRes Function(Input$LoginDto) then,
+  ) = _CopyWithImpl$Input$LoginDto;
+
+  factory CopyWith$Input$LoginDto.stub(TRes res) =
+      _CopyWithStubImpl$Input$LoginDto;
+
+  TRes call({
+    String? username,
+    String? password,
+    Input$DeviceDto? device,
+  });
+  CopyWith$Input$DeviceDto<TRes> get device;
+}
+
+class _CopyWithImpl$Input$LoginDto<TRes>
+    implements CopyWith$Input$LoginDto<TRes> {
+  _CopyWithImpl$Input$LoginDto(
+    this._instance,
+    this._then,
+  );
+
+  final Input$LoginDto _instance;
+
+  final TRes Function(Input$LoginDto) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? username = _undefined,
+    Object? password = _undefined,
+    Object? device = _undefined,
+  }) =>
+      _then(Input$LoginDto._({
+        ..._instance._$data,
+        if (username != _undefined && username != null)
+          'username': (username as String),
+        if (password != _undefined && password != null)
+          'password': (password as String),
+        if (device != _undefined && device != null)
+          'device': (device as Input$DeviceDto),
+      }));
+
+  CopyWith$Input$DeviceDto<TRes> get device {
+    final local$device = _instance.device;
+    return CopyWith$Input$DeviceDto(local$device, (e) => call(device: e));
+  }
+}
+
+class _CopyWithStubImpl$Input$LoginDto<TRes>
+    implements CopyWith$Input$LoginDto<TRes> {
+  _CopyWithStubImpl$Input$LoginDto(this._res);
+
+  TRes _res;
+
+  call({
+    String? username,
+    String? password,
+    Input$DeviceDto? device,
+  }) =>
+      _res;
+
+  CopyWith$Input$DeviceDto<TRes> get device =>
+      CopyWith$Input$DeviceDto.stub(_res);
+}
+
+class Input$DeviceDto {
+  factory Input$DeviceDto({
+    required String id,
+    required String device,
+    required String model,
+    required String product,
+    required String version,
+    String? fcm_token,
+  }) =>
+      Input$DeviceDto._({
+        r'id': id,
+        r'device': device,
+        r'model': model,
+        r'product': product,
+        r'version': version,
+        if (fcm_token != null) r'fcm_token': fcm_token,
+      });
+
+  Input$DeviceDto._(this._$data);
+
+  factory Input$DeviceDto.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
+    final l$device = data['device'];
+    result$data['device'] = (l$device as String);
+    final l$model = data['model'];
+    result$data['model'] = (l$model as String);
+    final l$product = data['product'];
+    result$data['product'] = (l$product as String);
+    final l$version = data['version'];
+    result$data['version'] = (l$version as String);
+    if (data.containsKey('fcm_token')) {
+      final l$fcm_token = data['fcm_token'];
+      result$data['fcm_token'] = (l$fcm_token as String);
+    }
+    return Input$DeviceDto._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get id => (_$data['id'] as String);
+
+  String get device => (_$data['device'] as String);
+
+  String get model => (_$data['model'] as String);
+
+  String get product => (_$data['product'] as String);
+
+  String get version => (_$data['version'] as String);
+
+  String? get fcm_token => (_$data['fcm_token'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$id = id;
+    result$data['id'] = l$id;
+    final l$device = device;
+    result$data['device'] = l$device;
+    final l$model = model;
+    result$data['model'] = l$model;
+    final l$product = product;
+    result$data['product'] = l$product;
+    final l$version = version;
+    result$data['version'] = l$version;
+    if (_$data.containsKey('fcm_token')) {
+      final l$fcm_token = fcm_token;
+      result$data['fcm_token'] = (l$fcm_token as String);
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$DeviceDto<Input$DeviceDto> get copyWith =>
+      CopyWith$Input$DeviceDto(
+        this,
+        (i) => i,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$DeviceDto) || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$device = device;
+    final lOther$device = other.device;
+    if (l$device != lOther$device) {
+      return false;
+    }
+    final l$model = model;
+    final lOther$model = other.model;
+    if (l$model != lOther$model) {
+      return false;
+    }
+    final l$product = product;
+    final lOther$product = other.product;
+    if (l$product != lOther$product) {
+      return false;
+    }
+    final l$version = version;
+    final lOther$version = other.version;
+    if (l$version != lOther$version) {
+      return false;
+    }
+    final l$fcm_token = fcm_token;
+    final lOther$fcm_token = other.fcm_token;
+    if (_$data.containsKey('fcm_token') !=
+        other._$data.containsKey('fcm_token')) {
+      return false;
+    }
+    if (l$fcm_token != lOther$fcm_token) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$device = device;
+    final l$model = model;
+    final l$product = product;
+    final l$version = version;
+    final l$fcm_token = fcm_token;
+    return Object.hashAll([
+      l$id,
+      l$device,
+      l$model,
+      l$product,
+      l$version,
+      _$data.containsKey('fcm_token') ? l$fcm_token : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$DeviceDto<TRes> {
+  factory CopyWith$Input$DeviceDto(
+    Input$DeviceDto instance,
+    TRes Function(Input$DeviceDto) then,
+  ) = _CopyWithImpl$Input$DeviceDto;
+
+  factory CopyWith$Input$DeviceDto.stub(TRes res) =
+      _CopyWithStubImpl$Input$DeviceDto;
+
+  TRes call({
+    String? id,
+    String? device,
+    String? model,
+    String? product,
+    String? version,
+    String? fcm_token,
+  });
+}
+
+class _CopyWithImpl$Input$DeviceDto<TRes>
+    implements CopyWith$Input$DeviceDto<TRes> {
+  _CopyWithImpl$Input$DeviceDto(
+    this._instance,
+    this._then,
+  );
+
+  final Input$DeviceDto _instance;
+
+  final TRes Function(Input$DeviceDto) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? device = _undefined,
+    Object? model = _undefined,
+    Object? product = _undefined,
+    Object? version = _undefined,
+    Object? fcm_token = _undefined,
+  }) =>
+      _then(Input$DeviceDto._({
+        ..._instance._$data,
+        if (id != _undefined && id != null) 'id': (id as String),
+        if (device != _undefined && device != null)
+          'device': (device as String),
+        if (model != _undefined && model != null) 'model': (model as String),
+        if (product != _undefined && product != null)
+          'product': (product as String),
+        if (version != _undefined && version != null)
+          'version': (version as String),
+        if (fcm_token != _undefined && fcm_token != null)
+          'fcm_token': (fcm_token as String),
+      }));
+}
+
+class _CopyWithStubImpl$Input$DeviceDto<TRes>
+    implements CopyWith$Input$DeviceDto<TRes> {
+  _CopyWithStubImpl$Input$DeviceDto(this._res);
+
+  TRes _res;
+
+  call({
+    String? id,
+    String? device,
+    String? model,
+    String? product,
+    String? version,
+    String? fcm_token,
   }) =>
       _res;
 }
