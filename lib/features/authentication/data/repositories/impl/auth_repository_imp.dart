@@ -5,6 +5,7 @@ import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/auth.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
+import 'package:cooknow/features/authentication/data/dtos/device_dto.dart';
 import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:cooknow/features/authentication/data/repositories/auth_repository.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -20,17 +21,19 @@ class AuthRepositoryImp implements AuthRepository {
   final GraphQLClient client;
 
   @override
-  Future<String> login(String username, String password) => _getData(
-      query: client.query$Login(
-        Options$Query$Login(
-          variables: Variables$Query$Login(
-            username: username,
-            password: password,
+  Future<String> login(String username, String password, DeviceDto deviceDto) =>
+      _getData(
+          query: client.mutate$Login(
+            Options$Mutation$Login(
+              variables: Variables$Mutation$Login(
+                username: username,
+                password: password,
+                device: Input$DeviceDto.fromJson(deviceDto.toJson()),
+              ),
+              fetchPolicy: FetchPolicy.noCache,
+            ),
           ),
-          fetchPolicy: FetchPolicy.noCache,
-        ),
-      ),
-      builder: (data) => (data as Query$Login).login.access_token);
+          builder: (data) => (data as Mutation$Login).login.access_token);
 
   @override
   Future<void> register(RegisterDto registerDto) => _getData(
@@ -70,33 +73,42 @@ class AuthRepositoryImp implements AuthRepository {
         builder: (data) {},
       );
 
+  @override
+  Future<bool> logout(String token) => _getData(
+        query: client.mutate$Logout(
+          Options$Mutation$Logout(
+            variables: Variables$Mutation$Logout(
+              data: token,
+            ),
+          ),
+        ),
+        builder: (data) => (data as Mutation$Logout).logout,
+      );
+
   Future<T> _getData<T>({
     required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
   }) async {
     final result = await query;
-    final String error =
-        result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-    if (error.isEmpty) {
+    if (!result.hasException) {
       final data = result.parsedData;
       return builder(data);
-    } else {
-      log('${result.exception}', name: 'AuthRepositoryImp');
-      if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
-        final error = result.exception!.graphqlErrors.first.message;
-        if (error == AuthExceptionFromServer.jwtExpired ||
-            error == AuthExceptionFromServer.jwtInvalid) {
-          throw TokenExpiredException();
-        } else if (error == AuthExceptionFromServer.userNotFound) {
-          throw InvalidUsernameOrPasswordException();
-        } else if (error == AuthExceptionFromServer.userAlreadyExists) {
-          throw MailOrPhoneIsAlreadyInUseException();
-        } else {
-          throw ServerErrorException();
-        }
+    }
+    log(result.exception.toString(), name: 'AuthRepositoryImp');
+    if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
+      final error = result.exception!.graphqlErrors.first.message;
+      if (error == AuthExceptionFromServer.jwtExpired ||
+          error == AuthExceptionFromServer.jwtInvalid) {
+        throw TokenExpiredException();
+      } else if (error == AuthExceptionFromServer.userNotFound) {
+        throw InvalidUsernameOrPasswordException();
+      } else if (error == AuthExceptionFromServer.userAlreadyExists) {
+        throw MailOrPhoneIsAlreadyInUseException();
       } else {
-        throw NoInternetException();
+        throw ServerErrorException();
       }
+    } else {
+      throw NoInternetException();
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
 
+import 'package:cooknow/core/constant/exception_from_server.dart';
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/user.graphql.dart';
@@ -152,28 +152,33 @@ class UserRepositoryImp implements UserRepository {
   @override
   Future<void> dispose() async {
     _userState.value = null;
-    _userState.close();
+    // _userState.close();
   }
 
   Future<T> _getData<T>({
     required Future<QueryResult<dynamic>> query,
     required T Function(dynamic data) builder,
   }) async {
-    try {
-      final result = await query;
-      final String error =
-          result.exception?.graphqlErrors.firstOrNull?.message ?? '';
-      log(error, name: 'UserRepositoryImp');
-      if (error.isEmpty) {
-        final data = result.parsedData;
-        return builder(data);
+    final result = await query;
+    if (!result.hasException) {
+      final data = result.parsedData;
+      return builder(data);
+    }
+    log(result.exception.toString(), name: 'UserRepositoryImp');
+    if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
+      final error = result.exception!.graphqlErrors.first.message;
+      if (error == AuthExceptionFromServer.jwtExpired ||
+          error == AuthExceptionFromServer.jwtInvalid) {
+        throw TokenExpiredException();
+      } else if (error == AuthExceptionFromServer.userNotFound) {
+        throw InvalidUsernameOrPasswordException();
+      } else if (error == AuthExceptionFromServer.userAlreadyExists) {
+        throw MailOrPhoneIsAlreadyInUseException();
       } else {
-        throw AppUnknownException();
+        throw ServerErrorException();
       }
-    } on SocketException {
+    } else {
       throw NoInternetException();
-    } on Exception {
-      throw AppUnknownException();
     }
   }
 }

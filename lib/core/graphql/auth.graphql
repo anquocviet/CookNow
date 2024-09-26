@@ -1,5 +1,5 @@
-query Login($username: String!, $password: String!) {
-  login(data: { username: $username, password: $password }) {
+mutation Login($username: String!, $password: String!, $device: DeviceDto!) {
+  login(data: { username: $username, password: $password, device: $device }) {
     access_token
   }
 }
@@ -8,6 +8,10 @@ mutation Register($data: CreateUserDto!) {
   register(data: $data) {
     access_token
   }
+}
+
+mutation Logout($data: String!) {
+  logout(data: $data)
 }
 
 query ValidateToken($token: String!) {

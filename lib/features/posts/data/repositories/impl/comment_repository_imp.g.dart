@@ -6,7 +6,7 @@ part of 'comment_repository_imp.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$commentRepositoryHash() => r'f6f26c67270fe992964a3759f259c54c2ec33f10';
+String _$commentRepositoryHash() => r'5e02dd7d3dc8ba381c6138fb449212fa5ee342ae';
 
 /// See also [commentRepository].
 @ProviderFor(commentRepository)
@@ -38,7 +38,7 @@ final commentStateChangesProvider = StreamProvider<List<Comment?>>.internal(
 
 typedef CommentStateChangesRef = StreamProviderRef<List<Comment?>>;
 String _$watchCreateCommentHash() =>
-    r'5b5f3ec19358b58b456c2d2ac395c6aed78ba655';
+    r'de7aaab60d0e32719555287e85f01050926a244e';
 
 /// Copied from Dart SDK
 class _SystemHash {

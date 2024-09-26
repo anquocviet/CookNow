@@ -56,6 +56,10 @@ class TokenNotFoundException extends AppException {
       : super('Không tìm thấy thông tin đăng nhập trên thiết bị');
 }
 
+class LogoutFailedException extends AppException {
+  LogoutFailedException() : super('Đăng xuất thất bại. Vui lòng thử lại');
+}
+
 // ================== POST EXCEPTIONS ==================
 // Define exceptions from post here
 class PostNotFoundException extends AppException {

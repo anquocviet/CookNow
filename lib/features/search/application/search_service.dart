@@ -1,5 +1,7 @@
+import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/search/data/repositories/impl/history_search_repository_imp.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
+import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'search_service.g.dart';
@@ -13,6 +15,16 @@ class SearchService {
       String data, double take, double skip) async {
     final searchRepository = ref.read(historySearchRepositoryProvider);
     return searchRepository.search(data, take, skip);
+  }
+
+  Future<List<Post>> searchPost(String data, double take, double skip) async {
+    final searchRepository = ref.read(historySearchRepositoryProvider);
+    return searchRepository.searchPost(data, take, skip);
+  }
+
+  Future<List<User>> searchUser(String data, double take, double skip) async {
+    final searchRepository = ref.read(historySearchRepositoryProvider);
+    return searchRepository.searchUser(data, take, skip);
   }
 
   Future<void> getHistorySearch() async {
@@ -44,11 +56,4 @@ class SearchService {
 @riverpod
 SearchService searchService(SearchServiceRef ref) {
   return SearchService(ref: ref);
-}
-
-@riverpod
-Future<Map<String, List<dynamic>>> search(
-    SearchRef ref, String data, double take, double skip) async {
-  final searchService = ref.read(searchServiceProvider);
-  return searchService.search(data, take, skip);
 }

@@ -1,3 +1,4 @@
+import 'package:cooknow/core/notify_config/firebase_config.dart';
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,9 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
   await dotenv.load();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseConfig.setupMessaging();
 
   runApp(const ProviderScope(
     child: MainApp(),
