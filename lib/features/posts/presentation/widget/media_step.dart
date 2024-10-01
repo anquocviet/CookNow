@@ -102,8 +102,8 @@ class _MediaStepState extends State<MediaStep> {
                             widget.currentPath,
                             fit: BoxFit.cover,
                           )
-                        : Image.asset(
-                            widget.currentPath,
+                        : Image.file(
+                            File(widget.currentPath),
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,

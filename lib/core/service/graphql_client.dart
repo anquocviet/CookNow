@@ -7,7 +7,7 @@ class GraphqlClient {
   static final _storeLocalData = StoreLocalData();
 
   static final HttpLink _httpLink = HttpLink(
-    dotenv.env['SERVER_HOST']!,
+    dotenv.env['HTTP_SERVER_HOST']!,
   );
 
   static final AuthLink authLink = AuthLink(getToken: () async {
