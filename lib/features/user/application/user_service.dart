@@ -3,7 +3,6 @@ import 'package:cooknow/core/service/image_pick_service.dart';
 import 'package:cooknow/features/user/data/dtos/update_user_dto.dart';
 import 'package:cooknow/features/user/data/repositories/impl/user_repository_imp.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,9 +1,9 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:badges/badges.dart' as badges;
 
 class ScaffoldWithNestedNavigation extends ConsumerWidget {
   const ScaffoldWithNestedNavigation({

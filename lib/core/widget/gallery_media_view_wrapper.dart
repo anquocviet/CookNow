@@ -41,7 +41,9 @@ class _GalleryMediaViewWrapperState extends State<GalleryMediaViewWrapper> {
   late List<ChewieController> _chewieControllers;
 
   void onPageChanged(int index) {
-    _videoPlayerControllers.forEach((element) => element.pause());
+    for (var element in _videoPlayerControllers) {
+      element.pause();
+    }
     setState(() {
       currentIndex = index;
     });

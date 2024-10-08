@@ -5,6 +5,7 @@ import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/auth.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
+import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/authentication/data/dtos/device_dto.dart';
 import 'package:cooknow/features/authentication/data/dtos/register_dto.dart';
 import 'package:cooknow/features/authentication/data/repositories/auth_repository.dart';
@@ -16,9 +17,11 @@ part 'auth_repository_imp.g.dart';
 class AuthRepositoryImp implements AuthRepository {
   AuthRepositoryImp({
     required this.client,
+    required this.ref,
   });
 
   final GraphQLClient client;
+  final AuthRepositoryRef ref;
 
   @override
   Future<String> login(String username, String password, DeviceDto deviceDto) =>
@@ -99,6 +102,7 @@ class AuthRepositoryImp implements AuthRepository {
       final error = result.exception!.graphqlErrors.first.message;
       if (error == AuthExceptionFromServer.jwtExpired ||
           error == AuthExceptionFromServer.jwtInvalid) {
+        ref.read(authServiceProvider).removeToken();
         throw TokenExpiredException();
       } else if (error == AuthExceptionFromServer.userNotFound) {
         throw InvalidUsernameOrPasswordException();
@@ -115,5 +119,5 @@ class AuthRepositoryImp implements AuthRepository {
 
 @Riverpod(keepAlive: true)
 AuthRepositoryImp authRepository(AuthRepositoryRef ref) {
-  return AuthRepositoryImp(client: GraphqlClient.client.value);
+  return AuthRepositoryImp(client: GraphqlClient.client.value, ref: ref);
 }
