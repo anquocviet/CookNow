@@ -7,6 +7,7 @@ import 'package:cooknow/core/graphql/__generated/post.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
 import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
+import 'package:cooknow/features/authentication/application/auth_service.dart';
 import 'package:cooknow/features/posts/data/dtos/create_post_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_emoji_dto.dart';
 import 'package:cooknow/features/posts/data/dtos/update_post_dto.dart';
@@ -20,12 +21,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'post_repository_imp.g.dart';
 
 class PostRepositoryImp implements PostRepository {
-  PostRepositoryImp({required this.client});
+  PostRepositoryImp({required this.client, required this.ref});
 
   final GraphQLClient client;
+  final PostRepositoryRef ref;
 
   final _listPostState = ims.InMemoryStore<List<Post?>>([]);
+
   List<Post?> get posts => _listPostState.value;
+
   Stream<List<Post?>> postStateChanges() => _listPostState.stream;
 
   @override
@@ -265,6 +269,7 @@ class PostRepositoryImp implements PostRepository {
     if (result.exception?.graphqlErrors.isNotEmpty ?? true) {
       final error = result.exception!.graphqlErrors.first.message;
       if (error == AuthExceptionFromServer.jwtExpired) {
+        ref.read(authServiceProvider).removeToken();
         throw TokenExpiredException();
       } else if (error == AuthExceptionFromServer.postNotFound) {
         throw PostNotFoundException();
@@ -279,7 +284,7 @@ class PostRepositoryImp implements PostRepository {
 
 @Riverpod(keepAlive: true)
 PostRepositoryImp postRepository(PostRepositoryRef ref) {
-  return PostRepositoryImp(client: GraphqlClient.client.value);
+  return PostRepositoryImp(client: GraphqlClient.client.value, ref: ref);
 }
 
 @Riverpod(keepAlive: true)

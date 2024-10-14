@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cooknow/core/router/router_app.dart';
 import 'package:cooknow/core/utils/check_formats.dart';
 import 'package:cooknow/core/widget/custom_button.dart';
@@ -33,7 +35,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
   AsyncValue<List<String>>? _previousImagePath;
 
   String get nameDish => _nameDish.text;
+
   String get nopEating => _nopEating.text;
+
   String get timeCooking => _timeCooking.text;
 
   final List<ing.Item> listIngredient =
@@ -80,6 +84,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
     }
   }
 
+  /// Submits the form to create or update a post.
+  ///
+  /// [isCreateNew] determines whether a new post is created or an existing one is updated.
   Future<void> _submit(bool isCreateNew) async {
     try {
       if (!_checkValid()) {
@@ -143,6 +150,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
     _nopEating.text = '';
     _timeCooking.text = '';
     _node.requestFocus(FocusNode());
+    context.go(RouteName.home);
   }
 
   bool _checkValid() {
@@ -218,8 +226,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                 onPressed: state.isLoading ? null : _onChooseImage,
                 icon: state.when(
                   data: (value) => _renderImage(value.first),
-                  error: (error, stack) => Image.asset(
-                    _previousImagePath!.asData!.value.first,
+                  // Render image with Image.network or Image.file
+                  error: (error, stack) => Image.file(
+                    File(_previousImagePath!.asData!.value.first),
                     height: 200,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -305,24 +314,30 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                         ? null
                         : () async {
                             await _submit(true);
-                            context.go(RouteName.home);
                           },
                   ),
       ),
     );
   }
 
-  Widget _renderImage(String path) => isLinkOnline(path)
-      ? Image.network(
+  Widget _renderImage(String path) => path == 'assets/create_post_image.png'
+      ? Image.asset(
           path,
           height: 200,
           width: double.infinity,
           fit: BoxFit.cover,
         )
-      : Image.asset(
-          path,
-          height: 200,
-          width: double.infinity,
-          fit: BoxFit.cover,
-        );
+      : isLinkOnline(path)
+          ? Image.network(
+              path,
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            )
+          : Image.file(
+              File(path),
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            );
 }

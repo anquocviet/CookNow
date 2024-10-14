@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/router/router_app.dart';
+import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:cooknow/core/widget/show_alert.dart';
 import 'package:cooknow/features/authentication/presentation/controller/register_controller.dart';
-import 'package:cooknow/core/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

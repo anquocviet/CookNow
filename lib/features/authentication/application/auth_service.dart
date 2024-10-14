@@ -70,6 +70,13 @@ class AuthService {
     await storeLocalData.removeData(StoreVariable.token);
   }
 
+  Future<void> removeToken() async {
+    final storeLocalData = StoreLocalData();
+    final userService = ref.read(userServiceProvider);
+    await userService.disposeUser();
+    await storeLocalData.removeData(StoreVariable.token);
+  }
+
   Future<void> validateToken() async {
     final authRepository = ref.read(authRepositoryProvider);
     final token = await this.token;

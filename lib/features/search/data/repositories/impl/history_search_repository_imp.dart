@@ -5,12 +5,12 @@ import 'package:cooknow/core/exceptions/app_exception.dart';
 import 'package:cooknow/core/graphql/__generated/schema.graphql.dart';
 import 'package:cooknow/core/graphql/__generated/search.graphql.dart';
 import 'package:cooknow/core/service/graphql_client.dart';
+import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:cooknow/features/posts/domain/post/post.dart';
 import 'package:cooknow/features/search/data/repositories/history_search_repository.dart';
 import 'package:cooknow/features/search/domain/history_search.dart';
 import 'package:cooknow/features/user/domain/user/user.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:cooknow/core/utils/in_memory_store.dart' as ims;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'history_search_repository_imp.g.dart';
